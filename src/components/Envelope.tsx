@@ -41,7 +41,7 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
         isOpen ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
-      {/* 1. الطية اليسرى الشفافة (تغطي نصف الشاشة وتفتح لليار) */}
+      {/* 1. الطية اليسرى الشفافة */}
       <div
         className={`absolute top-0 bottom-0 left-0 w-1/2 border-r border-white/30 backdrop-blur-sm transition-transform duration-1000 ease-in-out z-10 ${
           isOpen ? "-translate-x-full" : "translate-x-0"
@@ -51,7 +51,7 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
         }}
       />
 
-      {/* 2. الطية اليمنى الشفافة (تغطي نصف الشاشة وتفتح لليمين) */}
+      {/* 2. الطية اليمنى الشفافة */}
       <div
         className={`absolute top-0 bottom-0 right-0 w-1/2 border-l border-white/30 backdrop-blur-sm transition-transform duration-1000 ease-in-out z-10 ${
           isOpen ? "translate-x-full" : "translate-x-0"
@@ -61,7 +61,7 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
         }}
       />
 
-      {/* 3. الملصق في منتصف الصفحة تماماً */}
+      {/* 3. الملصق بحجم أكبر وبدون ظل */}
       <button
         onClick={handleOpen}
         className={`relative z-20 flex items-center justify-center cursor-pointer transition-all duration-700 ${
@@ -71,7 +71,7 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
         <img
           src={waxSealImg}
           alt="الختم"
-          className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-2xl transition-transform duration-300 hover:scale-105 active:scale-95"
+          className="w-32 h-32 sm:w-40 sm:h-40 transition-transform duration-300 hover:scale-105 active:scale-95"
         />
       </button>
     </div>
