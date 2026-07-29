@@ -8,8 +8,9 @@ interface EnvelopeProps {
 const Envelope = ({ onOpen }: EnvelopeProps) => {
   const [opening, setOpening] = useState(false);
 
+  // دالة تشغيل الفتح عند الضغط على الختم فقط
   const handleSealClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    e.stopPropagation(); // منع الضغط عن باقي الصفحة
     if (opening) return;
     setOpening(true);
     setTimeout(onOpen, 2100);
@@ -20,44 +21,44 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
       className="fixed inset-0 z-40 overflow-hidden pointer-events-auto"
       style={{ perspective: "2000px" }}
     >
-      {/* نصفين الظرف (الانقسام) */}
+      {/* نصفين الظرف المتلاقين في المنتصف */}
       <div className="absolute inset-0 flex">
         
-        {/* النصف الأيمن - معتم وشفافيته صريحة بدون أي خلفية سوداء مسربة */}
+        {/* النصف الأيمن: شفاف + تمويه خفيف ليتضح خلفه أول جزء من الموقع */}
         <div
-          className="absolute top-0 right-0 h-full w-1/2 bg-[#121212]"
+          className="absolute top-0 right-0 h-full w-1/2"
           style={{
             transition: "transform 2s cubic-bezier(0.65, 0, 0.35, 1) 0.08s",
             transform: opening ? "translateX(110%)" : "translateX(0)",
-            boxShadow: "none", // إلغاء أي ظل للجوانب
+            backgroundColor: "rgba(0, 0, 0, 0.25)", // لون داكن خفيف جداً لإبراز الشفافية
+            backdropFilter: "blur(12px)", // تمويه يعكس الصورة اللي تحته بشكل ضبابي
+            WebkitBackdropFilter: "blur(12px)",
           }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-l from-white/5 to-transparent pointer-events-none" />
-        </div>
+        />
 
-        {/* النصف الأيسر */}
+        {/* النصف الأيسر: شفاف + تمويه خفيف */}
         <div
-          className="absolute top-0 left-0 h-full w-1/2 bg-[#121212]"
+          className="absolute top-0 left-0 h-full w-1/2"
           style={{
             transition: "transform 2s cubic-bezier(0.65, 0, 0.35, 1)",
             transform: opening ? "translateX(-110%)" : "translateX(0)",
-            boxShadow: "none", // إلغاء أي ظل للجوانب
+            backgroundColor: "rgba(0, 0, 0, 0.25)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
           }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent pointer-events-none" />
-        </div>
+        />
 
-        {/* خط المنتصف العمودي */}
+        {/* خط المنتصف العمودي الفاصل */}
         <div
           className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px pointer-events-none"
           style={{
-            background: "rgba(255, 255, 255, 0.15)",
+            background: "rgba(255, 255, 255, 0.2)",
             opacity: opening ? 0 : 1,
             transition: "opacity 0.6s ease-out",
           }}
         />
 
-        {/* الملصق الدائري - بدون أي ظل نهائياً (No Shadow) + حركة النقر */}
+        {/* الختم/الملصق الدائري - بدون أي ظل نهائياً وبدون حواف + إيحاء انقراص عند النقر */}
         <div
           className="absolute top-0 left-0 w-full h-full flex items-center justify-center z-50 pointer-events-none"
           style={{
@@ -81,8 +82,9 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
                 alt="ختم الدعوة"
                 className="w-44 h-44 sm:w-52 sm:h-52 object-contain"
                 style={{
-                  filter: "none", // إلغاء كل أنواع الظلال تماماً
+                  filter: "none", // إلغاء جميع الظلال تماماً
                   boxShadow: "none",
+                  border: "none"
                 }}
               />
             </div>
@@ -90,9 +92,9 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
         </div>
       </div>
 
-      {/* نص التوجيه */}
+      {/* نص التوجيه بالأسفل */}
       <div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-sm font-arabic animate-pulse z-10 pointer-events-none"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-sm font-arabic animate-pulse z-10 pointer-events-none drop-shadow-sm"
         style={{ color: "#FFFFFF", opacity: opening ? 0 : 1 }}
       >
         اضغط على الختم لفتح الدعوة
