@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Phone, Music, Camera, MapPin, Heart, X, Download, RefreshCw } from "lucide-react";
 
 // 🎵 استيراد ملف الصوت الخاص بالدعوة
-import bgMusic from "@/assets/music.mp3"; // أو المسار الأصلي للصوت لديكِ مثل bg-music.mp3
+import bgMusic from "@/assets/music.mp4a"; // أو المسار الأصلي للصوت لديكِ مثل bg-music.mp3
 
 interface NavigationDockProps {
   active: boolean; // حالة فتح الظرف
