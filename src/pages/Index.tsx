@@ -135,7 +135,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* 3. قسم الصورة السفلية الممتدة والفوتر المكتمل */}
+        {/* 3. قسم الصورة السفلية الممتدة مع العناصر بالترتيب المطلوب */}
         <section className="relative w-full flex flex-col items-center justify-start">
           
           {/* الصورة السفلية 96AF05E8-7D83-48B7-B124-4763797873E0.png */}
@@ -146,19 +146,19 @@ const Index = () => {
               className="w-full h-auto block"
             />
 
-            {/* المحتوى المترتب بوضوح واحترافية فوق الصورة السفلية */}
-            <div className="absolute inset-0 flex flex-col items-center justify-between pt-16 pb-8 px-4">
+            {/* المحتوى مرتب بالتسلسل المطلوبة مباشرة فوق الصورة */}
+            <div className="absolute inset-0 flex flex-col items-center justify-between pt-12 pb-6 px-4">
               
-              {/* أ. السطر النصي { ننتظركم بكل حُب } نزل للأصل وتم تكبيره قليلاً */}
+              {/* 1. النص العلوي { ننتظركم بكل حُب } فوق الصورة بالمسافة الحالية وبحجم واضح */}
               <p
-                className="font-arabic text-lg sm:text-xl font-bold text-center mt-auto mb-2"
+                className="font-arabic text-lg sm:text-xl font-bold text-center mt-2"
                 style={{ color: "#5F4F41" }}
               >
                 &#123; ننتظركم بكل حُب &#125;
               </p>
 
-              {/* ب. بطاقة الصورة IMG_5482.jpeg بنفس نمط الكروت الزجاجية */}
-              <div className="w-[92%] max-w-md my-3 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl">
+              {/* 2. الصورة IMG_5482.jpeg بنفس مكانها الأصلي ونمط الكروت الزجاجية */}
+              <div className="w-[92%] max-w-md my-auto rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl">
                 <img
                   src={cardImg}
                   alt="بطاقة تذكارية"
@@ -166,10 +166,10 @@ const Index = () => {
                 />
               </div>
 
-              {/* ج. الفوتر الكامل المرفع ومكوناته الواضحة */}
-              <div className="w-full text-center space-y-2 pt-3 mb-2">
+              {/* 3. أسماء العروسين ومكونات الفوتر الكاملة وتحتها الحقوق */}
+              <div className="w-full text-center space-y-2 pb-2">
                 
-                {/* سطر أسماء العروسين مرقوع فوق الفوتر */}
+                {/* سطر أسماء العروسين */}
                 <Reveal>
                   <p
                     className="font-arabic text-xl sm:text-2xl font-extrabold"
@@ -179,7 +179,7 @@ const Index = () => {
                   </p>
                 </Reveal>
 
-                {/* حقوق الحقوق والقلب مع الرابط المصمم بنفس النمط */}
+                {/* حقوق الحقوق مع القلب والرابط */}
                 <Reveal delay={100}>
                   <div
                     className="flex items-center justify-center gap-2 pt-1"
