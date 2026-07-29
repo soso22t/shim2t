@@ -1,103 +1,80 @@
-import { useState } from "react";
-import waxSeal from "@/assets/0F85550C-A3B7-4BAC-9FAC-EAC702C30B90.png";
+import { useState, useEffect } from "react";
 
 interface EnvelopeProps {
   onOpen: () => void;
 }
 
 const Envelope = ({ onOpen }: EnvelopeProps) => {
-  const [opening, setOpening] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
 
-  // دالة تشغيل الفتح عند الضغط على الختم فقط
-  const handleSealClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // منع الضغط عن باقي الصفحة
-    if (opening) return;
-    setOpening(true);
-    setTimeout(onOpen, 2100);
+  // منع السكرول والتمرير ما دام الظرف مفتوحاً/موجوداً
+  useEffect(() => {
+    if (!isOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none"; // لمنع السحب في الجوال
+    } else {
+      document.body.style.overflow = "auto";
+      document.body.style.touchAction = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+      document.body.style.touchAction = "auto";
+    };
+  }, [isOpen]);
+
+  const handleOpen = () => {
+    setIsOpen(true);
+    onOpen();
+    setTimeout(() => {
+      setIsHidden(true);
+    }, 1000);
   };
+
+  if (isHidden) return null;
 
   return (
     <div
-      className="fixed inset-0 z-40 overflow-hidden pointer-events-auto"
-      style={{ perspective: "2000px" }}
+      className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-all duration-1000 ${
+        isOpen ? "opacity-0 pointer-events-none scale-105" : "opacity-100"
+      }`}
+      style={{
+        backgroundColor: "rgba(233, 221, 212, 0.92)", // خلفية شفافة ناعمة
+        backdropFilter: "blur(8px)",
+      }}
     >
-      {/* نصفين الظرف المتلاقين في المنتصف */}
-      <div className="absolute inset-0 flex">
-        
-        {/* النصف الأيمن: شفاف + تمويه خفيف ليتضح خلفه أول جزء من الموقع */}
+      <div className="relative w-full max-w-sm sm:max-w-md aspect-[4/3] flex items-center justify-center">
+        {/* جسم الظرف بشفافية مخففة ناعمة */}
         <div
-          className="absolute top-0 right-0 h-full w-1/2"
+          className="absolute inset-0 rounded-3xl border border-white/50 shadow-2xl transition-all duration-700"
           style={{
-            transition: "transform 2s cubic-bezier(0.65, 0, 0.35, 1) 0.08s",
-            transform: opening ? "translateX(110%)" : "translateX(0)",
-            backgroundColor: "rgba(0, 0, 0, 0.25)", // لون داكن خفيف جداً لإبراز الشفافية
-            backdropFilter: "blur(12px)", // تمويه يعكس الصورة اللي تحته بشكل ضبابي
-            WebkitBackdropFilter: "blur(12px)",
-          }}
-        />
-
-        {/* النصف الأيسر: شفاف + تمويه خفيف */}
-        <div
-          className="absolute top-0 left-0 h-full w-1/2"
-          style={{
-            transition: "transform 2s cubic-bezier(0.65, 0, 0.35, 1)",
-            transform: opening ? "translateX(-110%)" : "translateX(0)",
-            backgroundColor: "rgba(0, 0, 0, 0.25)",
+            background: "rgba(255, 255, 255, 0.35)", // شفافية مخففة للظرف
             backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
           }}
         />
 
-        {/* خط المنتصف العمودي الفاصل */}
-        <div
-          className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px pointer-events-none"
-          style={{
-            background: "rgba(255, 255, 255, 0.2)",
-            opacity: opening ? 0 : 1,
-            transition: "opacity 0.6s ease-out",
-          }}
-        />
-
-        {/* الختم/الملصق الدائري - بدون أي ظل نهائياً وبدون حواف + إيحاء انقراص عند النقر */}
-        <div
-          className="absolute top-0 left-0 w-full h-full flex items-center justify-center z-50 pointer-events-none"
-          style={{
-            opacity: opening ? 0 : 1,
-            transition: "opacity 0.5s ease-out",
-          }}
+        {/* ختم فتح الدعوة */}
+        <button
+          onClick={handleOpen}
+          className="relative z-10 flex flex-col items-center justify-center gap-2 group cursor-pointer transition-transform duration-300 hover:scale-105 active:scale-95"
         >
-          <button
-            onClick={handleSealClick}
-            className="pointer-events-auto cursor-pointer border-none outline-none bg-transparent p-0 transition-transform duration-150 ease-in-out active:scale-90 hover:scale-105"
-            style={{ 
-              border: "none", 
-              outline: "none", 
-              boxShadow: "none",
-              WebkitTapHighlightColor: "transparent"
+          {/* دائرة الختم الزجاجية الشفافة */}
+          <div
+            className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-white/60 shadow-xl flex items-center justify-center transition-all duration-300 group-hover:shadow-2xl"
+            style={{
+              background: "rgba(255, 255, 255, 0.45)",
+              backdropFilter: "blur(10px)",
             }}
           >
-            <div className="animate-float-slow">
-              <img
-                src={waxSeal}
-                alt="ختم الدعوة"
-                className="w-44 h-44 sm:w-52 sm:h-52 object-contain"
-                style={{
-                  filter: "none", // إلغاء جميع الظلال تماماً
-                  boxShadow: "none",
-                  border: "none"
-                }}
-              />
-            </div>
-          </button>
-        </div>
-      </div>
-
-      {/* نص التوجيه بالأسفل */}
-      <div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-sm font-arabic animate-pulse z-10 pointer-events-none drop-shadow-sm"
-        style={{ color: "#FFFFFF", opacity: opening ? 0 : 1 }}
-      >
-        اضغط على الختم لفتح الدعوة
+            <span
+              className="font-arabic text-xl sm:text-2xl font-bold"
+              style={{ color: "#5F4F41" }}
+            >
+              افتح
+            </span>
+          </div>
+        </button>
       </div>
     </div>
   );
