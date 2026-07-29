@@ -3,7 +3,7 @@ import { Heart, Calendar } from "lucide-react";
 import invitationImg from "@/assets/photo-output.png";
 import sosImg from "@/assets/sos.png";
 
-// 📸 استيراد الصور الجديدة (تأكدي من وضع الملفات بنفس الاسم داخل مجلد assets)
+// 📸 استيراد الصور السفلية
 import footerBgImg from "@/assets/96AF05E8-7D83-48B7-B124-4763797873E0.png";
 import cardImg from "@/assets/IMG_5482.jpeg";
 
@@ -135,10 +135,10 @@ const Index = () => {
           </div>
         </section>
 
-        {/* 3. قسم الصورة السفلية الجديدة والبطاقة والفوتر المعدل */}
+        {/* 3. قسم الصورة السفلية الممتدة والفوتر المكتمل */}
         <section className="relative w-full flex flex-col items-center justify-start">
           
-          {/* الصورة السفلية الجديدة 96AF05E8-7D83-48B7-B124-4763797873E0.png مباشرة تحت الصورة الثانية */}
+          {/* الصورة السفلية 96AF05E8-7D83-48B7-B124-4763797873E0.png */}
           <div className="relative w-full">
             <img
               src={footerBgImg}
@@ -146,19 +146,19 @@ const Index = () => {
               className="w-full h-auto block"
             />
 
-            {/* المحتوى فوق الصورة السفلية */}
-            <div className="absolute inset-0 flex flex-col items-center justify-between pt-8 pb-6 px-4">
+            {/* المحتوى المترتب بوضوح واحترافية فوق الصورة السفلية */}
+            <div className="absolute inset-0 flex flex-col items-center justify-between pt-16 pb-8 px-4">
               
-              {/* أ. السطر النصي { ننتظركم بكل حُب } في الأعلى بخط متوسط */}
+              {/* أ. السطر النصي { ننتظركم بكل حُب } نزل للأصل وتم تكبيره قليلاً */}
               <p
-                className="font-arabic text-base sm:text-lg font-medium text-center"
+                className="font-arabic text-lg sm:text-xl font-bold text-center mt-auto mb-2"
                 style={{ color: "#5F4F41" }}
               >
                 &#123; ننتظركم بكل حُب &#125;
               </p>
 
-              {/* ب. الصورة IMG_5482.jpeg بنمط المربعات الزجاجية ونفس امتدادها */}
-              <div className="w-[92%] max-w-md my-4 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl">
+              {/* ب. بطاقة الصورة IMG_5482.jpeg بنفس نمط الكروت الزجاجية */}
+              <div className="w-[92%] max-w-md my-3 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl">
                 <img
                   src={cardImg}
                   alt="بطاقة تذكارية"
@@ -166,30 +166,33 @@ const Index = () => {
                 />
               </div>
 
-              {/* ج. الفوتر المرفوع مع أسماء محمد & عهود فوقه */}
-              <footer className="w-full text-center space-y-2 pt-2">
+              {/* ج. الفوتر الكامل المرفع ومكوناته الواضحة */}
+              <div className="w-full text-center space-y-2 pt-3 mb-2">
+                
+                {/* سطر أسماء العروسين مرقوع فوق الفوتر */}
                 <Reveal>
                   <p
-                    className="font-arabic text-lg sm:text-xl font-bold"
+                    className="font-arabic text-xl sm:text-2xl font-extrabold"
                     style={{ color: "#5F4F41" }}
                   >
                     محمد & عهود
                   </p>
                 </Reveal>
 
+                {/* حقوق الحقوق والقلب مع الرابط المصمم بنفس النمط */}
                 <Reveal delay={100}>
                   <div
-                    className="flex items-center justify-center gap-2"
+                    className="flex items-center justify-center gap-2 pt-1"
                     style={{ color: "#5F4F41" }}
                   >
-                    <Heart className="w-4 h-4 fill-current" />
-                    <span className="font-arabic text-xs">
+                    <Heart className="w-4 h-4 fill-current text-[#5F4F41]" />
+                    <span className="font-arabic text-xs sm:text-sm font-semibold">
                       صُنع بحب بواسطة{" "}
                       <a
                         href="https://www.tiktok.com/@shim2t?_r=1&_t=ZS-95w0d8f7vnk"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="underline underline-offset-4 font-bold"
+                        className="underline underline-offset-4 font-bold hover:opacity-80 transition-opacity"
                         style={{ color: "#5F4F41" }}
                       >
                         متجر غيمة
@@ -197,7 +200,8 @@ const Index = () => {
                     </span>
                   </div>
                 </Reveal>
-              </footer>
+
+              </div>
 
             </div>
           </div>
