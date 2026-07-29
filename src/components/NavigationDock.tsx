@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Phone, Music, Camera, MapPin, Heart, X, Download, RefreshCw } from "lucide-react";
 
-// 🎵 استيراد ملف الصوت الخاص بالدعوة
-import bgMusic from "@/assets/music.mp4a"; // أو المسار الأصلي للصوت لديكِ مثل bg-music.mp3
+// 🎵 استيراد ملف الصوت بالامتداد الصحيح m4a
+import bgMusic from "@/assets/music.m4a";
 
 interface NavigationDockProps {
   active: boolean; // حالة فتح الظرف
@@ -25,7 +25,6 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
         .play()
         .then(() => setIsPlaying(true))
         .catch(() => {
-          // في حال منع المتصفح التشغيل التلقائي بدون تفاعل
           setIsPlaying(false);
         });
     }
@@ -76,7 +75,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     setCapturedImage(null);
   };
 
-  // التقاط الصورة وتثبيت الفلتر بالمقاس والعبارات الجديدة
+  // التقاط الصورة وتثبيت الفلتر
   const capturePhoto = () => {
     if (!videoRef.current || !canvasRef.current) return;
 
@@ -85,25 +84,23 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // تثبيت مقاس 9:16
     canvas.width = 1080;
     canvas.height = 1920;
 
-    // رسم الكاميرا مع العكس (Mirror mode)
     ctx.save();
     ctx.translate(canvas.width, 0);
     ctx.scale(-1, 1);
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     ctx.restore();
 
-    // تظليل ناعم في الأسفل فقط لكتابة الاسم
+    // تظليل ناعم في الأسفل
     const gradient = ctx.createLinearGradient(0, canvas.height - 400, 0, canvas.height);
     gradient.addColorStop(0, "rgba(0,0,0,0)");
     gradient.addColorStop(1, "rgba(0,0,0,0.6)");
     ctx.fillStyle = gradient;
     ctx.fillRect(0, canvas.height - 400, canvas.width, 400);
 
-    // كتابة الاسم "محمد & عهود" في الأسفل فقط
+    // كتابة الاسم "محمد & عهود" في الأسفل
     ctx.textAlign = "center";
     ctx.fillStyle = "#FFFFFF";
     ctx.font = "bold 60px Tajawal, sans-serif";
@@ -128,17 +125,15 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
   return (
     <>
-      {/* ملف الصوت */}
+      {/* 🎵 ربط ملف الصوت m4a الاصلي */}
       <audio ref={audioRef} loop src={bgMusic} preload="auto" />
       <canvas ref={canvasRef} className="hidden" />
 
       {/* شاشة الكاميرا والفلتر */}
       {showCamera && (
         <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
-          {/* حاوية بمقاس 9:16 */}
           <div className="relative w-full h-full max-w-[500px] aspect-[9/16] bg-black flex items-center justify-center overflow-hidden">
             
-            {/* زر الإغلاق */}
             <button
               onClick={closeCamera}
               className="absolute top-6 right-6 z-30 p-3 rounded-full bg-black/50 text-white border border-white/30 cursor-pointer"
@@ -155,7 +150,6 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   className="w-full h-full object-cover -scale-x-100"
                 />
 
-                {/* طبقة الفلتر: الاسم فقط في الأسفل */}
                 <div className="absolute inset-0 pointer-events-none flex flex-col justify-end p-8 text-center bg-gradient-to-t from-black/70 via-transparent to-transparent">
                   <div className="pb-20">
                     <h2 className="font-arabic text-3xl sm:text-4xl font-extrabold text-white drop-shadow-2xl">
@@ -164,7 +158,6 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   </div>
                 </div>
 
-                {/* زر التقاط الصورة */}
                 <div className="absolute bottom-6 z-20">
                   <button
                     onClick={capturePhoto}
@@ -175,7 +168,6 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                 </div>
               </>
             ) : (
-              /* عرض الصورة الملتقطة مع خيار التنزيل والإعادة */
               <div className="relative w-full h-full flex flex-col items-center justify-center">
                 <img
                   src={capturedImage}
