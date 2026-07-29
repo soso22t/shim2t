@@ -41,7 +41,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     }
   };
 
-  // فتح الكاميرا الخلفية بمقاس طبيعي (بدون تكبير)
+  // فتح الكاميرا الخلفية العادية بدون زووم
   const openCamera = async () => {
     try {
       setShowCamera(true);
@@ -49,8 +49,6 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: { ideal: "environment" }, // الكاميرا الخلفية
-          width: { ideal: 1080 },
-          height: { ideal: 1920 },
         },
         audio: false,
       });
@@ -74,7 +72,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     setCapturedImage(null);
   };
 
-  // التقاط الصورة بدون عكس (لأنها كاميرا خلفية)
+  // التقاط الصورة بالأبعاد الحقيقية للكاميرا بدون قص أو زووم
   const capturePhoto = () => {
     if (!videoRef.current || !canvasRef.current) return;
 
@@ -83,26 +81,26 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = 1080;
-    canvas.height = 1920;
+    canvas.width = video.videoWidth || 1080;
+    canvas.height = video.videoHeight || 1920;
 
-    // رسم الكاميرا أفقياً ورأسياً بالشكل الطبيعي
+    // رسم الصورة
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // تظليل ناعم في الأسفل
-    const gradient = ctx.createLinearGradient(0, canvas.height - 400, 0, canvas.height);
+    // تظليل ناعم في الأسفل للنص
+    const gradient = ctx.createLinearGradient(0, canvas.height - 300, 0, canvas.height);
     gradient.addColorStop(0, "rgba(0,0,0,0)");
     gradient.addColorStop(1, "rgba(0,0,0,0.6)");
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, canvas.height - 400, canvas.width, 400);
+    ctx.fillRect(0, canvas.height - 300, canvas.width, 300);
 
-    // كتابة الاسم "محمد & عهود" في الأسفل
+    // كتابة الاسم "محمد & عهود"
     ctx.textAlign = "center";
     ctx.fillStyle = "#FFFFFF";
-    ctx.font = "bold 60px Tajawal, sans-serif";
+    ctx.font = `bold ${Math.round(canvas.width * 0.055)}px Tajawal, sans-serif`;
     ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
     ctx.shadowBlur = 12;
-    ctx.fillText("محمد & عهود", canvas.width / 2, canvas.height - 120);
+    ctx.fillText("محمد & عهود", canvas.width / 2, canvas.height - (canvas.height * 0.08));
 
     const imageUrl = canvas.toDataURL("image/png");
     setCapturedImage(imageUrl);
@@ -150,7 +148,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
       {/* شاشة الكاميرا والفلتر */}
       {showCamera && (
         <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
-          <div className="relative w-full h-full max-w-[500px] aspect-[9/16] bg-black flex items-center justify-center overflow-hidden">
+          <div className="relative w-full h-full max-w-[500px] bg-black flex items-center justify-center overflow-hidden">
             
             {/* زر الإغلاق */}
             <button
@@ -162,12 +160,12 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
             {!capturedImage ? (
               <>
-                {/* الكاميرا الخلفية العادية */}
+                {/* الكاميرا الخلفية العادية بدون زووم */}
                 <video
                   ref={videoRef}
                   autoPlay
                   playsInline
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain bg-black"
                 />
 
                 {/* نص الفلتر السفلي قبل التقاط الصورة */}
@@ -190,15 +188,15 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                 </div>
               </>
             ) : (
-              /* شاشة عرض الصورة الملتقطة مع شريط الأزرار بتصميم الصورة المرفقة */
+              /* شاشة عرض الصورة الملتقطة مع أزرار التحكم بالعربي */
               <div className="relative w-full h-full flex flex-col items-center justify-center">
                 <img
                   src={capturedImage}
                   alt="الصورة الملتقطة"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain bg-black"
                 />
 
-                {/* الشريط السفلي بتصميم مطابق تماماً مع ألوان التصميم */}
+                {/* الكارت السفلي بأزرار التحكم بألوان متناسقة */}
                 <div className="absolute bottom-6 z-30 w-[90%] max-w-[360px]">
                   <div
                     className="w-full p-4 rounded-3xl backdrop-blur-xl border border-white/30 flex flex-col items-center gap-3 shadow-2xl"
@@ -226,12 +224,11 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                       </button>
                     </div>
 
-                    {/* الصف الثاني: زر المشاركة السفلي الأنيق */}
+                    {/* الصف الثاني: زر المشاركة */}
                     <button
                       onClick={handleShare}
                       className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-xl font-arabic text-sm font-bold shadow-lg transition-all active:scale-95 cursor-pointer"
                       style={{
-                        background: "linear-[#5F4F41]",
                         backgroundColor: "#8C7A6B",
                         color: "#FFFFFF",
                       }}
@@ -247,7 +244,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
         </div>
       )}
 
-      {/* الشريط السفلي الرئيسي للتطبيق */}
+      {/* الشريط السفلي الرئيسي */}
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-md pointer-events-auto">
         <div
           className="w-full px-3 py-2.5 rounded-3xl border border-white/50 shadow-2xl flex items-center justify-around backdrop-blur-md"
