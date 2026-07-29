@@ -38,18 +38,18 @@ const Index = () => {
           />
         </section>
 
-        {/* الصورة الثانية: تحتوي على المربع الزجاجي + الموقع + التقويم وزر الحفظ */}
+        {/* الصورة الثانية: تحتوي على المربع الزجاجي والموقع والعد التنازلي والتقويم */}
         <section className="relative w-full">
           <img
             src={sosImg}
             alt="الصورة الثانية"
-            className="w-full h-auto block min-h-[1050px] sm:min-h-[1100px] object-cover"
+            className="w-full h-auto block min-h-[1450px] sm:min-h-[1500px] object-cover"
           />
 
-          {/* العناصر التراكبية فوق الصورة الثانية */}
-          <div className="absolute inset-0 flex flex-col items-center justify-start pt-14 sm:pt-20 px-4 space-y-6">
+          {/* العناصر التراكبية فوق الصورة الثانية مع مسافة علوية مناسبة */}
+          <div className="absolute inset-0 flex flex-col items-center justify-start pt-24 sm:pt-32 px-4 space-y-7">
             
-            {/* 1. المربع الزجاجي (تم تنزيله لأسفل قليلاً عبر pt-14 / pt-20) */}
+            {/* 1. المربع الزجاجي (مع وجود مسافة كافية بينه وبين بداية الصورة) */}
             <div
               className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
               style={{
@@ -57,7 +57,7 @@ const Index = () => {
                 color: "#5F4F41",
               }}
             >
-              {/* السطر الأول - حجم كبير */}
+              {/* السطر الأول */}
               <p
                 className="font-arabic text-base sm:text-lg font-bold leading-snug"
                 style={{ color: "#5F4F41" }}
@@ -124,7 +124,24 @@ const Index = () => {
               </p>
             </div>
 
-            {/* 3. كارت التقويم المرفوع لأعلى داخل الصورة الثانية */}
+            {/* 3. قسم العد التنازلي المرفوع فوق الصورة الثانية بمربعات زجاجية ولون بني */}
+            <div className="w-full max-w-md text-center py-2 space-y-3">
+              <h3
+                className="font-arabic text-lg sm:text-xl font-bold"
+                style={{ color: "#5F4F41" }}
+              >
+                العدّ التنازلي
+              </h3>
+              
+              {/* مربعات العداد الزجاجية */}
+              <div
+                className="[&_div]:backdrop-blur-md [&_div]:bg-white/65 [&_div]:border [&_div]:border-white/50 [&_div]:shadow-md [&_*]:!text-[#5F4F41]"
+              >
+                <Countdown />
+              </div>
+            </div>
+
+            {/* 4. كارت التقويم وزر الحفظ */}
             <div className="flex flex-col items-center space-y-4 pt-2">
               <div
                 className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-2xl text-center"
@@ -141,7 +158,6 @@ const Index = () => {
                     color: "#FFFFFF",
                   }}
                 >
-                  {/* حلقات التعليق */}
                   <div className="absolute top-1.5 left-8 w-2.5 h-3.5 rounded-full bg-white/30 border border-white/50" />
                   <div className="absolute top-1.5 right-8 w-2.5 h-3.5 rounded-full bg-white/30 border border-white/50" />
 
@@ -175,7 +191,7 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* زر احفظ الموعد الزجاجي داخل الصورة الثانية أيضاً */}
+              {/* زر احفظ الموعد */}
               <button
                 onClick={() => {
                   alert("تم حفظ الموعد في التقويم!");
@@ -194,16 +210,6 @@ const Index = () => {
             </div>
 
           </div>
-        </section>
-
-        {/* العداد التنازلي */}
-        <section className="px-4 py-12">
-          <Reveal>
-            <h2 className="text-center font-arabic text-2xl mb-8" style={{ color: "#5F4F41" }}>العدّ التنازلي</h2>
-          </Reveal>
-          <Reveal delay={150}>
-            <Countdown />
-          </Reveal>
         </section>
 
         {/* الخريطة */}
