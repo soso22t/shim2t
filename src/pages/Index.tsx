@@ -139,28 +139,26 @@ const Index = () => {
         <section className="relative w-full flex flex-col items-center justify-start">
           
           {/* الصورة السفلية 96AF05E8-7D83-48B7-B124-4763797873E0.png */}
-          <div className="relative w-full">
+          <div className="relative w-full flex items-center justify-center">
             <img
               src={footerBgImg}
               alt="صورة خلفية الفوتر"
               className="w-full h-auto block"
             />
 
-            {/* المحتوى فوق الصورة السفلية */}
-            <div className="absolute inset-0 flex flex-col items-center justify-between pt-6 pb-6 px-4">
+            {/* المحتوى المترتب بثبات فوق الصورة السفلية */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-4 py-6">
               
-              {/* الحاوية العلوية: تم إنزال العبارة وتثبيتها قريبة جداً فوق البطاقة */}
-              <div className="w-full flex flex-col items-center mt-auto mb-2">
-                <p
-                  className="font-arabic text-lg sm:text-xl font-bold text-center"
-                  style={{ color: "#5F4F41" }}
-                >
-                  &#123; ننتظركم بكل حُب &#125;
-                </p>
-              </div>
+              {/* 1. النص فوق الصورة مباشرة وبقرب ممتاز */}
+              <p
+                className="font-arabic text-lg sm:text-xl font-bold text-center mb-3"
+                style={{ color: "#5F4F41" }}
+              >
+                &#123; ننتظركم بكل حُب &#125;
+              </p>
 
-              {/* بطاقة الصورة IMG_5482.jpeg في مكانها الأصلي */}
-              <div className="w-[92%] max-w-md my-2 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl">
+              {/* 2. الصورة IMG_5482.jpeg في النصف تماماً ومرتفعة في موقعها الصحيح */}
+              <div className="w-[92%] max-w-md rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl mb-6">
                 <img
                   src={cardImg}
                   alt="بطاقة تذكارية"
@@ -168,10 +166,8 @@ const Index = () => {
                 />
               </div>
 
-              {/* الفوتر وأسماء العروسين والحقوق في مكانهم الأسفل بدون أي تغيير */}
-              <div className="w-full text-center space-y-2 pb-2">
-                
-                {/* سطر أسماء العروسين */}
+              {/* 3. أسماء العروسين والفوتر في الأسفل */}
+              <div className="w-full text-center space-y-1.5">
                 <Reveal>
                   <p
                     className="font-arabic text-xl sm:text-2xl font-extrabold"
@@ -181,10 +177,9 @@ const Index = () => {
                   </p>
                 </Reveal>
 
-                {/* حقوق المتجر والقلب والرابط */}
                 <Reveal delay={100}>
                   <div
-                    className="flex items-center justify-center gap-2 pt-1"
+                    className="flex items-center justify-center gap-2 pt-0.5"
                     style={{ color: "#5F4F41" }}
                   >
                     <Heart className="w-4 h-4 fill-current text-[#5F4F41]" />
@@ -202,7 +197,6 @@ const Index = () => {
                     </span>
                   </div>
                 </Reveal>
-
               </div>
 
             </div>
