@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MapPin, Heart, QrCode, Baby, Camera } from "lucide-react";
-import invitationImg from "@/assets/invitation.jpg";
+import invitationImg from "@/assets/photo-output.png";
 import Envelope from "@/components/Envelope";
 import SprayParticles from "@/components/SprayParticles";
 import Reveal from "@/components/Reveal";
