@@ -41,14 +41,15 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     }
   };
 
-  // فتح الكاميرا الخلفية العادية بدون زووم
+  // فتح الكاميرا الخلفية بمقاس 9:16 طبيعي بدون زووم عالي
   const openCamera = async () => {
     try {
       setShowCamera(true);
       setCapturedImage(null);
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: {
-          facingMode: { ideal: "environment" }, // الكاميرا الخلفية
+          facingMode: { ideal: "environment" },
+          aspectRatio: 9 / 16, // فرض نسبة 9:16 لتعبئة الشاشة بدون أسود
         },
         audio: false,
       });
@@ -72,7 +73,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     setCapturedImage(null);
   };
 
-  // التقاط الصورة بالأبعاد الحقيقية للكاميرا بدون قص أو زووم
+  // التقاط الصورة بدقة 9:16 متناسقة
   const capturePhoto = () => {
     if (!videoRef.current || !canvasRef.current) return;
 
@@ -81,26 +82,43 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = video.videoWidth || 1080;
-    canvas.height = video.videoHeight || 1920;
+    canvas.width = 1080;
+    canvas.height = 1920;
 
-    // رسم الصورة
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    // ملء الكانفاس بأبعاد 9:16 بشكل متناسق تماماً مثل الكاميرا
+    const vRatio = video.videoWidth / video.videoHeight;
+    const cRatio = canvas.width / canvas.height;
+    let renderWidth = canvas.width;
+    let renderHeight = canvas.height;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    if (vRatio > cRatio) {
+      renderWidth = canvas.height * vRatio;
+      offsetX = (canvas.width - renderWidth) / 2;
+    } else {
+      renderHeight = canvas.width / vRatio;
+      offsetY = (canvas.height - renderHeight) / 2;
+    }
+
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(video, offsetX, offsetY, renderWidth, renderHeight);
 
     // تظليل ناعم في الأسفل للنص
-    const gradient = ctx.createLinearGradient(0, canvas.height - 300, 0, canvas.height);
+    const gradient = ctx.createLinearGradient(0, canvas.height - 400, 0, canvas.height);
     gradient.addColorStop(0, "rgba(0,0,0,0)");
     gradient.addColorStop(1, "rgba(0,0,0,0.6)");
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, canvas.height - 300, canvas.width, 300);
+    ctx.fillRect(0, canvas.height - 400, canvas.width, 400);
 
     // كتابة الاسم "محمد & عهود"
     ctx.textAlign = "center";
     ctx.fillStyle = "#FFFFFF";
-    ctx.font = `bold ${Math.round(canvas.width * 0.055)}px Tajawal, sans-serif`;
+    ctx.font = "bold 60px Tajawal, sans-serif";
     ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
     ctx.shadowBlur = 12;
-    ctx.fillText("محمد & عهود", canvas.width / 2, canvas.height - (canvas.height * 0.08));
+    ctx.fillText("محمد & عهود", canvas.width / 2, canvas.height - 120);
 
     const imageUrl = canvas.toDataURL("image/png");
     setCapturedImage(imageUrl);
@@ -148,7 +166,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
       {/* شاشة الكاميرا والفلتر */}
       {showCamera && (
         <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
-          <div className="relative w-full h-full max-w-[500px] bg-black flex items-center justify-center overflow-hidden">
+          <div className="relative w-full h-full max-w-[500px] aspect-[9/16] bg-black flex items-center justify-center overflow-hidden">
             
             {/* زر الإغلاق */}
             <button
@@ -160,12 +178,12 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
             {!capturedImage ? (
               <>
-                {/* الكاميرا الخلفية العادية بدون زووم */}
+                {/* الكاميرا الخلفية بمقاس 9:16 بدون أسود */}
                 <video
                   ref={videoRef}
                   autoPlay
                   playsInline
-                  className="w-full h-full object-contain bg-black"
+                  className="w-full h-full object-cover"
                 />
 
                 {/* نص الفلتر السفلي قبل التقاط الصورة */}
@@ -193,7 +211,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                 <img
                   src={capturedImage}
                   alt="الصورة الملتقطة"
-                  className="w-full h-full object-contain bg-black"
+                  className="w-full h-full object-cover"
                 />
 
                 {/* الكارت السفلي بأزرار التحكم بألوان متناسقة */}
