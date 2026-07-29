@@ -61,7 +61,7 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
         }}
       />
 
-      {/* 3. الملصق بحجم أكبر وظل دئري ينعكس على حدود الدائرة فقط */}
+      {/* 3. الملصق الدائري بظل أكثر تغميقاً وبروزاً */}
       <button
         onClick={handleOpen}
         className={`relative z-20 flex items-center justify-center cursor-pointer transition-all duration-700 ${
@@ -73,7 +73,7 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
           alt="الختم"
           className="w-44 h-44 sm:w-52 sm:h-52 rounded-full object-contain transition-transform duration-300 hover:scale-105 active:scale-95"
           style={{
-            filter: "drop-shadow(0px 8px 16px rgba(95, 79, 65, 0.35))",
+            filter: "drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.55))",
           }}
         />
       </button>
