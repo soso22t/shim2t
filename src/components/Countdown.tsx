@@ -1,57 +1,70 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
-const TARGET = new Date("2026-07-30T19:30:00+03:00").getTime();
+interface TimeLeft {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
+
+const TARGET_DATE = new Date("2026-12-22T19:00:00");
 
 const Countdown = () => {
-  const [t, setT] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
-    const tick = () => {
-      const diff = Math.max(0, TARGET - Date.now());
-      setT({
-        d: Math.floor(diff / 86400000),
-        h: Math.floor((diff / 3600000) % 24),
-        m: Math.floor((diff / 60000) % 60),
-        s: Math.floor((diff / 1000) % 60),
-      });
+    const calculateTime = () => {
+      const now = new Date().getTime();
+      const difference = TARGET_DATE.getTime() - now;
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60),
+        });
+      }
     };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
+
+    calculateTime();
+    const interval = setInterval(calculateTime, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const items = [
-    { v: t.d, l: "Days" },
-    { v: t.h, l: "Hours" },
-    { v: t.m, l: "Minutes" },
-    { v: t.s, l: "Seconds" },
+    { label: "DAYS", value: String(timeLeft.days).padStart(2, "0") },
+    { label: "HOURS", value: String(timeLeft.hours).padStart(2, "0") },
+    { label: "MINUTES", value: String(timeLeft.minutes).padStart(2, "0") },
+    { label: "SECONDS", value: String(timeLeft.seconds).padStart(2, "0") },
   ];
 
   return (
-    <div dir="ltr" className="flex justify-center gap-3 sm:gap-6">
-      {items.map((it) => (
+    <div className="flex items-center justify-center gap-2 sm:gap-4 dir-ltr py-2">
+      {items.map((item, idx) => (
         <div
-          key={it.l}
-          className="flex flex-col items-center justify-center rounded-xl px-4 sm:px-6 py-4 min-w-[70px] sm:min-w-[90px] backdrop-blur-md"
+          key={idx}
+          className="w-16 h-20 sm:w-20 sm:h-24 rounded-2xl flex flex-col items-center justify-center bg-transparent backdrop-blur-[2px] border transition-all"
           style={{
-            background: "#F8F6F2",
-            border: "1px solid hsl(80 25% 45% / 0.3)",
-            boxShadow: "var(--shadow-soft)",
+            borderColor: "rgba(95, 79, 65, 0.4)",
+            boxShadow: "0 0 12px rgba(95, 79, 65, 0.25), inset 0 0 8px rgba(95, 79, 65, 0.15)",
           }}
         >
-          <div
-  className="font-display text-3xl sm:text-4xl font-light tabular-nums"
-  style={{ color: "#B89B5E" }}
->
-            {String(it.v).padStart(2, "0")}
-          </div>
-
-          <div
-            className="text-xs uppercase tracking-widest mt-1"
-            style={{ color: "#3C2E23" }}
+          {/* الرقم مباشرة فوق المربع المفرغ */}
+          <span
+            className="font-display text-xl sm:text-2xl font-bold tracking-tight leading-none mb-1"
+            style={{ color: "#5F4F41" }}
           >
-            {it.l}
-          </div>
+            {item.value}
+          </span>
+
+          {/* الكلمة مباشرة فوق المربع المفرغ */}
+          <span
+            className="font-sans text-[9px] sm:text-[10px] font-bold tracking-widest uppercase opacity-80"
+            style={{ color: "#5F4F41" }}
+          >
+            {item.label}
+          </span>
         </div>
       ))}
     </div>
