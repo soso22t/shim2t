@@ -20,7 +20,9 @@ const Index = () => {
 
   return (
     <div
-      className="relative min-h-screen overflow-x-hidden text-white"
+      className={`relative min-h-screen text-white ${
+        !opened ? "overflow-hidden h-screen" : "overflow-x-hidden"
+      }`}
       style={{ backgroundColor: "#E9DDD4" }}
     >
       <SprayParticles />
@@ -32,7 +34,7 @@ const Index = () => {
       {/* 2. محتوى الموقع */}
       <main className="relative z-10 w-full">
         
-        {/* الصورة الأولى (أعلى الدعوة) */}
+        {/* الصورة الأولى */}
         <section className="w-full">
           <img
             src={invitationImg}
@@ -44,14 +46,12 @@ const Index = () => {
         {/* الصورة الثانية الطويلة الخلفية */}
         <section className="relative w-full flex flex-col items-center justify-start pb-12">
           
-          {/* خلفية الصورة الثانية */}
           <img
             src={sosImg}
             alt="الصورة الثانية"
             className="absolute inset-0 w-full h-full object-cover z-0"
           />
 
-          {/* العناصر المتراكبة فوق الصورة الثانية */}
           <div className="relative z-10 w-full flex flex-col items-center pt-20 sm:pt-32 px-4 space-y-6">
             
             {/* أ. المربع الزجاجي للكتابة */}
@@ -137,8 +137,6 @@ const Index = () => {
 
         {/* 3. قسم الصورة السفلية الممتدة */}
         <section className="relative w-full flex flex-col items-center justify-start">
-          
-          {/* الصورة السفلية 96AF05E8-7D83-48B7-B124-4763797873E0.png */}
           <div className="relative w-full flex items-center justify-center">
             <img
               src={footerBgImg}
@@ -146,10 +144,8 @@ const Index = () => {
               className="w-full h-auto block"
             />
 
-            {/* المحتوى المترتب بثبات فوق الصورة السفلية */}
             <div className="absolute inset-0 flex flex-col items-center justify-center px-4 py-6">
               
-              {/* 1. النص فوق الصورة مباشرة وبقرب ممتاز */}
               <p
                 className="font-arabic text-lg sm:text-xl font-bold text-center mb-3"
                 style={{ color: "#5F4F41" }}
@@ -157,7 +153,6 @@ const Index = () => {
                 &#123; ننتظركم بكل حُب &#125;
               </p>
 
-              {/* 2. الصورة IMG_5482.jpeg في النصف تماماً ومرتفعة في موقعها الصحيح */}
               <div className="w-[92%] max-w-md rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl mb-6">
                 <img
                   src={cardImg}
@@ -166,7 +161,6 @@ const Index = () => {
                 />
               </div>
 
-              {/* 3. أسماء العروسين والفوتر في الأسفل */}
               <div className="w-full text-center space-y-1.5">
                 <Reveal>
                   <p
