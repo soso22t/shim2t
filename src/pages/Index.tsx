@@ -6,6 +6,7 @@ import Envelope from "@/components/Envelope";
 import SprayParticles from "@/components/SprayParticles";
 import Reveal from "@/components/Reveal";
 import Countdown from "@/components/Countdown";
+import EventTimeline from "@/components/EventTimeline"; // <-- إضافة الاستيراد هنا
 import MusicToggle from "@/components/MusicToggle";
 
 const Index = () => {
@@ -42,10 +43,10 @@ const Index = () => {
             className="w-full h-auto block"
           />
 
-          {/* العناصر المتراكبة فوق الصورة الثانية (تم زيادة pt لإنزالها لأسفل) */}
-          <div className="absolute inset-x-0 top-0 flex flex-col items-center justify-start pt-44 sm:pt-60 px-4 space-y-7">
+          {/* العناصر المتراكبة فوق الصورة الثانية */}
+          <div className="absolute inset-x-0 top-0 flex flex-col items-center justify-start pt-44 sm:pt-60 px-4 space-y-7 pb-20">
             
-            {/* أ. المربع الزجاجي للكتابة (شفاف ومموّه) */}
+            {/* أ. المربع الزجاجي للكتابة */}
             <div
               className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/40 shadow-xl space-y-2"
               style={{ background: "rgba(255, 255, 255, 0.25)", color: "#5F4F41" }}
@@ -80,7 +81,7 @@ const Index = () => {
               <p className="font-arabic text-xs font-medium opacity-90" style={{ color: "#5F4F41" }}>جدة</p>
             </div>
 
-            {/* ج. كارت التقويم + زر احفظ الموعد (شفاف ومموّه) */}
+            {/* ج. كارت التقويم + زر احفظ الموعد */}
             <div className="flex flex-col items-center space-y-3">
               <div
                 className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl text-center"
@@ -98,7 +99,7 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* زر احفظ الموعد (شفاف ومموّه) */}
+              {/* زر احفظ الموعد */}
               <button
                 onClick={() => alert("تم حفظ الموعد في التقويم!")}
                 className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/40 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
@@ -109,13 +110,16 @@ const Index = () => {
               </button>
             </div>
 
-            {/* د. العد التنازلي المفرغ مباشرة تحت زر احفظ الموعد */}
+            {/* د. العد التنازلي */}
             <div className="w-full max-w-md text-center space-y-2 pt-1">
               <h3 className="font-arabic text-base sm:text-lg font-bold" style={{ color: "#5F4F41" }}>
                 العدّ التنازلي
               </h3>
               <Countdown />
             </div>
+
+            {/* هـ. مربع برنامج المناسبة التفاعلي الجديد */}
+            <EventTimeline />
 
           </div>
         </section>
