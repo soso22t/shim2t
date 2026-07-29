@@ -135,7 +135,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* 3. قسم الصورة السفلية الممتدة مع العناصر بالترتيب المطلوب */}
+        {/* 3. قسم الصورة السفلية الممتدة */}
         <section className="relative w-full flex flex-col items-center justify-start">
           
           {/* الصورة السفلية 96AF05E8-7D83-48B7-B124-4763797873E0.png */}
@@ -146,19 +146,21 @@ const Index = () => {
               className="w-full h-auto block"
             />
 
-            {/* المحتوى مرتب بالتسلسل المطلوبة مباشرة فوق الصورة */}
-            <div className="absolute inset-0 flex flex-col items-center justify-between pt-12 pb-6 px-4">
+            {/* المحتوى فوق الصورة السفلية */}
+            <div className="absolute inset-0 flex flex-col items-center justify-between pt-6 pb-6 px-4">
               
-              {/* 1. النص العلوي { ننتظركم بكل حُب } فوق الصورة بالمسافة الحالية وبحجم واضح */}
-              <p
-                className="font-arabic text-lg sm:text-xl font-bold text-center mt-2"
-                style={{ color: "#5F4F41" }}
-              >
-                &#123; ننتظركم بكل حُب &#125;
-              </p>
+              {/* الحاوية العلوية: تم إنزال العبارة وتثبيتها قريبة جداً فوق البطاقة */}
+              <div className="w-full flex flex-col items-center mt-auto mb-2">
+                <p
+                  className="font-arabic text-lg sm:text-xl font-bold text-center"
+                  style={{ color: "#5F4F41" }}
+                >
+                  &#123; ننتظركم بكل حُب &#125;
+                </p>
+              </div>
 
-              {/* 2. الصورة IMG_5482.jpeg بنفس مكانها الأصلي ونمط الكروت الزجاجية */}
-              <div className="w-[92%] max-w-md my-auto rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl">
+              {/* بطاقة الصورة IMG_5482.jpeg في مكانها الأصلي */}
+              <div className="w-[92%] max-w-md my-2 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl">
                 <img
                   src={cardImg}
                   alt="بطاقة تذكارية"
@@ -166,7 +168,7 @@ const Index = () => {
                 />
               </div>
 
-              {/* 3. أسماء العروسين ومكونات الفوتر الكاملة وتحتها الحقوق */}
+              {/* الفوتر وأسماء العروسين والحقوق في مكانهم الأسفل بدون أي تغيير */}
               <div className="w-full text-center space-y-2 pb-2">
                 
                 {/* سطر أسماء العروسين */}
@@ -179,7 +181,7 @@ const Index = () => {
                   </p>
                 </Reveal>
 
-                {/* حقوق الحقوق مع القلب والرابط */}
+                {/* حقوق المتجر والقلب والرابط */}
                 <Reveal delay={100}>
                   <div
                     className="flex items-center justify-center gap-2 pt-1"
