@@ -104,17 +104,17 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     ctx.drawImage(video, offsetX, offsetY, renderWidth, renderHeight);
 
     // تظليل ناعم في الأسفل للنص
-    const gradient = ctx.createLinearGradient(0, canvas.height - 550, 0, canvas.height);
+    const gradient = ctx.createLinearGradient(0, canvas.height - 650, 0, canvas.height);
     gradient.addColorStop(0, "rgba(0,0,0,0)");
-    gradient.addColorStop(1, "rgba(0,0,0,0.75)");
+    gradient.addColorStop(1, "rgba(0,0,0,0.85)");
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, canvas.height - 550, canvas.width, 550);
+    ctx.fillRect(0, canvas.height - 650, canvas.width, 650);
 
-    // إعداد الخطوط للرسم على الصورة
-    const fontMonasabat = '48px "Monasabat", sans-serif';
-    const fontAlmarai = '44px "Almarai", sans-serif';
-    const fontWa = '48px "WaFont", sans-serif';
-    const fontNastaliq = '60px "IranNastaliq", sans-serif';
+    // إعداد الخطوط المطلوبة تماماً
+    const fontMonasabat = '46px "Monasabat", sans-serif';
+    const fontAlmarai = '42px "Almarai", sans-serif';
+    const fontWa = '46px "WaFont", sans-serif';
+    const fontNastaliq = '56px "IranNastaliq", sans-serif';
 
     ctx.textAlign = "center";
     ctx.fillStyle = "#FFFFFF";
@@ -122,14 +122,14 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     ctx.shadowBlur = 10;
 
     const centerX = canvas.width / 2;
-    let startY = canvas.height - 440;
-    const lineHeight = 60;
+    let startY = canvas.height - 520;
+    const lineHeight = 55;
 
     // 1. السطر الأول: بارك الله لهما (Monasabat)
     ctx.font = fontMonasabat;
     ctx.fillText("بارك الله لهما", centerX, startY);
 
-    // 2. الثلاث سطور التي تحته (نفس ماهي)
+    // 2. الثلاث سطور التي تحته (نفس ماهي بخط Almarai)
     startY += lineHeight;
     ctx.font = fontAlmarai;
     ctx.fillText("يشرفنا حضوركم لتشاركوا معنا فرحة", centerX, startY);
@@ -143,7 +143,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     ctx.fillText("يوم الأربعاء 2026/03/03", centerX, startY);
 
     startY += lineHeight;
-    // السطر الخامس مقسم لثلاثة أجزاء في نفس السطر: (أم محمد السلماني) + (& بخط wa) + (محمد)
+    // السطر الخامس مقسم لثلاثة أقسام في نفس السطر: (أم محمد السلماني) + (& بخط wa) + (محمد)
     const textPart1 = "أم محمد السلماني ";
     const ampPart = "&";
     const textPart2 = " محمد";
@@ -170,13 +170,18 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     ctx.font = fontAlmarai;
     ctx.fillText(textPart2, currentX, startY);
 
-    // 6. السطر السادس (وبحضوركم تكتمل أفراحنا)
+    // 6. السطر السادس (وبحضوركم تكتمل أفراحنا - نفس ماهو)
     startY += lineHeight;
     ctx.textAlign = "center";
     ctx.font = fontAlmarai;
     ctx.fillText("وبحضوركم تكتمل أفراحنا", centerX, startY);
 
-    // 7. السطر السابع (محمد & عهود في المربع بخط IranNastaliq مع علامة & بخط wa)
+    // 7. عبارة "وننتظركم بكل حب" (Monasabat)
+    startY += lineHeight;
+    ctx.font = fontMonasabat;
+    ctx.fillText("وننتظركم بكل حب", centerX, startY);
+
+    // 8. السطر الأخير في المربع (محمد & عهود بخط IranNastaliq مع علامة & بخط wa)
     startY += lineHeight + 15;
     const name1 = "محمد";
     const nameAmp = "&";
@@ -270,8 +275,8 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   className="w-full h-full object-cover scale-100"
                 />
 
-                {/* النصوص على الشاشة بنفس الخطوط المطوبة */}
-                <div className="absolute inset-0 pointer-events-none flex flex-col justify-end p-6 text-center bg-gradient-to-t from-black/75 via-black/20 to-transparent">
+                {/* النصوص على الشاشة بنفس الخطوط المطلوبة بدقة */}
+                <div className="absolute inset-0 pointer-events-none flex flex-col justify-end p-6 text-center bg-gradient-to-t from-black/80 via-black/25 to-transparent">
                   <div className="pb-16 flex flex-col items-center gap-1.5 text-white drop-shadow-2xl">
                     
                     {/* السطر الأول: بارك الله لهما */}
@@ -302,7 +307,12 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                       وبحضوركم تكتمل أفراحنا
                     </p>
 
-                    {/* السطر السابع داخل المربع */}
+                    {/* وننتظركم بكل حب */}
+                    <p style={{ fontFamily: "'Monasabat', sans-serif" }} className="text-sm">
+                      وننتظركم بكل حب
+                    </p>
+
+                    {/* السطر السابع داخل المربع (محمد & عهود) */}
                     <div className="mt-2 py-2 px-6 rounded-2xl bg-black/40 border border-white/20 backdrop-blur-md flex items-center justify-center gap-2">
                       <span style={{ fontFamily: "'IranNastaliq', sans-serif" }} className="text-xl">محمد</span>
                       <span style={{ fontFamily: "'WaFont', sans-serif" }} className="text-lg">&</span>
