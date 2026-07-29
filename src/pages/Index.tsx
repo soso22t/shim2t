@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { MapPin, Heart, QrCode, Baby, Camera } from "lucide-react";
 import invitationImg from "@/assets/photo-output.png";
+import sosImg from "@/assets/sos.png"; // الصورة الجديدة
 import Envelope from "@/components/Envelope";
 import SprayParticles from "@/components/SprayParticles";
 import Reveal from "@/components/Reveal";
@@ -14,7 +15,7 @@ const Index = () => {
 
   return (
     <div
-      className="relative min-h-screen overflow-x-hidden"
+      className="relative min-h-screen overflow-x-hidden bg-black"
       style={{
         background:
           "linear-gradient(180deg, hsl(40 50% 92%) 0%, hsl(38 45% 86%) 50%, hsl(35 42% 80%) 100%)",
@@ -32,21 +33,49 @@ const Index = () => {
       <SprayParticles />
       <MusicToggle active={opened} />
 
-      {/* 1. الظرف يوضع دائماً في الأعلى فوق المحتوى */}
+      {/* 1. الظرف فوق الصفحة */}
       <Envelope onOpen={() => setOpened(true)} />
 
-      {/* 2. محتوى الموقع محمل وجاهز خلف الظرف مباشرة لتظهر الصورة الأولى تحت الظرف المموّه فوراً */}
+      {/* 2. محتوى الموقع الرئيسي */}
       <main className="relative z-10">
-        <section className="min-h-screen flex items-center justify-center">
+        
+        {/* الصفحة الأولى: الصورة الأولى */}
+        <section className="w-full">
           <img
             src={invitationImg}
-            alt="غيمة"
-            className="w-screen h-auto max-w-none"
+            alt="صورة الدعوة الأولى"
+            className="w-full h-auto block"
             style={{ boxShadow: "var(--shadow-elegant)" }}
           />
         </section>
 
-        {/* Calendar block — date 7/7/2026 with heart strikethrough */}
+        {/* الصفحة الثانية: صورة sos.png وبدايتها متصلة بنهاية الأولى */}
+        <section className="relative w-full">
+          <img
+            src={sosImg}
+            alt="الصورة الثانية"
+            className="w-full h-auto block"
+          />
+
+          {/* المربع الزجاجي فوق الصورة الثانية */}
+          <div className="absolute inset-0 flex items-center justify-center p-4">
+            <div
+              className="w-[90%] max-w-sm p-6 rounded-2xl text-center backdrop-blur-md border border-white/20 shadow-2xl"
+              style={{
+                background: "rgba(0, 0, 0, 0.45)", // خلفية زجاجية داكنة تناسب التصميم الداكن
+              }}
+            >
+              <h3 className="font-arabic text-xl font-bold mb-2 text-white">
+                "وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا"
+              </h3>
+              <p className="font-arabic text-sm text-gray-200 leading-relaxed">
+                يسرنا دعوتكم لمشاركتنا فرحتنا في هذا اليوم البهيج
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* التقويم */}
         <section className="px-4 py-16">
           <Reveal>
             <div
@@ -71,7 +100,6 @@ const Index = () => {
                 <span>2026</span>
               </div>
 
-              {/* Mini calendar grid */}
               <div className="grid grid-cols-7 gap-1 text-[10px] font-display text-muted-foreground mb-1 mt-3" dir="ltr">
                 {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => (
                   <div key={i} className="py-1">{d}</div>
@@ -106,7 +134,7 @@ const Index = () => {
           </Reveal>
         </section>
 
-        {/* Countdown */}
+        {/* العداد التنازلي */}
         <section className="px-4 py-16">
           <Reveal>
             <h2 className="text-center font-arabic text-3xl text-primary mb-10">العدّ التنازلي</h2>
@@ -116,7 +144,7 @@ const Index = () => {
           </Reveal>
         </section>
 
-        {/* Venue */}
+        {/* الموقع */}
         <section className="px-4 py-16">
           <Reveal>
             <h2 className="text-center font-arabic text-3xl text-primary mb-8">موقع حفلنا</h2>
@@ -148,7 +176,7 @@ const Index = () => {
           </Reveal>
         </section>
 
-        {/* Program timeline */}
+        {/* برنامج الحفل */}
         <section className="px-4 py-16">
           <Reveal>
             <h2 className="text-center font-arabic text-3xl text-primary mb-6">برنامج الحفل</h2>
@@ -156,7 +184,7 @@ const Index = () => {
           <Timeline />
         </section>
 
-        {/* Details */}
+        {/* تفاصيل الحفل */}
         <section className="px-4 py-16">
           <Reveal>
             <h2 className="text-center font-arabic text-3xl text-primary mb-10">تفاصيل الحفل</h2>
@@ -207,7 +235,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* RSVP */}
+        {/* تأكيد الحضور */}
         <section className="px-4 py-16">
           <Reveal>
             <h2 className="text-center font-arabic text-3xl text-primary mb-2">أكّد حضورك</h2>
@@ -218,7 +246,7 @@ const Index = () => {
           <RSVP />
         </section>
 
-        {/* Footer */}
+        {/* الفوتر */}
         <footer className="px-4 py-12 text-center">
           <Reveal>
             <div className="flex items-center justify-center gap-2 text-primary">
