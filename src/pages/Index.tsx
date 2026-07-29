@@ -4,9 +4,8 @@ import invitationImg from "@/assets/photo-output.png";
 import sosImg from "@/assets/sos.png";
 import Envelope from "@/components/Envelope";
 import SprayParticles from "@/components/SprayParticles";
-import Reveal from "@/components/Reveal";
 import Countdown from "@/components/Countdown";
-import EventTimeline from "@/components/EventTimeline"; // <-- إضافة الاستيراد هنا
+import EventTimeline from "@/components/EventTimeline";
 import EventDetails from "@/components/EventDetails";
 import MusicToggle from "@/components/MusicToggle";
 
@@ -37,15 +36,17 @@ const Index = () => {
         </section>
 
         {/* الصورة الثانية مع العناصر التراكبية */}
-        <section className="relative w-full overflow-hidden">
+        <section className="relative w-full flex flex-col items-center justify-start pb-20">
+          
+          {/* خلفية الصورة الثانية */}
           <img
             src={sosImg}
             alt="الصورة الثانية"
-            className="w-full h-auto block"
+            className="absolute inset-0 w-full h-full object-cover z-0"
           />
 
-          {/* العناصر المتراكبة فوق الصورة الثانية */}
-          <div className="absolute inset-x-0 top-0 flex flex-col items-center justify-start pt-44 sm:pt-60 px-4 space-y-7 pb-20">
+          {/* المسافة العلوية المطلوبة والعناصر المتراكبة */}
+          <div className="relative z-10 w-full flex flex-col items-center pt-20 sm:pt-32 px-4 space-y-6">
             
             {/* أ. المربع الزجاجي للكتابة */}
             <div
@@ -119,31 +120,30 @@ const Index = () => {
               <Countdown />
             </div>
 
-            {/* هـ. مربع برنامج المناسبة التفاعلي الجديد */}
+            {/* هـ. مستطيلات برنامج الحفل وتفاصيل الحفل */}
             <EventTimeline />
+            <EventDetails />
 
           </div>
         </section>
 
         {/* الذيل (Footer) */}
         <footer className="px-4 py-8 text-center border-t border-[#5F4F41]/20">
-          <Reveal>
-            <div className="flex items-center justify-center gap-2" style={{ color: "#5F4F41" }}>
-              <Heart className="w-4 h-4 fill-current" />
-              <span className="font-arabic text-xs">
-                صُنع بحب بواسطة{" "}
-                <a
-                  href="https://www.tiktok.com/@shim2t?_r=1&_t=ZS-95w0d8f7vnk"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline underline-offset-4 font-bold"
-                  style={{ color: "#5F4F41" }}
-                >
-                  متجر غيمة
-                </a>
-              </span>
-            </div>
-          </Reveal>
+          <div className="flex items-center justify-center gap-2" style={{ color: "#5F4F41" }}>
+            <Heart className="w-4 h-4 fill-current" />
+            <span className="font-arabic text-xs">
+              صُنع بحب بواسطة{" "}
+              <a
+                href="https://www.tiktok.com/@shim2t?_r=1&_t=ZS-95w0d8f7vnk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-4 font-bold"
+                style={{ color: "#5F4F41" }}
+              >
+                متجر غيمة
+              </a>
+            </span>
+          </div>
         </footer>
       </main>
     </div>
