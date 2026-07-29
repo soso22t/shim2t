@@ -38,18 +38,18 @@ const Index = () => {
           />
         </section>
 
-        {/* الصورة الثانية: تحتوي على المربع الزجاجي في الأعلى + تفاصيل الموقع تحته مباشرة */}
+        {/* الصورة الثانية: تحتوي على المربع الزجاجي + الموقع + التقويم وزر الحفظ */}
         <section className="relative w-full">
           <img
             src={sosImg}
             alt="الصورة الثانية"
-            className="w-full h-auto block"
+            className="w-full h-auto block min-h-[1050px] sm:min-h-[1100px] object-cover"
           />
 
-          {/* محتوى متراكب فوق الصورة الثانية */}
-          <div className="absolute inset-0 flex flex-col items-center justify-start pt-6 sm:pt-10 px-4 space-y-6">
+          {/* العناصر التراكبية فوق الصورة الثانية */}
+          <div className="absolute inset-0 flex flex-col items-center justify-start pt-14 sm:pt-20 px-4 space-y-6">
             
-            {/* المربع الزجاجي المرفوع لأعلى الصورة */}
+            {/* 1. المربع الزجاجي (تم تنزيله لأسفل قليلاً عبر pt-14 / pt-20) */}
             <div
               className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
               style={{
@@ -80,7 +80,7 @@ const Index = () => {
                 تتشرف
               </p>
 
-              {/* السطر الخامس - بنفس حجم السطر الأول */}
+              {/* السطر الخامس */}
               <p
                 className="font-arabic text-base sm:text-lg font-bold py-0.5"
                 style={{ color: "#5F4F41" }}
@@ -93,7 +93,7 @@ const Index = () => {
                 بدعوتكن لحضور حفل عقد قران نجليهما
               </p>
 
-              {/* السطر السابع - بنفس حجم السطر الأول واكبر */}
+              {/* السطر السابع */}
               <p
                 className="font-arabic text-lg sm:text-2xl font-extrabold pt-1"
                 style={{ color: "#5F4F41" }}
@@ -102,10 +102,10 @@ const Index = () => {
               </p>
             </div>
 
-            {/* تفاصيل الموقع تحت المربع الزجاجي مباشرة وعلى نفس الصورة الثانية */}
-            <div className="text-center space-y-1 py-2">
+            {/* 2. تفاصيل الموقع تحت المربع الزجاجي مباشرة */}
+            <div className="text-center space-y-0.5 py-1">
               <h3
-                className="font-arabic text-base sm:text-lg font-bold drop-shadow-sm"
+                className="font-arabic text-base sm:text-lg font-bold"
                 style={{ color: "#5F4F41" }}
               >
                 الموقع
@@ -124,58 +124,48 @@ const Index = () => {
               </p>
             </div>
 
-          </div>
-        </section>
-
-        {/* كارت التقويم المصمم بأسلوب النتيجة المرفقة + زر الحفظ الزجاجي */}
-        <section className="px-4 py-10 text-center flex flex-col items-center justify-center space-y-5">
-          <Reveal>
-            <div className="flex flex-col items-center space-y-4">
-              
-              {/* كارت النتيجة/التقويم المماثل للصورة المرفقة */}
+            {/* 3. كارت التقويم المرفوع لأعلى داخل الصورة الثانية */}
+            <div className="flex flex-col items-center space-y-4 pt-2">
               <div
-                className="w-64 sm:w-72 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-2xl text-center"
+                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-2xl text-center"
                 style={{
                   background: "rgba(255, 255, 255, 0.75)",
                   color: "#5F4F41",
                 }}
               >
-                {/* الشريط العلوي للتقويم باللون البني */}
+                {/* الشريط العلوي للتقويم */}
                 <div
-                  className="relative px-4 py-3 flex justify-between items-center font-arabic text-sm font-bold"
+                  className="relative px-4 py-2.5 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold"
                   style={{
                     background: "#5F4F41",
                     color: "#FFFFFF",
                   }}
                 >
-                  {/* حلقات التعليق في الأعلى */}
-                  <div className="absolute top-1.5 left-10 w-3 h-4 rounded-full bg-white/30 border border-white/50" />
-                  <div className="absolute top-1.5 right-10 w-3 h-4 rounded-full bg-white/30 border border-white/50" />
+                  {/* حلقات التعليق */}
+                  <div className="absolute top-1.5 left-8 w-2.5 h-3.5 rounded-full bg-white/30 border border-white/50" />
+                  <div className="absolute top-1.5 right-8 w-2.5 h-3.5 rounded-full bg-white/30 border border-white/50" />
 
                   <span>الثلاثاء</span>
-                  <span className="text-base font-extrabold">ديسمبر</span>
+                  <span className="text-sm font-extrabold">ديسمبر</span>
                   <span className="font-display">2026</span>
                 </div>
 
-                {/* جسم البطاقة الداخلي */}
-                <div className="py-6 px-4 space-y-2">
-                  {/* رقم اليوم الكبير بنفس البني */}
+                {/* جسم التقويم */}
+                <div className="py-5 px-4 space-y-1">
                   <div
-                    className="font-display text-6xl font-extrabold tracking-tight"
+                    className="font-display text-5xl font-extrabold tracking-tight"
                     style={{ color: "#5F4F41" }}
                   >
                     22
                   </div>
 
-                  {/* اسم اليوم */}
                   <div
-                    className="font-arabic text-lg font-bold"
+                    className="font-arabic text-base font-bold"
                     style={{ color: "#5F4F41" }}
                   >
                     الثلاثاء
                   </div>
 
-                  {/* التوقيت */}
                   <div
                     className="font-display text-xs font-semibold opacity-80"
                     style={{ color: "#5F4F41" }}
@@ -185,13 +175,12 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* زر زجاجي: احفظ الموعد (نفس المرفق بالصورة) */}
+              {/* زر احفظ الموعد الزجاجي داخل الصورة الثانية أيضاً */}
               <button
                 onClick={() => {
-                  // إمكانية إضافة حفظ للتقويم أو تنبيه
                   alert("تم حفظ الموعد في التقويم!");
                 }}
-                className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-full backdrop-blur-md border border-white/50 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
+                className="flex items-center justify-center gap-2 px-6 py-2 rounded-full backdrop-blur-md border border-white/50 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
                 style={{
                   background: "rgba(255, 255, 255, 0.65)",
                   color: "#5F4F41",
@@ -202,13 +191,13 @@ const Index = () => {
                   احفظ الموعد
                 </span>
               </button>
-
             </div>
-          </Reveal>
+
+          </div>
         </section>
 
         {/* العداد التنازلي */}
-        <section className="px-4 py-10">
+        <section className="px-4 py-12">
           <Reveal>
             <h2 className="text-center font-arabic text-2xl mb-8" style={{ color: "#5F4F41" }}>العدّ التنازلي</h2>
           </Reveal>
