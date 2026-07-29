@@ -49,7 +49,6 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: { ideal: "environment" },
-          // تم إزالة aspectRatio لمنع إجبار الكاميرا على التقريب
         },
         audio: false,
       });
@@ -73,7 +72,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     setCapturedImage(null);
   };
 
-  // التقاط الصورة بدقة متناسقة
+  // التقاط الصورة وتطبيق الخطوط المطلوبة بدقة على الكانفاس
   const capturePhoto = () => {
     if (!videoRef.current || !canvasRef.current) return;
 
@@ -105,19 +104,105 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     ctx.drawImage(video, offsetX, offsetY, renderWidth, renderHeight);
 
     // تظليل ناعم في الأسفل للنص
-    const gradient = ctx.createLinearGradient(0, canvas.height - 400, 0, canvas.height);
+    const gradient = ctx.createLinearGradient(0, canvas.height - 550, 0, canvas.height);
     gradient.addColorStop(0, "rgba(0,0,0,0)");
-    gradient.addColorStop(1, "rgba(0,0,0,0.6)");
+    gradient.addColorStop(1, "rgba(0,0,0,0.75)");
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, canvas.height - 400, canvas.width, 400);
+    ctx.fillRect(0, canvas.height - 550, canvas.width, 550);
 
-    // كتابة الاسم "محمد & عهود"
+    // إعداد الخطوط للرسم على الصورة
+    const fontMonasabat = '48px "Monasabat", sans-serif';
+    const fontAlmarai = '44px "Almarai", sans-serif';
+    const fontWa = '48px "WaFont", sans-serif';
+    const fontNastaliq = '60px "IranNastaliq", sans-serif';
+
     ctx.textAlign = "center";
     ctx.fillStyle = "#FFFFFF";
-    ctx.font = "bold 60px Tajawal, sans-serif";
-    ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
-    ctx.shadowBlur = 12;
-    ctx.fillText("محمد & عهود", canvas.width / 2, canvas.height - 120);
+    ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+    ctx.shadowBlur = 10;
+
+    const centerX = canvas.width / 2;
+    let startY = canvas.height - 440;
+    const lineHeight = 60;
+
+    // 1. السطر الأول: بارك الله لهما (Monasabat)
+    ctx.font = fontMonasabat;
+    ctx.fillText("بارك الله لهما", centerX, startY);
+
+    // 2. الثلاث سطور التي تحته (نفس ماهي)
+    startY += lineHeight;
+    ctx.font = fontAlmarai;
+    ctx.fillText("يشرفنا حضوركم لتشاركوا معنا فرحة", centerX, startY);
+
+    startY += lineHeight;
+    ctx.fillText("عقد قران ابنائنا", centerX, startY);
+
+    startY += lineHeight;
+    // التاريخ والأرقام (Monasabat)
+    ctx.font = fontMonasabat;
+    ctx.fillText("يوم الأربعاء 2026/03/03", centerX, startY);
+
+    startY += lineHeight;
+    // السطر الخامس مقسم لثلاثة أجزاء في نفس السطر: (أم محمد السلماني) + (& بخط wa) + (محمد)
+    const textPart1 = "أم محمد السلماني ";
+    const ampPart = "&";
+    const textPart2 = " محمد";
+
+    ctx.font = fontAlmarai;
+    const w1 = ctx.measureText(textPart1).width;
+    ctx.font = fontWa;
+    const wAmp = ctx.measureText(ampPart).width;
+    ctx.font = fontAlmarai;
+    const w2 = ctx.measureText(textPart2).width;
+
+    const totalWidth = w1 + wAmp + w2;
+    let currentX = centerX - totalWidth / 2;
+
+    ctx.textAlign = "left";
+    ctx.font = fontAlmarai;
+    ctx.fillText(textPart1, currentX, startY);
+    currentX += w1;
+
+    ctx.font = fontWa;
+    ctx.fillText(ampPart, currentX, startY);
+    currentX += wAmp;
+
+    ctx.font = fontAlmarai;
+    ctx.fillText(textPart2, currentX, startY);
+
+    // 6. السطر السادس (وبحضوركم تكتمل أفراحنا)
+    startY += lineHeight;
+    ctx.textAlign = "center";
+    ctx.font = fontAlmarai;
+    ctx.fillText("وبحضوركم تكتمل أفراحنا", centerX, startY);
+
+    // 7. السطر السابع (محمد & عهود في المربع بخط IranNastaliq مع علامة & بخط wa)
+    startY += lineHeight + 15;
+    const name1 = "محمد";
+    const nameAmp = "&";
+    const name2 = "عهود";
+
+    ctx.font = fontNastaliq;
+    const nw1 = ctx.measureText(name1).width;
+    ctx.font = fontWa;
+    const nwAmp = ctx.measureText(nameAmp).width;
+    ctx.font = fontNastaliq;
+    const nw2 = ctx.measureText(name2).width;
+
+    const totalNameWidth = nw1 + nwAmp + nw2 + 40;
+    let currentNameX = centerX - totalNameWidth / 2;
+
+    ctx.textAlign = "left";
+    ctx.font = fontNastaliq;
+    ctx.fillText(name1, currentNameX, startY);
+    currentNameX += nw1 + 20;
+
+    ctx.font = fontWa;
+    ctx.fillText(nameAmp, currentNameX, startY);
+    currentNameX += nwAmp + 20;
+
+    ctx.font = fontNastaliq;
+    ctx.fillText(name2, currentNameX, startY);
 
     const imageUrl = canvas.toDataURL("image/png");
     setCapturedImage(imageUrl);
@@ -177,7 +262,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
             {!capturedImage ? (
               <>
-                {/* الكاميرا الخلفية بالعدسة العادية الطبيعية بدون زووم أو تقريب */}
+                {/* الكاميرا الخلفية بالعدسة العادية الطبيعية */}
                 <video
                   ref={videoRef}
                   autoPlay
@@ -185,17 +270,50 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   className="w-full h-full object-cover scale-100"
                 />
 
-                {/* نص الفلتر السفلي قبل التقاط الصورة */}
-                <div className="absolute inset-0 pointer-events-none flex flex-col justify-end p-8 text-center bg-gradient-to-t from-black/60 via-transparent to-transparent">
-                  <div className="pb-24">
-                    <h2 className="font-arabic text-3xl sm:text-4xl font-extrabold text-white drop-shadow-2xl">
-                      محمد & عهود
-                    </h2>
+                {/* النصوص على الشاشة بنفس الخطوط المطوبة */}
+                <div className="absolute inset-0 pointer-events-none flex flex-col justify-end p-6 text-center bg-gradient-to-t from-black/75 via-black/20 to-transparent">
+                  <div className="pb-16 flex flex-col items-center gap-1.5 text-white drop-shadow-2xl">
+                    
+                    {/* السطر الأول: بارك الله لهما */}
+                    <p style={{ fontFamily: "'Monasabat', sans-serif" }} className="text-2xl font-bold">
+                      بارك الله لهما
+                    </p>
+
+                    {/* الثلاث سطور تحته */}
+                    <p style={{ fontFamily: "'Almarai', sans-serif" }} className="text-sm font-medium">
+                      يشرفنا حضوركم لتشاركوا معنا فرحة
+                    </p>
+                    <p style={{ fontFamily: "'Almarai', sans-serif" }} className="text-sm font-medium">
+                      عقد قران ابنائنا
+                    </p>
+                    <p style={{ fontFamily: "'Monasabat', sans-serif" }} className="text-sm">
+                      يوم الأربعاء 2026/03/03
+                    </p>
+
+                    {/* السطر الخامس مقسم لثلاثة أجزاء في سطر واحد */}
+                    <div className="flex items-center justify-center gap-1.5 text-sm font-medium">
+                      <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم محمد السلماني</span>
+                      <span style={{ fontFamily: "'WaFont', sans-serif" }} className="text-base">&</span>
+                      <span style={{ fontFamily: "'Almarai', sans-serif" }}>محمد</span>
+                    </div>
+
+                    {/* السطر السادس */}
+                    <p style={{ fontFamily: "'Almarai', sans-serif" }} className="text-sm font-medium">
+                      وبحضوركم تكتمل أفراحنا
+                    </p>
+
+                    {/* السطر السابع داخل المربع */}
+                    <div className="mt-2 py-2 px-6 rounded-2xl bg-black/40 border border-white/20 backdrop-blur-md flex items-center justify-center gap-2">
+                      <span style={{ fontFamily: "'IranNastaliq', sans-serif" }} className="text-xl">محمد</span>
+                      <span style={{ fontFamily: "'WaFont', sans-serif" }} className="text-lg">&</span>
+                      <span style={{ fontFamily: "'IranNastaliq', sans-serif" }} className="text-xl">عهود</span>
+                    </div>
+
                   </div>
                 </div>
 
                 {/* زر التقاط الصورة */}
-                <div className="absolute bottom-8 z-20">
+                <div className="absolute bottom-6 z-20">
                   <button
                     onClick={capturePhoto}
                     className="w-20 h-20 rounded-full border-4 border-white/80 bg-white/20 flex items-center justify-center cursor-pointer active:scale-95 transition-transform backdrop-blur-sm"
@@ -213,7 +331,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   className="w-full h-full object-cover"
                 />
 
-                {/* الكارت السفلي بأزرار التحكم بألوان متناسقة */}
+                {/* الكارت السفلي بأزرار التحكم */}
                 <div className="absolute bottom-6 z-30 w-[90%] max-w-[360px]">
                   <div
                     className="w-full p-4 rounded-3xl backdrop-blur-xl border border-white/30 flex flex-col items-center gap-3 shadow-2xl"
