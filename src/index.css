@@ -1,21 +1,21 @@
 @font-face {
   font-family: 'Monasabat';
-  src: url('/src/assets/fonts/Monasabat.ttf') format('truetype');
+  src: url('./Monasabat.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'Almarai';
-  src: url('/src/assets/fonts/Almarai-Regular.ttf') format('truetype');
+  src: url('./Almarai-Regular.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'WaFont';
-  src: url('/src/assets/fonts/wa.ttf') format('truetype');
+  src: url('./wa.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'IranNastaliq';
-  src: url('/src/assets/fonts/IranNastali.ttf') format('truetype');
+  src: url('./IranNastali.ttf') format('truetype');
 }
 
 @tailwind base;
