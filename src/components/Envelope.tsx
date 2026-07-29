@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import waxSealImg from "@/assets/wax-seal.png";
 
 interface EnvelopeProps {
   onOpen: () => void;
@@ -8,11 +9,11 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
 
-  // منع السكرول والتمرير ما دام الظرف مفتوحاً/موجوداً
+  // قفل السكرول والتمرير تماماً حتى يتم فتح الظرف
   useEffect(() => {
     if (!isOpen) {
       document.body.style.overflow = "hidden";
-      document.body.style.touchAction = "none"; // لمنع السحب في الجوال
+      document.body.style.touchAction = "none";
     } else {
       document.body.style.overflow = "auto";
       document.body.style.touchAction = "auto";
@@ -29,7 +30,7 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
     onOpen();
     setTimeout(() => {
       setIsHidden(true);
-    }, 1000);
+    }, 1200);
   };
 
   if (isHidden) return null;
@@ -40,40 +41,30 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
         isOpen ? "opacity-0 pointer-events-none scale-105" : "opacity-100"
       }`}
       style={{
-        backgroundColor: "rgba(233, 221, 212, 0.92)", // خلفية شفافة ناعمة
-        backdropFilter: "blur(8px)",
+        backgroundColor: "rgba(233, 221, 212, 0.85)", // تخفيف الشفافية
+        backdropFilter: "blur(6px)",
       }}
     >
       <div className="relative w-full max-w-sm sm:max-w-md aspect-[4/3] flex items-center justify-center">
-        {/* جسم الظرف بشفافية مخففة ناعمة */}
+        {/* خلفية الظرف الأصلية مع تخفيف الشفافية فقط */}
         <div
-          className="absolute inset-0 rounded-3xl border border-white/50 shadow-2xl transition-all duration-700"
+          className="absolute inset-0 rounded-3xl border border-white/60 shadow-2xl transition-all duration-700"
           style={{
-            background: "rgba(255, 255, 255, 0.35)", // شفافية مخففة للظرف
-            backdropFilter: "blur(12px)",
+            background: "rgba(255, 255, 255, 0.45)", // الشفافية الجديدة المخففة
+            backdropFilter: "blur(10px)",
           }}
         />
 
-        {/* ختم فتح الدعوة */}
+        {/* ملصق / ختم الشمع الأصلي بدون النص السفلّي */}
         <button
           onClick={handleOpen}
-          className="relative z-10 flex flex-col items-center justify-center gap-2 group cursor-pointer transition-transform duration-300 hover:scale-105 active:scale-95"
+          className="relative z-10 flex flex-col items-center justify-center group cursor-pointer transition-transform duration-300 hover:scale-105 active:scale-95"
         >
-          {/* دائرة الختم الزجاجية الشفافة */}
-          <div
-            className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-white/60 shadow-xl flex items-center justify-center transition-all duration-300 group-hover:shadow-2xl"
-            style={{
-              background: "rgba(255, 255, 255, 0.45)",
-              backdropFilter: "blur(10px)",
-            }}
-          >
-            <span
-              className="font-arabic text-xl sm:text-2xl font-bold"
-              style={{ color: "#5F4F41" }}
-            >
-              افتح
-            </span>
-          </div>
+          <img
+            src={waxSealImg}
+            alt="الختم"
+            className="w-20 h-20 sm:w-24 sm:h-24 drop-shadow-xl transition-transform duration-500 group-hover:rotate-12"
+          />
         </button>
       </div>
     </div>
