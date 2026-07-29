@@ -1,284 +1,195 @@
-import { useState, useEffect, useRef } from "react";
-import { Phone, Music, Camera, MapPin, Heart, X, Download, RefreshCw } from "lucide-react";
+import { useState } from "react";
+import { Heart, Calendar } from "lucide-react";
+import invitationImg from "@/assets/photo-output.png";
+import sosImg from "@/assets/sos.png";
 
-interface NavigationDockProps {
-  active: boolean;
-}
+import footerBgImg from "@/assets/96AF05E8-7D83-48B7-B124-4763797873E0.png";
+import cardImg from "@/assets/IMG_5482.jpeg";
 
-const NavigationDock = ({ active }: NavigationDockProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [showCamera, setShowCamera] = useState(false);
-  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+import Envelope from "@/components/Envelope";
+import SprayParticles from "@/components/SprayParticles";
+import Reveal from "@/components/Reveal";
+import Countdown from "@/components/Countdown";
+import EventTimeline from "@/components/EventTimeline";
+import EventDetails from "@/components/EventDetails";
+import NavigationDock from "@/components/NavigationDock"; // ⬅️ استبدال زر الموسيقى القديم
 
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [stream, setStream] = useState<MediaStream | null>(null);
-
-  // تشغيل الموسيقى تلقائياً بعد فتح الظرف
-  useEffect(() => {
-    if (active && audioRef.current) {
-      audioRef.current
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch(() => setIsPlaying(false));
-    }
-  }, [active]);
-
-  const toggleMusic = () => {
-    if (!audioRef.current) return;
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      audioRef.current.play();
-      setIsPlaying(true);
-    }
-  };
-
-  // فتح كاميرا الجوال
-  const openCamera = async () => {
-    try {
-      setShowCamera(true);
-      setCapturedImage(null);
-      const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 1920 } },
-        audio: false,
-      });
-      setStream(mediaStream);
-      if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream;
-      }
-    } catch (err) {
-      alert("يرجى السماح للمتصفح بالوصول إلى الكاميرا.");
-      setShowCamera(false);
-    }
-  };
-
-  // إغلاق الكاميرا
-  const closeCamera = () => {
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
-    }
-    setStream(null);
-    setShowCamera(false);
-    setCapturedImage(null);
-  };
-
-  // التقاط الصورة وتطبيق الفلتر عليها
-  const capturePhoto = () => {
-    if (!videoRef.current || !canvasRef.current) return;
-
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    canvas.width = video.videoWidth || 720;
-    canvas.height = video.videoHeight || 1280;
-
-    // رسم الكاميرا (مع عكس الاتجاه للسيلفي)
-    ctx.save();
-    ctx.translate(canvas.width, 0);
-    ctx.scale(-1, 1);
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    ctx.restore();
-
-    // إضافة الفلتر والنصوص فوق الصورة الملتقطة
-    ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.textAlign = "center";
-
-    // العنوان العلوي
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font = "bold 32px Tajawal, sans-serif";
-    ctx.fillText("حفل عقد قران", canvas.width / 2, 90);
-
-    ctx.font = "bold 48px Tajawal, sans-serif";
-    ctx.fillText("محمد & عهود", canvas.width / 2, 160);
-
-    // العبارة السفلية
-    ctx.font = "bold 36px Tajawal, sans-serif";
-    ctx.fillText("{ ننتظركم بكل حُب }", canvas.width / 2, canvas.height - 100);
-
-    const imageUrl = canvas.toDataURL("image/png");
-    setCapturedImage(imageUrl);
-  };
-
-  const handlePhoneClick = () => {
-    window.location.href = "tel:0554129943";
-  };
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+const Index = () => {
+  const [opened, setOpened] = useState(false);
 
   return (
-    <>
-      <audio ref={audioRef} loop src="/music.mp3" preload="auto" />
-      <canvas ref={canvasRef} className="hidden" />
+    <div
+      className={`relative min-h-screen text-white ${
+        !opened ? "overflow-hidden h-screen" : "overflow-x-hidden"
+      }`}
+      style={{ backgroundColor: "#E9DDD4" }}
+    >
+      <SprayParticles />
+      
+      {/* الشريط السفلي الجديد للتنقل والموسيقى */}
+      <NavigationDock active={opened} />
 
-      {/* شاشة الكاميرا والفلتر */}
-      {showCamera && (
-        <div className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center">
-          {/* زر الإغلاق */}
-          <button
-            onClick={closeCamera}
-            className="absolute top-6 right-6 z-30 p-3 rounded-full bg-black/50 text-white border border-white/30 cursor-pointer"
-          >
-            <X className="w-6 h-6" />
-          </button>
+      {/* 1. الظرف */}
+      <Envelope onOpen={() => setOpened(true)} />
 
-          {/* المعاينة المباشرة للكاميرا أو الصورة الملتقطة */}
-          <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-            {!capturedImage ? (
-              <>
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  playsInline
-                  className="w-full h-full object-cover -scale-x-100"
-                />
+      {/* 2. محتوى الموقع */}
+      <main className="relative z-10 w-full pb-24">
+        
+        {/* الصورة الأولى */}
+        <section className="w-full">
+          <img
+            src={invitationImg}
+            alt="صورة الدعوة الأولى"
+            className="w-full h-auto block"
+          />
+        </section>
 
-                {/* طبقة الفلتر فوق الفيديو */}
-                <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-8 text-center bg-gradient-to-b from-black/50 via-transparent to-black/60">
-                  <div className="pt-10 space-y-1">
-                    <p className="font-arabic text-sm text-white/90 font-medium">
-                      حفل عقد قران
-                    </p>
-                    <h2 className="font-arabic text-3xl font-extrabold text-white drop-shadow-lg">
-                      محمد & عهود
-                    </h2>
-                  </div>
+        {/* باقي أقسام الموقع بنفس الدقة... */}
+        <section className="relative w-full flex flex-col items-center justify-start pb-12">
+          <img
+            src={sosImg}
+            alt="الصورة الثانية"
+            className="absolute inset-0 w-full h-full object-cover z-0"
+          />
 
-                  <div className="pb-24">
-                    <p className="font-arabic text-xl font-bold text-white drop-shadow-lg">
-                      &#123; ننتظركم بكل حُب &#125;
-                    </p>
-                  </div>
+          <div className="relative z-10 w-full flex flex-col items-center pt-20 sm:pt-32 px-4 space-y-6">
+            <div
+              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2"
+              style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
+            >
+              <p className="font-arabic text-base sm:text-lg font-bold leading-snug" style={{ color: "#5F4F41" }}>
+                بارك الله لهما وبارك عليهما وجمع بينهما في خير
+              </p>
+              <p className="font-arabic text-xs sm:text-sm" style={{ color: "#5F4F41" }}>
+                بمشاعر مليئة بالفرح والسعادة
+              </p>
+              <p className="font-arabic text-xs sm:text-sm" style={{ color: "#5F4F41" }}>
+                ولأن الفرحة لا تكتمل الابرويتكم
+              </p>
+              <p className="font-arabic text-xs sm:text-sm opacity-90" style={{ color: "#5F4F41" }}>
+                تتشرف
+              </p>
+              <p className="font-arabic text-base sm:text-lg font-bold py-0.5" style={{ color: "#5F4F41" }}>
+                أم محمد السلماني & أم طلال السعيد
+              </p>
+              <p className="font-arabic text-xs sm:text-sm" style={{ color: "#5F4F41" }}>
+                بدعوتكن لحضور حفل عقد قران نجليهما
+              </p>
+              <p className="font-arabic text-lg sm:text-2xl font-extrabold pt-1" style={{ color: "#5F4F41" }}>
+                محمد & عهود
+              </p>
+            </div>
+
+            {/* قسم الموقع مع إعطائه id="location" للتنقل السريع */}
+            <div id="location" className="text-center space-y-0.5 py-1">
+              <h3 className="font-arabic text-base sm:text-lg font-bold" style={{ color: "#5F4F41" }}>الموقع</h3>
+              <p className="font-arabic text-sm font-semibold" style={{ color: "#5F4F41" }}>قاعـة فرح</p>
+              <p className="font-arabic text-xs font-medium opacity-90" style={{ color: "#5F4F41" }}>جدة</p>
+            </div>
+
+            {/* التقويم */}
+            <div className="flex flex-col items-center space-y-3">
+              <div
+                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-2xl text-center"
+                style={{ background: "rgba(255, 255, 255, 0.75)", color: "#5F4F41" }}
+              >
+                <div className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold" style={{ background: "#5F4F41", color: "#FFFFFF" }}>
+                  <span>الثلاثاء</span>
+                  <span className="text-sm font-extrabold">ديسمبر</span>
+                  <span className="font-display">2026</span>
                 </div>
-
-                {/* زر التقاط الصورة */}
-                <div className="absolute bottom-8 z-20">
-                  <button
-                    onClick={capturePhoto}
-                    className="w-18 h-18 rounded-full border-4 border-white bg-white/30 flex items-center justify-center cursor-pointer active:scale-95 transition-transform"
-                  >
-                    <div className="w-14 h-14 rounded-full bg-white shadow-lg" />
-                  </button>
-                </div>
-              </>
-            ) : (
-              /* إظهار الصورة الملتقطة مع خيار التنزيل وإعادة التصوير */
-              <div className="relative w-full h-full flex flex-col items-center justify-center">
-                <img
-                  src={capturedImage}
-                  alt="الصورة الملتقطة"
-                  className="w-full h-full object-cover"
-                />
-
-                <div className="absolute bottom-8 z-30 flex items-center gap-6">
-                  {/* إعادة التصوير */}
-                  <button
-                    onClick={() => setCapturedImage(null)}
-                    className="flex items-center gap-2 px-5 py-3 rounded-full bg-white/20 backdrop-blur-md border border-white/40 text-white font-arabic text-sm font-bold cursor-pointer"
-                  >
-                    <RefreshCw className="w-4 h-4" />
-                    إعادة
-                  </button>
-
-                  {/* تنزيل الصورة */}
-                  <a
-                    href={capturedImage}
-                    download="mohammed-ahood-wedding.png"
-                    className="flex items-center gap-2 px-6 py-3 rounded-full bg-white text-[#5F4F41] font-arabic text-sm font-bold shadow-xl cursor-pointer"
-                  >
-                    <Download className="w-4 h-4" />
-                    حفظ الصورة
-                  </a>
+                <div className="py-4 px-4 space-y-0.5">
+                  <div className="font-display text-4xl font-extrabold tracking-tight" style={{ color: "#5F4F41" }}>22</div>
+                  <div className="font-arabic text-sm font-bold" style={{ color: "#5F4F41" }}>الثلاثاء</div>
+                  <div className="font-display text-xs font-semibold opacity-80" style={{ color: "#5F4F41" }}>PM 7:00</div>
                 </div>
               </div>
-            )}
-          </div>
-        </div>
-      )}
 
-      {/* الشريط السفلي الثابت */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-md pointer-events-auto">
-        <div
-          className="w-full px-3 py-2.5 rounded-3xl border border-white/50 shadow-2xl flex items-center justify-around backdrop-blur-md"
-          style={{
-            background: "rgba(255, 255, 255, 0.45)",
-            boxShadow: "0 10px 30px rgba(95, 79, 65, 0.2)",
-          }}
-        >
-          {/* 1. تواصل */}
-          <button
-            onClick={handlePhoneClick}
-            className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
-          >
-            <Phone className="w-5 h-5" style={{ color: "#5F4F41" }} />
-            <span className="font-arabic text-[11px] font-bold" style={{ color: "#5F4F41" }}>
-              تواصل
-            </span>
-          </button>
-
-          {/* 2. موسيقى */}
-          <button
-            onClick={toggleMusic}
-            className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
-          >
-            <Music
-              className={`w-5 h-5 transition-opacity ${isPlaying ? "opacity-100" : "opacity-50"}`}
-              style={{ color: "#5F4F41" }}
-            />
-            <span className="font-arabic text-[11px] font-bold" style={{ color: "#5F4F41" }}>
-              موسيقى
-            </span>
-          </button>
-
-          {/* 3. الكاميرا والفلتر */}
-          <button
-            onClick={openCamera}
-            className="relative -top-2 flex flex-col items-center justify-center cursor-pointer transition-transform active:scale-95"
-          >
-            <div
-              className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg border border-white/40"
-              style={{ background: "#5F4F41" }}
-            >
-              <Camera className="w-6 h-6 text-white" />
+              <button
+                onClick={() => alert("تم حفظ الموعد في التقويم!")}
+                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/50 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
+                style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
+              >
+                <Calendar className="w-4 h-4" style={{ color: "#5F4F41" }} />
+                <span className="font-arabic text-xs sm:text-sm font-bold">احفظ الموعد</span>
+              </button>
             </div>
-          </button>
 
-          {/* 4. الموقع */}
-          <button
-            onClick={() => scrollToSection("location")}
-            className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
-          >
-            <MapPin className="w-5 h-5" style={{ color: "#5F4F41" }} />
-            <span className="font-arabic text-[11px] font-bold" style={{ color: "#5F4F41" }}>
-              الموقع
-            </span>
-          </button>
+            <div className="w-full max-w-md text-center space-y-2 pt-1">
+              <h3 className="font-arabic text-base sm:text-lg font-bold" style={{ color: "#5F4F41" }}>
+                العدّ التنازلي
+              </h3>
+              <Countdown />
+            </div>
 
-          {/* 5. تأكيد الحضور */}
-          <button
-            onClick={() => scrollToSection("rsvp")}
-            className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
-          >
-            <Heart className="w-5 h-5" style={{ color: "#5F4F41" }} />
-            <span className="font-arabic text-[11px] font-bold" style={{ color: "#5F4F41" }}>
-              تأكيد الحضور
-            </span>
-          </button>
-        </div>
-      </div>
-    </>
+            <EventTimeline />
+            <EventDetails />
+          </div>
+        </section>
+
+        {/* القسم السفلي */}
+        <section id="gallery" className="relative w-full flex flex-col items-center justify-start">
+          <div className="relative w-full flex items-center justify-center">
+            <img
+              src={footerBgImg}
+              alt="صورة خلفية الفوتر"
+              className="w-full h-auto block"
+            />
+
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-4 py-6">
+              <p
+                className="font-arabic text-lg sm:text-xl font-bold text-center mb-3"
+                style={{ color: "#5F4F41" }}
+              >
+                &#123; ننتظركم بكل حُب &#125;
+              </p>
+
+              <div className="w-[92%] max-w-md rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl mb-6">
+                <img
+                  src={cardImg}
+                  alt="بطاقة تذكارية"
+                  className="w-full h-auto object-cover block"
+                />
+              </div>
+
+              <div id="rsvp" className="w-full text-center space-y-1.5">
+                <Reveal>
+                  <p
+                    className="font-arabic text-xl sm:text-2xl font-extrabold"
+                    style={{ color: "#5F4F41" }}
+                  >
+                    محمد & عهود
+                  </p>
+                </Reveal>
+
+                <Reveal delay={100}>
+                  <div
+                    className="flex items-center justify-center gap-2 pt-0.5"
+                    style={{ color: "#5F4F41" }}
+                  >
+                    <Heart className="w-4 h-4 fill-current text-[#5F4F41]" />
+                    <span className="font-arabic text-xs sm:text-sm font-semibold">
+                      صُنع بحب بواسطة{" "}
+                      <a
+                        href="https://www.tiktok.com/@shim2t?_r=1&_t=ZS-95w0d8f7vnk"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-4 font-bold hover:opacity-80 transition-opacity"
+                        style={{ color: "#5F4F41" }}
+                      >
+                        متجر غيمة
+                      </a>
+                    </span>
+                  </div>
+                </Reveal>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
   );
 };
 
-export default NavigationDock;
+export default Index;
