@@ -60,13 +60,13 @@ const EventTimeline = () => {
           style={{ backgroundColor: "#5F4F41" }}
         />
 
-        {/* الخط المضيء الذي ينزل مع السكرول */}
+        {/* الخط المضيء البني الذي ينزل مع السكرول */}
         <div
-          className="absolute left-1/2 top-3 -translate-x-1/2 w-[2px] rounded-full transition-all duration-150 ease-out"
+          className="absolute left-1/2 top-3 -translate-x-1/2 w-[2.5px] rounded-full transition-all duration-150 ease-out"
           style={{
             height: `${scrollProgress * 88}%`,
             backgroundColor: "#5F4F41",
-            boxShadow: "0 0 8px rgba(95, 79, 65, 0.6)",
+            boxShadow: "0 0 10px rgba(95, 79, 65, 0.8)",
           }}
         />
 
@@ -82,21 +82,22 @@ const EventTimeline = () => {
                 {/* اسم المناسبة */}
                 <div
                   className="col-span-2 text-left pl-2 sm:pl-3 font-arabic text-sm sm:text-base font-bold transition-opacity duration-300"
-                  style={{ color: "#5F4F41", opacity: isActive ? 1 : 0.6 }}
+                  style={{ color: "#5F4F41", opacity: isActive ? 1 : 0.5 }}
                 >
                   {event.title}
                 </div>
 
-                {/* الدائرة المتوهجة عند وصول التمرير إليها */}
+                {/* الدائرة المتوهجة باللون البني الفاخر */}
                 <div className="col-span-1 flex justify-center items-center">
                   <div
                     className="w-4 h-4 rounded-full border-2 transition-all duration-500 ease-out"
                     style={{
                       borderColor: "#5F4F41",
-                      backgroundColor: isActive ? "#FFFFFF" : "rgba(255, 255, 255, 0.3)",
-                      transform: isActive ? "scale(1.25)" : "scale(1)",
+                      backgroundColor: isActive ? "#5F4F41" : "rgba(255, 255, 255, 0.4)",
+                      transform: isActive ? "scale(1.3)" : "scale(1)",
+                      /* توهج بني قوي وواضح بدلاً من الأبيض */
                       boxShadow: isActive
-                        ? "0 0 15px 4px rgba(255, 255, 255, 0.9), 0 0 20px 4px rgba(95, 79, 65, 0.5)"
+                        ? "0 0 12px 3px rgba(95, 79, 65, 0.9), 0 0 22px 6px rgba(95, 79, 65, 0.5)"
                         : "none",
                     }}
                   />
@@ -105,7 +106,7 @@ const EventTimeline = () => {
                 {/* الوقت */}
                 <div
                   className="col-span-2 text-right pr-2 sm:pr-3 font-display text-xs sm:text-sm font-semibold tracking-wider dir-ltr transition-opacity duration-300"
-                  style={{ color: "#5F4F41", opacity: isActive ? 1 : 0.6 }}
+                  style={{ color: "#5F4F41", opacity: isActive ? 1 : 0.5 }}
                 >
                   {event.time}
                 </div>
