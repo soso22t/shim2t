@@ -58,7 +58,7 @@ const Index = () => {
               style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
             >
               <p className="font-arabic text-base sm:text-lg font-bold leading-snug" style={{ color: "#5F4F41" }}>
-                بارك الله لهما وبارك عليهما وجمع بينهما في خير
+2
               </p>
               <p className="font-arabic text-xs sm:text-sm" style={{ color: "#5F4F41" }}>
                 بمشاعر مليئة بالفرح والسعادة
