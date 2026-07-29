@@ -44,7 +44,7 @@ const Index = () => {
           />
         </section>
 
-        {/* المربع الذي يحتوي على النصوص بالخطوط المطلوبة */}
+        {/* المربع الأول بالنصوص الأصلية وتطبيق الخطوط المطلوبة فقط */}
         <section className="relative w-full flex flex-col items-center justify-start pb-12">
           <img
             src={sosImg}
@@ -57,38 +57,36 @@ const Index = () => {
               className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
               style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
             >
-              {/* السطر الأول: بارك الله لهما (Monasabat) */}
-              <p className="text-xl sm:text-2xl font-bold" style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}>
-                بارك الله لهما
+              {/* السطر الأول: بارك الله لهما وبارك عليهما وجمع بينهما في خير (Monasabat) */}
+              <p className="text-lg sm:text-xl font-bold leading-relaxed" style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}>
+                بارك الله لهما وبارك عليهما وجمع بينهما في خير
               </p>
 
-              {/* الثلاث سطور تحته (Almarai) */}
-              <p className="text-xs sm:text-sm font-medium" style={{ fontFamily: "'Almarai', sans-serif", color: "#5F4F41" }}>
-                يشرفنا حضوركم لتشاركوا معنا فرحة
+              {/* الثلاث سطور تحته (نفسها تماماً بدون أي تغيير) */}
+              <p className="font-arabic text-xs sm:text-sm" style={{ color: "#5F4F41" }}>
+                بمشاعر مليئة بالفرح والسعادة
               </p>
-              <p className="text-xs sm:text-sm font-medium" style={{ fontFamily: "'Almarai', sans-serif", color: "#5F4F41" }}>
-                عقد قران ابنائنا
+              <p className="font-arabic text-xs sm:text-sm" style={{ color: "#5F4F41" }}>
+                ولأن الفرحة لا تكتمل الا برويتكم
               </p>
-              
-              {/* تاريخ الأربعاء والأرقام (Monasabat) */}
-              <p className="text-xs sm:text-sm" style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}>
-                يوم الأربعاء 2026/03/03
+              <p className="font-arabic text-xs sm:text-sm opacity-90" style={{ color: "#5F4F41" }}>
+                تتشرف
               </p>
 
-              {/* السطر الخامس مقسم لثلاثة أجزاء في سطر واحد: أم محمد السلماني + & (WaFont) + محمد */}
-              <div className="flex items-center justify-center gap-1.5 text-xs sm:text-sm font-medium" style={{ color: "#5F4F41" }}>
+              {/* السطر الخامس مقسم: أم محمد السلماني (Almarai) + & (wa.ttf) + أم طلال السعيد (Almarai) */}
+              <div className="flex items-center justify-center gap-1.5 text-base sm:text-lg font-bold py-0.5" style={{ color: "#5F4F41" }}>
                 <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم محمد السلماني</span>
-                <span className="text-base" style={{ fontFamily: "'WaFont', sans-serif" }}>&</span>
-                <span style={{ fontFamily: "'Almarai', sans-serif" }}>محمد</span>
+                <span className="text-lg" style={{ fontFamily: "'WaFont', sans-serif" }}>&</span>
+                <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم طلال السعيد</span>
               </div>
 
-              {/* السطر السادس (Almarai) */}
-              <p className="text-xs sm:text-sm font-medium" style={{ fontFamily: "'Almarai', sans-serif", color: "#5F4F41" }}>
-                وبحضوركم تكتمل أفراحنا
+              {/* السطر السادس (نفسه تماماً بدون أي تغيير) */}
+              <p className="font-arabic text-xs sm:text-sm" style={{ color: "#5F4F41" }}>
+                بدعوتكن لحضور حفل عقد قران نجليهما
               </p>
 
-              {/* السطر السابع داخل المربع (محمد & عهود بخط IranNastaliq مع العلامة بخط WaFont) */}
-              <div className="mt-3 py-2.5 px-6 rounded-2xl bg-white/40 border border-white/30 backdrop-blur-md flex items-center justify-center gap-2">
+              {/* السطر الاخير في المربع: محمد & عهود (IranNastaliq مع علامة & بخط wa.ttf) */}
+              <div className="mt-2 py-2 px-6 rounded-2xl bg-white/40 border border-white/30 backdrop-blur-md flex items-center justify-center gap-2">
                 <span className="text-xl sm:text-2xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمد</span>
                 <span className="text-lg" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
                 <span className="text-xl sm:text-2xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عهود</span>
@@ -102,7 +100,7 @@ const Index = () => {
               <p className="font-arabic text-xs font-medium opacity-90" style={{ color: "#5F4F41" }}>جدة</p>
             </div>
 
-            {/* التقويم (الأرقام بخط Monasabat) */}
+            {/* التقويم */}
             <div className="flex flex-col items-center space-y-3">
               <div
                 className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-2xl text-center"
@@ -111,12 +109,12 @@ const Index = () => {
                 <div className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold" style={{ background: "#5F4F41", color: "#FFFFFF" }}>
                   <span>الثلاثاء</span>
                   <span className="text-sm font-extrabold">ديسمبر</span>
-                  <span style={{ fontFamily: "'Monasabat', sans-serif" }}>2026</span>
+                  <span className="font-display">2026</span>
                 </div>
                 <div className="py-4 px-4 space-y-0.5">
-                  <div className="text-4xl font-extrabold tracking-tight" style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}>22</div>
+                  <div className="font-display text-4xl font-extrabold tracking-tight" style={{ color: "#5F4F41" }}>22</div>
                   <div className="font-arabic text-sm font-bold" style={{ color: "#5F4F41" }}>الثلاثاء</div>
-                  <div className="text-xs font-semibold opacity-80" style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}>PM 7:00</div>
+                  <div className="font-display text-xs font-semibold opacity-80" style={{ color: "#5F4F41" }}>PM 7:00</div>
                 </div>
               </div>
 
@@ -152,7 +150,7 @@ const Index = () => {
             />
 
             <div className="absolute inset-0 flex flex-col items-center justify-center px-4 py-6">
-              {/* عبارة وننتظركم بكل حب (Monasabat) */}
+              {/* وننتظركم بكل حب (Monasabat) */}
               <p
                 className="text-lg sm:text-xl font-bold text-center mb-3"
                 style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}
@@ -170,7 +168,7 @@ const Index = () => {
 
               <div id="rsvp" className="w-full text-center space-y-1.5">
                 <Reveal>
-                  {/* اسم محمد & عهود في الذيل (IranNastaliq مع علامة & بخط WaFont) */}
+                  {/* محمد & عهود في الذيل (IranNastaliq مع علامة & بخط wa.ttf) */}
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمد</span>
                     <span className="text-xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
