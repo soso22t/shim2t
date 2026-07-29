@@ -87,9 +87,9 @@ const Index = () => {
 
               {/* السطر الاخير في المربع: محمد & عهود (IranNastaliq مع علامة & بخط wa.ttf) */}
               <div className="mt-2 py-2 px-6 rounded-2xl bg-white/40 border border-white/30 backdrop-blur-md flex items-center justify-center gap-2">
-                <span className="text-xl sm:text-2xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمد</span>
+                <span className="text-xl sm:text-2xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
                 <span className="text-lg" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
-                <span className="text-xl sm:text-2xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عهود</span>
+                <span className="text-xl sm:text-2xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عهـود</span>
               </div>
             </div>
 
@@ -170,9 +170,9 @@ const Index = () => {
                 <Reveal>
                   {/* محمد & عهود في الذيل (IranNastaliq مع علامة & بخط wa.ttf) */}
                   <div className="flex items-center justify-center gap-2">
-                    <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمد</span>
+                    <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
                     <span className="text-xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
-                    <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عهود</span>
+                    <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عهـود</span>
                   </div>
                 </Reveal>
 
@@ -183,7 +183,7 @@ const Index = () => {
                   >
                     <Heart className="w-4 h-4 fill-current text-[#5F4F41]" />
                     <span className="font-arabic text-xs sm:text-sm font-semibold">
-                      صُنع بحب بواسطة{" "}
+                        {" "}
                       <a
                         href="https://www.tiktok.com/@shim2t?_r=1&_t=ZS-95w0d8f7vnk"
                         target="_blank"
@@ -191,7 +191,7 @@ const Index = () => {
                         className="underline underline-offset-4 font-bold hover:opacity-80 transition-opacity"
                         style={{ color: "#5F4F41" }}
                       >
-                        متجر غيمة
+                     غيمة
                       </a>
                     </span>
                   </div>
