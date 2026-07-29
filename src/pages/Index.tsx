@@ -7,6 +7,7 @@ import SprayParticles from "@/components/SprayParticles";
 import Reveal from "@/components/Reveal";
 import Countdown from "@/components/Countdown";
 import EventTimeline from "@/components/EventTimeline"; // <-- إضافة الاستيراد هنا
+import EventDetails from "@/components/EventDetails";
 import MusicToggle from "@/components/MusicToggle";
 
 const Index = () => {
