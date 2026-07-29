@@ -61,21 +61,27 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
         }}
       />
 
-      {/* 3. الملصق الدائري بظل أكثر تغميقاً وبروزاً */}
+      {/* 3. زر الملصق بحجم وثبات كامل للظل الدائري */}
       <button
         onClick={handleOpen}
         className={`relative z-20 flex items-center justify-center cursor-pointer transition-all duration-700 ${
           isOpen ? "scale-150 opacity-0" : "scale-100 opacity-100"
         }`}
       >
-        <img
-          src={waxSealImg}
-          alt="الختم"
-          className="w-44 h-44 sm:w-52 sm:h-52 rounded-full object-contain transition-transform duration-300 hover:scale-105 active:scale-95"
+        {/* حاوية دائرية شفافة تحمل الظل الغامق دائماً وبشكل دائري 100% */}
+        <div
+          className="w-44 h-44 sm:w-52 sm:h-52 rounded-full relative flex items-center justify-center transition-transform duration-300 hover:scale-105 active:scale-95"
           style={{
-            filter: "drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.55))",
+            boxShadow: "0px 14px 28px rgba(0, 0, 0, 0.55), 0px 6px 12px rgba(0, 0, 0, 0.35)",
           }}
-        />
+        >
+          {/* صورة الختم داخل الحاوية الدائرية */}
+          <img
+            src={waxSealImg}
+            alt="الختم"
+            className="w-full h-full rounded-full object-cover block"
+          />
+        </div>
       </button>
     </div>
   );
