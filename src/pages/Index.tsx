@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, Heart, QrCode, Baby, Camera } from "lucide-react";
+import { MapPin, Heart, QrCode, Baby, Camera, Calendar } from "lucide-react";
 import invitationImg from "@/assets/photo-output.png";
 import sosImg from "@/assets/sos.png";
 import Envelope from "@/components/Envelope";
@@ -38,7 +38,7 @@ const Index = () => {
           />
         </section>
 
-        {/* الصورة الثانية (sos.png) */}
+        {/* الصورة الثانية: تحتوي على المربع الزجاجي في الأعلى + تفاصيل الموقع تحته مباشرة */}
         <section className="relative w-full">
           <img
             src={sosImg}
@@ -46,154 +46,169 @@ const Index = () => {
             className="w-full h-auto block"
           />
 
-          {/* التعديل: المربع الزجاجي الأبيض والخط بلون #5F4F41 */}
-          <div className="absolute inset-0 flex items-center justify-center p-4">
+          {/* محتوى متراكب فوق الصورة الثانية */}
+          <div className="absolute inset-0 flex flex-col items-center justify-start pt-6 sm:pt-10 px-4 space-y-6">
+            
+            {/* المربع الزجاجي المرفوع لأعلى الصورة */}
             <div
-              className="w-[92%] max-w-md p-6 sm:p-8 rounded-3xl text-center backdrop-blur-md border border-white/40 shadow-2xl space-y-3"
+              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
               style={{
-                background: "rgba(255, 255, 255, 0.65)", // مربع زجاجي أبيض راقي
-                color: "#5F4F41", // تطبيق لون الخط المطلوبة على كافة النصوص الداخلية
+                background: "rgba(255, 255, 255, 0.65)",
+                color: "#5F4F41",
               }}
             >
               {/* السطر الأول - حجم كبير */}
               <p
-                className="font-arabic text-lg sm:text-xl font-bold leading-snug"
+                className="font-arabic text-base sm:text-lg font-bold leading-snug"
                 style={{ color: "#5F4F41" }}
               >
                 بارك الله لهما وبارك عليهما وجمع بينهما في خير
               </p>
 
               {/* السطر الثاني */}
-              <p className="font-arabic text-sm" style={{ color: "#5F4F41" }}>
+              <p className="font-arabic text-xs sm:text-sm" style={{ color: "#5F4F41" }}>
                 بمشاعر مليئة بالفرح والسعادة
               </p>
 
               {/* السطر الثالث */}
-              <p className="font-arabic text-sm" style={{ color: "#5F4F41" }}>
+              <p className="font-arabic text-xs sm:text-sm" style={{ color: "#5F4F41" }}>
                 ولأن الفرحة لا تكتمل الابرويتكم
               </p>
 
               {/* السطر الرابع */}
-              <p className="font-arabic text-sm opacity-90" style={{ color: "#5F4F41" }}>
+              <p className="font-arabic text-xs sm:text-sm opacity-90" style={{ color: "#5F4F41" }}>
                 تتشرف
               </p>
 
               {/* السطر الخامس - بنفس حجم السطر الأول */}
               <p
-                className="font-arabic text-lg sm:text-xl font-bold py-1"
+                className="font-arabic text-base sm:text-lg font-bold py-0.5"
                 style={{ color: "#5F4F41" }}
               >
                 أم محمد السلماني & أم طلال السعيد
               </p>
 
               {/* السطر السادس */}
-              <p className="font-arabic text-sm" style={{ color: "#5F4F41" }}>
+              <p className="font-arabic text-xs sm:text-sm" style={{ color: "#5F4F41" }}>
                 بدعوتكن لحضور حفل عقد قران نجليهما
               </p>
 
               {/* السطر السابع - بنفس حجم السطر الأول واكبر */}
               <p
-                className="font-arabic text-xl sm:text-2xl font-extrabold pt-1"
+                className="font-arabic text-lg sm:text-2xl font-extrabold pt-1"
                 style={{ color: "#5F4F41" }}
               >
                 محمد & عهود
               </p>
             </div>
+
+            {/* تفاصيل الموقع تحت المربع الزجاجي مباشرة وعلى نفس الصورة الثانية */}
+            <div className="text-center space-y-1 py-2">
+              <h3
+                className="font-arabic text-base sm:text-lg font-bold drop-shadow-sm"
+                style={{ color: "#5F4F41" }}
+              >
+                الموقع
+              </h3>
+              <p
+                className="font-arabic text-sm font-semibold"
+                style={{ color: "#5F4F41" }}
+              >
+                قاعـة فرح
+              </p>
+              <p
+                className="font-arabic text-xs font-medium opacity-90"
+                style={{ color: "#5F4F41" }}
+              >
+                جدة
+              </p>
+            </div>
+
           </div>
         </section>
 
-        {/* التعديل الثاني: الموقع والتقويم باللون #5F4F41 */}
-        <section className="px-4 py-10 text-center space-y-6">
-          
-          {/* تفاصيل الموقع باللون المطلوب */}
-          <div className="space-y-1">
-            <h3
-              className="font-arabic text-lg font-bold"
-              style={{ color: "#5F4F41" }}
-            >
-              الموقع
-            </h3>
-            <p
-              className="font-arabic text-sm font-medium"
-              style={{ color: "#5F4F41" }}
-            >
-              قاعـة فرح
-            </p>
-            <p
-              className="font-arabic text-sm opacity-80"
-              style={{ color: "#5F4F41" }}
-            >
-              جدة
-            </p>
-          </div>
-
-          {/* مربع التقويم الفاخر بتدرج أبيض ناعم والخط #5F4F41 */}
+        {/* كارت التقويم المصمم بأسلوب النتيجة المرفقة + زر الحفظ الزجاجي */}
+        <section className="px-4 py-10 text-center flex flex-col items-center justify-center space-y-5">
           <Reveal>
-            <div
-              className="mx-auto max-w-xs rounded-2xl p-5 text-center backdrop-blur-md border border-white/30 shadow-xl"
-              style={{
-                background: "rgba(255, 255, 255, 0.75)",
-                color: "#5F4F41",
-              }}
-            >
-              {/* الشريط العلوي للتقويم */}
+            <div className="flex flex-col items-center space-y-4">
+              
+              {/* كارت النتيجة/التقويم المماثل للصورة المرفقة */}
               <div
-                className="flex justify-between items-center font-display text-xs mb-3 px-3 py-1.5 rounded-lg text-white font-bold"
-                dir="ltr"
+                className="w-64 sm:w-72 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-2xl text-center"
                 style={{
-                  background: "#5F4F41",
+                  background: "rgba(255, 255, 255, 0.75)",
+                  color: "#5F4F41",
                 }}
               >
-                <span>Tuesday</span>
-                <span>December</span>
-                <span>2026</span>
-              </div>
+                {/* الشريط العلوي للتقويم باللون البني */}
+                <div
+                  className="relative px-4 py-3 flex justify-between items-center font-arabic text-sm font-bold"
+                  style={{
+                    background: "#5F4F41",
+                    color: "#FFFFFF",
+                  }}
+                >
+                  {/* حلقات التعليق في الأعلى */}
+                  <div className="absolute top-1.5 left-10 w-3 h-4 rounded-full bg-white/30 border border-white/50" />
+                  <div className="absolute top-1.5 right-10 w-3 h-4 rounded-full bg-white/30 border border-white/50" />
 
-              {/* أيام الأسبوع */}
-              <div className="grid grid-cols-7 gap-1 text-[10px] font-display mb-2 opacity-75" dir="ltr" style={{ color: "#5F4F41" }}>
-                {["S", "M", "T", "W", "T", "F", "S"].map((d, i) => (
-                  <div key={i} className="py-0.5">{d}</div>
-                ))}
-              </div>
+                  <span>الثلاثاء</span>
+                  <span className="text-base font-extrabold">ديسمبر</span>
+                  <span className="font-display">2026</span>
+                </div>
 
-              {/* شبكة أيام شهر ديسمبر 2026 */}
-              <div className="grid grid-cols-7 gap-1 text-xs font-display" dir="ltr" style={{ color: "#5F4F41" }}>
-                {[null, null, 1, 2, 3, 4, 5,
-                  6, 7, 8, 9, 10, 11, 12,
-                  13, 14, 15, 16, 17, 18, 19,
-                  20, 21, 22, 23, 24, 25, 26,
-                  27, 28, 29, 30, 31, null, null].map((d, i) => (
+                {/* جسم البطاقة الداخلي */}
+                <div className="py-6 px-4 space-y-2">
+                  {/* رقم اليوم الكبير بنفس البني */}
                   <div
-                    key={i}
-                    className={`aspect-square flex items-center justify-center rounded-md font-semibold ${
-                      d === 22
-                        ? "text-white font-extrabold shadow-md scale-110"
-                        : ""
-                    }`}
-                    style={
-                      d === 22
-                        ? { backgroundColor: "#5F4F41" }
-                        : {}
-                    }
+                    className="font-display text-6xl font-extrabold tracking-tight"
+                    style={{ color: "#5F4F41" }}
                   >
-                    {d ?? ""}
+                    22
                   </div>
-                ))}
+
+                  {/* اسم اليوم */}
+                  <div
+                    className="font-arabic text-lg font-bold"
+                    style={{ color: "#5F4F41" }}
+                  >
+                    الثلاثاء
+                  </div>
+
+                  {/* التوقيت */}
+                  <div
+                    className="font-display text-xs font-semibold opacity-80"
+                    style={{ color: "#5F4F41" }}
+                  >
+                    PM 7:00
+                  </div>
+                </div>
               </div>
 
-              {/* التاريخ */}
-              <div
-                className="font-arabic text-sm mt-4 font-bold"
-                style={{ color: "#5F4F41" }}
+              {/* زر زجاجي: احفظ الموعد (نفس المرفق بالصورة) */}
+              <button
+                onClick={() => {
+                  // إمكانية إضافة حفظ للتقويم أو تنبيه
+                  alert("تم حفظ الموعد في التقويم!");
+                }}
+                className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-full backdrop-blur-md border border-white/50 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
+                style={{
+                  background: "rgba(255, 255, 255, 0.65)",
+                  color: "#5F4F41",
+                }}
               >
-                الثلاثاء 22 ديسمبر 2026
-              </div>
+                <Calendar className="w-4 h-4" style={{ color: "#5F4F41" }} />
+                <span className="font-arabic text-xs sm:text-sm font-bold">
+                  احفظ الموعد
+                </span>
+              </button>
+
             </div>
           </Reveal>
         </section>
 
         {/* العداد التنازلي */}
-        <section className="px-4 py-12">
+        <section className="px-4 py-10">
           <Reveal>
             <h2 className="text-center font-arabic text-2xl mb-8" style={{ color: "#5F4F41" }}>العدّ التنازلي</h2>
           </Reveal>
@@ -202,8 +217,8 @@ const Index = () => {
           </Reveal>
         </section>
 
-        {/* الموقع على الخريطة */}
-        <section className="px-4 py-12">
+        {/* الخريطة */}
+        <section className="px-4 py-10">
           <Reveal>
             <h2 className="text-center font-arabic text-2xl mb-6" style={{ color: "#5F4F41" }}>موقع الحفل</h2>
           </Reveal>
@@ -229,7 +244,7 @@ const Index = () => {
         </section>
 
         {/* برنامج الحفل */}
-        <section className="px-4 py-12">
+        <section className="px-4 py-10">
           <Reveal>
             <h2 className="text-center font-arabic text-2xl mb-6" style={{ color: "#5F4F41" }}>برنامج الحفل</h2>
           </Reveal>
@@ -237,7 +252,7 @@ const Index = () => {
         </section>
 
         {/* تفاصيل الحفل */}
-        <section className="px-4 py-12">
+        <section className="px-4 py-10">
           <Reveal>
             <h2 className="text-center font-arabic text-2xl mb-8" style={{ color: "#5F4F41" }}>تفاصيل الحفل</h2>
           </Reveal>
@@ -265,7 +280,7 @@ const Index = () => {
         </section>
 
         {/* تأكيد الحضور */}
-        <section className="px-4 py-12">
+        <section className="px-4 py-10">
           <Reveal>
             <h2 className="text-center font-arabic text-2xl mb-2" style={{ color: "#5F4F41" }}>أكّد حضورك</h2>
             <p className="text-center font-arabic text-xs opacity-80 mb-8" style={{ color: "#5F4F41" }}>
