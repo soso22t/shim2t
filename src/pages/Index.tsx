@@ -2,8 +2,14 @@ import { useState } from "react";
 import { Heart, Calendar } from "lucide-react";
 import invitationImg from "@/assets/photo-output.png";
 import sosImg from "@/assets/sos.png";
+
+// 📸 استيراد الصور الجديدة (تأكدي من وضع الملفات بنفس الاسم داخل مجلد assets)
+import footerBgImg from "@/assets/96AF05E8-7D83-48B7-B124-4763797873E0.png";
+import cardImg from "@/assets/IMG_5482.jpeg";
+
 import Envelope from "@/components/Envelope";
 import SprayParticles from "@/components/SprayParticles";
+import Reveal from "@/components/Reveal";
 import Countdown from "@/components/Countdown";
 import EventTimeline from "@/components/EventTimeline";
 import EventDetails from "@/components/EventDetails";
@@ -26,7 +32,7 @@ const Index = () => {
       {/* 2. محتوى الموقع */}
       <main className="relative z-10 w-full">
         
-        {/* الصورة الأولى */}
+        {/* الصورة الأولى (أعلى الدعوة) */}
         <section className="w-full">
           <img
             src={invitationImg}
@@ -35,8 +41,8 @@ const Index = () => {
           />
         </section>
 
-        {/* الصورة الثانية مع العناصر التراكبية */}
-        <section className="relative w-full flex flex-col items-center justify-start pb-20">
+        {/* الصورة الثانية الطويلة الخلفية */}
+        <section className="relative w-full flex flex-col items-center justify-start pb-12">
           
           {/* خلفية الصورة الثانية */}
           <img
@@ -45,13 +51,13 @@ const Index = () => {
             className="absolute inset-0 w-full h-full object-cover z-0"
           />
 
-          {/* المسافة العلوية المطلوبة والعناصر المتراكبة */}
+          {/* العناصر المتراكبة فوق الصورة الثانية */}
           <div className="relative z-10 w-full flex flex-col items-center pt-20 sm:pt-32 px-4 space-y-6">
             
             {/* أ. المربع الزجاجي للكتابة */}
             <div
-              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/40 shadow-xl space-y-2"
-              style={{ background: "rgba(255, 255, 255, 0.25)", color: "#5F4F41" }}
+              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2"
+              style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
             >
               <p className="font-arabic text-base sm:text-lg font-bold leading-snug" style={{ color: "#5F4F41" }}>
                 بارك الله لهما وبارك عليهما وجمع بينهما في خير
@@ -86,8 +92,8 @@ const Index = () => {
             {/* ج. كارت التقويم + زر احفظ الموعد */}
             <div className="flex flex-col items-center space-y-3">
               <div
-                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl text-center"
-                style={{ background: "rgba(255, 255, 255, 0.25)", color: "#5F4F41" }}
+                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-2xl text-center"
+                style={{ background: "rgba(255, 255, 255, 0.75)", color: "#5F4F41" }}
               >
                 <div className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold" style={{ background: "#5F4F41", color: "#FFFFFF" }}>
                   <span>الثلاثاء</span>
@@ -104,8 +110,8 @@ const Index = () => {
               {/* زر احفظ الموعد */}
               <button
                 onClick={() => alert("تم حفظ الموعد في التقويم!")}
-                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/40 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
-                style={{ background: "rgba(255, 255, 255, 0.25)", color: "#5F4F41" }}
+                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/50 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
+                style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
               >
                 <Calendar className="w-4 h-4" style={{ color: "#5F4F41" }} />
                 <span className="font-arabic text-xs sm:text-sm font-bold">احفظ الموعد</span>
@@ -120,31 +126,83 @@ const Index = () => {
               <Countdown />
             </div>
 
-            {/* هـ. مستطيلات برنامج الحفل وتفاصيل الحفل */}
+            {/* هـ. برنامج المناسبة */}
             <EventTimeline />
+
+            {/* و. تفاصيل الحفل */}
             <EventDetails />
 
           </div>
         </section>
 
-        {/* الذيل (Footer) */}
-        <footer className="px-4 py-8 text-center border-t border-[#5F4F41]/20">
-          <div className="flex items-center justify-center gap-2" style={{ color: "#5F4F41" }}>
-            <Heart className="w-4 h-4 fill-current" />
-            <span className="font-arabic text-xs">
-              صُنع بحب بواسطة{" "}
-              <a
-                href="https://www.tiktok.com/@shim2t?_r=1&_t=ZS-95w0d8f7vnk"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline underline-offset-4 font-bold"
+        {/* 3. قسم الصورة السفلية الجديدة والبطاقة والفوتر المعدل */}
+        <section className="relative w-full flex flex-col items-center justify-start">
+          
+          {/* الصورة السفلية الجديدة 96AF05E8-7D83-48B7-B124-4763797873E0.png مباشرة تحت الصورة الثانية */}
+          <div className="relative w-full">
+            <img
+              src={footerBgImg}
+              alt="صورة خلفية الفوتر"
+              className="w-full h-auto block"
+            />
+
+            {/* المحتوى فوق الصورة السفلية */}
+            <div className="absolute inset-0 flex flex-col items-center justify-between pt-8 pb-6 px-4">
+              
+              {/* أ. السطر النصي { ننتظركم بكل حُب } في الأعلى بخط متوسط */}
+              <p
+                className="font-arabic text-base sm:text-lg font-medium text-center"
                 style={{ color: "#5F4F41" }}
               >
-                متجر غيمة
-              </a>
-            </span>
+                &#123; ننتظركم بكل حُب &#125;
+              </p>
+
+              {/* ب. الصورة IMG_5482.jpeg بنمط المربعات الزجاجية ونفس امتدادها */}
+              <div className="w-[92%] max-w-md my-4 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl">
+                <img
+                  src={cardImg}
+                  alt="بطاقة تذكارية"
+                  className="w-full h-auto object-cover block"
+                />
+              </div>
+
+              {/* ج. الفوتر المرفوع مع أسماء محمد & عهود فوقه */}
+              <footer className="w-full text-center space-y-2 pt-2">
+                <Reveal>
+                  <p
+                    className="font-arabic text-lg sm:text-xl font-bold"
+                    style={{ color: "#5F4F41" }}
+                  >
+                    محمد & عهود
+                  </p>
+                </Reveal>
+
+                <Reveal delay={100}>
+                  <div
+                    className="flex items-center justify-center gap-2"
+                    style={{ color: "#5F4F41" }}
+                  >
+                    <Heart className="w-4 h-4 fill-current" />
+                    <span className="font-arabic text-xs">
+                      صُنع بحب بواسطة{" "}
+                      <a
+                        href="https://www.tiktok.com/@shim2t?_r=1&_t=ZS-95w0d8f7vnk"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-4 font-bold"
+                        style={{ color: "#5F4F41" }}
+                      >
+                        متجر غيمة
+                      </a>
+                    </span>
+                  </div>
+                </Reveal>
+              </footer>
+
+            </div>
           </div>
-        </footer>
+        </section>
+
       </main>
     </div>
   );
