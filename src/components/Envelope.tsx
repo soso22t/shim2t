@@ -61,7 +61,7 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
         }}
       />
 
-      {/* 3. الملصق بحجم أكبر وبدون ظل */}
+      {/* 3. الملصق بحجم أكبر وظل ملائم للتصميم الدائري */}
       <button
         onClick={handleOpen}
         className={`relative z-20 flex items-center justify-center cursor-pointer transition-all duration-700 ${
@@ -71,7 +71,10 @@ const Envelope = ({ onOpen }: EnvelopeProps) => {
         <img
           src={waxSealImg}
           alt="الختم"
-          className="w-32 h-32 sm:w-40 sm:h-40 transition-transform duration-300 hover:scale-105 active:scale-95"
+          className="w-44 h-44 sm:w-52 sm:h-52 transition-transform duration-300 hover:scale-105 active:scale-95"
+          style={{
+            filter: "drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.25))",
+          }}
         />
       </button>
     </div>
