@@ -42,13 +42,13 @@ const Index = () => {
             className="w-full h-auto block"
           />
 
-          {/* العناصر المتراكبة فوق الصورة الثانية */}
-          <div className="absolute inset-x-0 top-0 flex flex-col items-center justify-start pt-16 sm:pt-28 px-4 space-y-6">
+          {/* العناصر المتراكبة فوق الصورة الثانية (تم زيادة pt لإنزالها لأسفل) */}
+          <div className="absolute inset-x-0 top-0 flex flex-col items-center justify-start pt-44 sm:pt-60 px-4 space-y-7">
             
-            {/* أ. المربع الزجاجي للكتابة */}
+            {/* أ. المربع الزجاجي للكتابة (شفاف ومموّه) */}
             <div
-              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2"
-              style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
+              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/40 shadow-xl space-y-2"
+              style={{ background: "rgba(255, 255, 255, 0.25)", color: "#5F4F41" }}
             >
               <p className="font-arabic text-base sm:text-lg font-bold leading-snug" style={{ color: "#5F4F41" }}>
                 بارك الله لهما وبارك عليهما وجمع بينهما في خير
@@ -80,11 +80,11 @@ const Index = () => {
               <p className="font-arabic text-xs font-medium opacity-90" style={{ color: "#5F4F41" }}>جدة</p>
             </div>
 
-            {/* ج. كارت التقويم + زر احفظ الموعد */}
+            {/* ج. كارت التقويم + زر احفظ الموعد (شفاف ومموّه) */}
             <div className="flex flex-col items-center space-y-3">
               <div
-                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-2xl text-center"
-                style={{ background: "rgba(255, 255, 255, 0.75)", color: "#5F4F41" }}
+                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl text-center"
+                style={{ background: "rgba(255, 255, 255, 0.25)", color: "#5F4F41" }}
               >
                 <div className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold" style={{ background: "#5F4F41", color: "#FFFFFF" }}>
                   <span>الثلاثاء</span>
@@ -98,11 +98,11 @@ const Index = () => {
                 </div>
               </div>
 
-              {/* زر احفظ الموعد */}
+              {/* زر احفظ الموعد (شفاف ومموّه) */}
               <button
                 onClick={() => alert("تم حفظ الموعد في التقويم!")}
-                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/50 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
-                style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
+                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/40 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
+                style={{ background: "rgba(255, 255, 255, 0.25)", color: "#5F4F41" }}
               >
                 <Calendar className="w-4 h-4" style={{ color: "#5F4F41" }} />
                 <span className="font-arabic text-xs sm:text-sm font-bold">احفظ الموعد</span>
@@ -120,7 +120,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* الذيل (Footer) فقط */}
+        {/* الذيل (Footer) */}
         <footer className="px-4 py-8 text-center border-t border-[#5F4F41]/20">
           <Reveal>
             <div className="flex items-center justify-center gap-2" style={{ color: "#5F4F41" }}>
