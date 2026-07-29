@@ -14,7 +14,7 @@ const Index = () => {
   const [opened, setOpened] = useState(false);
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-black text-white" style={{ background: "#0a0a0a" }}>
+    <div className="relative min-h-screen overflow-x-hidden bg-[#0a0a0a] text-white">
       <SprayParticles />
       <MusicToggle active={opened} />
 
@@ -22,23 +22,31 @@ const Index = () => {
       <Envelope onOpen={() => setOpened(true)} />
 
       {/* 2. محتوى الموقع */}
-      <main className="relative z-10">
+      <main className="relative z-10 w-full">
         
         {/* الصورة الأولى */}
         <section className="w-full">
-          <img src={invitationImg} alt="صورة الدعوة الأولى" className="w-full h-auto block" />
+          <img
+            src={invitationImg}
+            alt="صورة الدعوة الأولى"
+            className="w-full h-auto block"
+          />
         </section>
 
-        {/* الصورة الثانية */}
-        <section className="relative w-full">
-          <img src={sosImg} alt="الصورة الثانية" className="w-full h-auto block min-h-[1600px] object-cover" />
+        {/* الصورة الثانية مع العناصر التراكبية */}
+        <section className="relative w-full overflow-hidden">
+          <img
+            src={sosImg}
+            alt="الصورة الثانية"
+            className="w-full h-auto block"
+          />
 
-          {/* العناصر المتراكبة بالترتيب المضبوط */}
-          <div className="absolute inset-0 flex flex-col items-center justify-start pt-36 sm:pt-48 px-4 space-y-7">
+          {/* العناصر المتراكبة فوق الصورة الثانية */}
+          <div className="absolute inset-x-0 top-0 flex flex-col items-center justify-start pt-20 sm:pt-32 px-4 space-y-6">
             
             {/* أ. المربع الزجاجي للكتابة */}
             <div
-              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
+              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2"
               style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
             >
               <p className="font-arabic text-base sm:text-lg font-bold leading-snug" style={{ color: "#5F4F41" }}>
@@ -72,21 +80,19 @@ const Index = () => {
             </div>
 
             {/* ج. كارت التقويم + زر احفظ الموعد */}
-            <div className="flex flex-col items-center space-y-4 pt-1">
+            <div className="flex flex-col items-center space-y-3">
               <div
                 className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-2xl text-center"
                 style={{ background: "rgba(255, 255, 255, 0.75)", color: "#5F4F41" }}
               >
-                <div className="relative px-4 py-2.5 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold" style={{ background: "#5F4F41", color: "#FFFFFF" }}>
-                  <div className="absolute top-1.5 left-8 w-2.5 h-3.5 rounded-full bg-white/30 border border-white/50" />
-                  <div className="absolute top-1.5 right-8 w-2.5 h-3.5 rounded-full bg-white/30 border border-white/50" />
+                <div className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold" style={{ background: "#5F4F41", color: "#FFFFFF" }}>
                   <span>الثلاثاء</span>
                   <span className="text-sm font-extrabold">ديسمبر</span>
                   <span className="font-display">2026</span>
                 </div>
-                <div className="py-5 px-4 space-y-1">
-                  <div className="font-display text-5xl font-extrabold tracking-tight" style={{ color: "#5F4F41" }}>22</div>
-                  <div className="font-arabic text-base font-bold" style={{ color: "#5F4F41" }}>الثلاثاء</div>
+                <div className="py-4 px-4 space-y-0.5">
+                  <div className="font-display text-4xl font-extrabold tracking-tight" style={{ color: "#5F4F41" }}>22</div>
+                  <div className="font-arabic text-sm font-bold" style={{ color: "#5F4F41" }}>الثلاثاء</div>
                   <div className="font-display text-xs font-semibold opacity-80" style={{ color: "#5F4F41" }}>PM 7:00</div>
                 </div>
               </div>
@@ -94,7 +100,7 @@ const Index = () => {
               {/* زر احفظ الموعد */}
               <button
                 onClick={() => alert("تم حفظ الموعد في التقويم!")}
-                className="flex items-center justify-center gap-2 px-6 py-2 rounded-full backdrop-blur-md border border-white/50 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
+                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/50 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
                 style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
               >
                 <Calendar className="w-4 h-4" style={{ color: "#5F4F41" }} />
@@ -103,7 +109,7 @@ const Index = () => {
             </div>
 
             {/* د. العد التنازلي المفرغ مباشرة تحت زر احفظ الموعد */}
-            <div className="w-full max-w-md text-center pt-2 space-y-2">
+            <div className="w-full max-w-md text-center space-y-2 pt-1">
               <h3 className="font-arabic text-base sm:text-lg font-bold" style={{ color: "#5F4F41" }}>
                 العدّ التنازلي
               </h3>
@@ -113,7 +119,7 @@ const Index = () => {
           </div>
         </section>
 
-        {/* باقي عناصر الصفحات (الخريطة والبرنامج وتأكيد الحضور)... */}
+        {/* الخريطة والبرنامج وباقي الأقسام... */}
         <section className="px-4 py-10">
           <Reveal>
             <h2 className="text-center font-arabic text-2xl mb-6" style={{ color: "#5F4F41" }}>موقع الحفل</h2>
