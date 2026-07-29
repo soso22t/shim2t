@@ -40,24 +40,24 @@ const Countdown = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center gap-3 sm:gap-5 dir-ltr py-2">
+    <div className="flex items-center justify-center gap-3 sm:gap-4 dir-ltr py-2">
       {items.map((item, idx) => (
         <div
           key={idx}
-          className="w-20 h-24 sm:w-24 sm:h-28 rounded-2xl flex flex-col items-center justify-center bg-transparent backdrop-blur-[2px] border transition-all"
+          className="w-16 h-20 sm:w-20 sm:h-24 rounded-2xl flex flex-col items-center justify-center backdrop-blur-md border border-white/40 shadow-md transition-transform"
           style={{
-            borderColor: "rgba(95, 79, 65, 0.4)",
-            boxShadow: "0 0 12px rgba(95, 79, 65, 0.25), inset 0 0 8px rgba(95, 79, 65, 0.15)",
+            background: "rgba(255, 255, 255, 0.25)",
+            color: "#5F4F41",
           }}
         >
           <span
-            className="font-display text-2xl sm:text-3xl font-bold tracking-tight leading-none mb-1.5"
+            className="font-display text-xl sm:text-2xl font-bold tracking-tight leading-none mb-1"
             style={{ color: "#5F4F41" }}
           >
             {item.value}
           </span>
           <span
-            className="font-sans text-[10px] sm:text-[11px] font-bold tracking-widest uppercase opacity-85"
+            className="font-sans text-[9px] sm:text-[10px] font-bold tracking-widest uppercase opacity-85"
             style={{ color: "#5F4F41" }}
           >
             {item.label}
