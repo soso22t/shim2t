@@ -41,7 +41,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     }
   };
 
-  // فتح الكاميرا الخلفية بمقاس 9:16 طبيعي بدون زووم عالي
+  // فتح الكاميرا الخلفية بالعدسة الطبيعية بدون أي زووم
   const openCamera = async () => {
     try {
       setShowCamera(true);
@@ -49,7 +49,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: { ideal: "environment" },
-          aspectRatio: 9 / 16, // فرض نسبة 9:16 لتعبئة الشاشة بدون أسود
+          // تم إزالة aspectRatio لمنع إجبار الكاميرا على التقريب
         },
         audio: false,
       });
@@ -73,7 +73,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     setCapturedImage(null);
   };
 
-  // التقاط الصورة بدقة 9:16 متناسقة
+  // التقاط الصورة بدقة متناسقة
   const capturePhoto = () => {
     if (!videoRef.current || !canvasRef.current) return;
 
@@ -85,8 +85,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     canvas.width = 1080;
     canvas.height = 1920;
 
-    // ملء الكانفاس بأبعاد 9:16 بشكل متناسق تماماً مثل الكاميرا
-    const vRatio = video.videoWidth / video.videoHeight;
+    const vRatio = video.videoWidth / video.videoHeight || 9 / 16;
     const cRatio = canvas.width / canvas.height;
     let renderWidth = canvas.width;
     let renderHeight = canvas.height;
@@ -178,12 +177,12 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
             {!capturedImage ? (
               <>
-                {/* الكاميرا الخلفية بمقاس 9:16 بدون أسود */}
+                {/* الكاميرا الخلفية بالعدسة العادية الطبيعية بدون زووم أو تقريب */}
                 <video
                   ref={videoRef}
                   autoPlay
                   playsInline
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover scale-100"
                 />
 
                 {/* نص الفلتر السفلي قبل التقاط الصورة */}
