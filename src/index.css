@@ -18,6 +18,36 @@
   src: url('./assets/fonts/IranNastali.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'SARAhhh1';
+  src: url('./assets/fonts/SARAhhh1.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Whitney';
+  src: url('./assets/fonts/Whitney.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'FontA';
+  src: url('./assets/fonts/a.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Parnian';
+  src: url('./assets/fonts/alfont_com_Parnian-1.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Goori';
+  src: url('./assets/fonts/goori.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Sull';
+  src: url('./assets/fonts/sull.ttf') format('truetype');
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -106,17 +136,17 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Tajawal', 'Cairo', sans-serif;
+    font-family: 'Almarai', sans-serif;
   }
 }
 
 @layer utilities {
   .font-arabic {
-    font-family: 'Tajawal', 'Cairo', sans-serif;
+    font-family: 'Almarai', sans-serif;
     font-weight: 500;
   }
   .font-display {
-    font-family: 'Playfair Display', 'Cairo', serif;
+    font-family: 'Playfair Display', sans-serif;
   }
   .text-gold {
     color: hsl(var(--gold));
