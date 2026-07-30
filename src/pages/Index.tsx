@@ -87,7 +87,7 @@ const Index = () => {
               {/* السطر الخامس مقسم: أم محمد السلماني (Almarai) + & (wa.ttf) + أم طلال السعيد (Almarai) */}
               <div className="flex items-center justify-center gap-1 text-lg sm:text-xl font-bold py-2" style={{ color: "#5F4F41" }}>
                 <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم محمد السلماني</span>
-                <span className="text-6xl" style={{ fontFamily: "'Sull', sans-serif" }}>&</span>
+                <span className="text-5xl" style={{ fontFamily: "'Sull', sans-serif" }}>&</span>
                 <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم طلال السعيد</span>
               </div>
 
@@ -102,7 +102,7 @@ const Index = () => {
               {/* السطر الاخير في المربع: محمد & عهود */}
               <div className="py-2 flex items-center justify-center gap-2">
                 <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
-                <span className="text-6xl" style={{ fontFamily: "'Sull', sans-serif", color: "#5F4F41" }}>&</span>
+                <span className="text-5xl" style={{ fontFamily: "'Sull', sans-serif", color: "#5F4F41" }}>&</span>
                 <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عتـاب</span>
               </div>
             </div>
