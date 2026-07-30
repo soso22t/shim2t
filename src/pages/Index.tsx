@@ -57,9 +57,9 @@ const Index = () => {
               className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
               style={{ background: "rgba(233, 221, 212, 0.85)", color: "#5F4F41" }}
             >
-                           {/* الرقم 2 بخط Monasabat وبحجم كبير جداً */}
+                                         {/* الرقم 2 بخط Monasabat وبحجم ضخم جداً */}
               <p
-                className="text-5xl sm:text-6xl md:text-7xl leading-none font-bold"
+                className="text-7xl sm:text-8xl md:text-9xl leading-none font-bold py-1"
                 style={{
                   fontFamily: "'Monasabat', sans-serif",
                   color: "#5F4F41"
