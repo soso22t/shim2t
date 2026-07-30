@@ -93,8 +93,8 @@ const Index = () => {
                 بدعوتكن لحضور حفل عقد قران نجليهما
               </p>
 
-              {/* السطر الاخير في المربع: محمد & عهود */}
-              <div className="mt-4 py-2 flex items-center justify-center gap-2">
+              {/* السطر الاخير في المربع: محمد & عهود (تمت زيادة المسافة العلوية هنا) */}
+              <div className="mt-6 py-2 flex items-center justify-center gap-2">
                 <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
                 <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
                 <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عتـاب</span>
