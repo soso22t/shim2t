@@ -89,7 +89,7 @@ const Index = () => {
               <div className="mt-2 py-2 px-6 rounded-2xl bg-white/40 border border-white/30 backdrop-blur-md flex items-center justify-center gap-2">
                 <span className="text-xl sm:text-2xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
                 <span className="text-lg" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
-                <span className="text-xl sm:text-2xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عهـود</span>
+                <span className="text-xl sm:text-2xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عهـــود</span>
               </div>
             </div>
 
@@ -172,7 +172,7 @@ const Index = () => {
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
                     <span className="text-xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
-                    <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عهـود</span>
+                    <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عهـــود</span>
                   </div>
                 </Reveal>
 
