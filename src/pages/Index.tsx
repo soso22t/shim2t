@@ -74,7 +74,7 @@ const Index = () => {
               </p>
 
               {/* السطر الخامس مقسم: أم محمد السلماني (Almarai) + & (wa.ttf) + أم طلال السعيد (Almarai) */}
-              <div className="flex items-center justify-center gap-1.5 text-xl sm:text-2xl font-bold py-1" style={{ color: "#5F4F41" }}>
+              <div className="flex items-center justify-center gap-1 text-xl sm:text-2xl font-bold py-1" style={{ color: "#5F4F41" }}>
                 <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم محمد السلماني</span>
                 <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif" }}>&</span>
                 <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم طلال السعيد</span>
