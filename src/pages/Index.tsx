@@ -57,16 +57,18 @@ const Index = () => {
               className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
               style={{ background: "rgba(233, 221, 212, 0.85)", color: "#5F4F41" }}
             >
-                                         {/* الرقم 2 بخط Monasabat وبحجم ضخم جداً */}
-              <p
-                className="text-7xl sm:text-8xl md:text-9xl leading-none font-bold py-1"
-                style={{
-                  fontFamily: "'Monasabat', sans-serif",
-                  color: "#5F4F41"
-                }}
-              >
-                2
-              </p>
+                                         {              {/* الرقم 2 بخط Monasabat بحجم ضخم جداً وبدون أي فراغات */}
+              <div className="flex items-center justify-center py-0 my-0">
+                <span
+                  className="inline-block text-8xl sm:text-9xl leading-none scale-125 font-bold"
+                  style={{
+                    fontFamily: "'Monasabat', sans-serif",
+                    color: "#5F4F41"
+                  }}
+                >
+                  2
+                </span>
+              </div>
 
               {/* الثلاث سطور تحته */}
               <p className="font-arabic text-sm sm:text-base" style={{ color: "#5F4F41" }}>
