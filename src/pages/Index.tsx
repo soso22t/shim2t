@@ -58,9 +58,9 @@ const Index = () => {
               style={{ background: "rgba(233, 221, 212, 0.85)", color: "#5F4F41" }}
             >
               {/* الرقم 2 مكبر جداً وبدون أي فراغات محيطة */}
-              <div className="flex items-center justify-center -my-6">
+              <div className="flex items-center justify-center -my-8">
                 <span
-                  className="inline-block text-9xl font-bold leading-none scale-150 origin-center"
+                  className="inline-block text-9xl font-bold leading-none scale-[2] origin-center"
                   style={{
                     fontFamily: "'Monasabat', sans-serif",
                     color: "#5F4F41"
