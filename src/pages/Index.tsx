@@ -44,7 +44,7 @@ const Index = () => {
           />
         </section>
 
-        {/* المربع الأول بالنصوص الأصلية وتطبيق الخطوط المطلوبة فقط */}
+        {/* المربع الأول بالنصوص الأصلية */}
         <section className="relative w-full flex flex-col items-center justify-start pb-12">
           <img
             src={sosImg}
@@ -57,9 +57,9 @@ const Index = () => {
               className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/40 shadow-2xl space-y-2.5"
               style={{ background: "rgba(255, 255, 255, 0.75)", color: "#5F4F41" }}
             >
-              {/* السطر الأول: بارك الله لهما وبارك عليهما وجمع بينهما في خير (Monasabat) - بحجم واضح وطبيعي */}
-              <p className="text-lg sm:text-xl font-bold leading-relaxed" style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}>
-                بارك الله لهما وبارك عليهما وجمع بينهما في خير
+              {/* الرقم 2 بحجمه الأصلي تماماً */}
+              <p className="font-arabic text-base sm:text-lg font-bold leading-snug" style={{ color: "#5F4F41" }}>
+                2
               </p>
 
               {/* الثلاث سطور تحته */}
@@ -85,7 +85,7 @@ const Index = () => {
                 بدعوتكن لحضور حفل عقد قران نجليهما
               </p>
 
-              {/* السطر الاخير في المربع: محمد & عهود (بدون طبقة خلفية إضافية) */}
+              {/* السطر الاخير في المربع: محمد & عهود */}
               <div className="mt-2 py-2 flex items-center justify-center gap-2">
                 <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
                 <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
@@ -120,8 +120,8 @@ const Index = () => {
 
               <button
                 onClick={() => alert("تم حفظ الموعد في التقويم!")}
-                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/50 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
-                style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
+                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/40 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
+                style={{ background: "rgba(255, 255, 255, 0.75)", color: "#5F4F41" }}
               >
                 <Calendar className="w-4 h-4" style={{ color: "#5F4F41" }} />
                 <span className="font-arabic text-xs sm:text-sm font-bold">احفظ الموعد</span>
