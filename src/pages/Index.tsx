@@ -54,8 +54,8 @@ const Index = () => {
 
           <div className="relative z-10 w-full flex flex-col items-center pt-20 sm:pt-32 px-4 space-y-6">
             <div
-              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/40 shadow-2xl space-y-2.5"
-              style={{ background: "rgba(255, 255, 255, 0.75)", color: "#5F4F41" }}
+              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
+              style={{ background: "rgba(233, 221, 212, 0.85)", color: "#5F4F41" }}
             >
               {/* الرقم 2 بحجمه الأصلي تماماً */}
               <p className="font-arabic text-base sm:text-lg font-bold leading-snug" style={{ color: "#5F4F41" }}>
@@ -103,8 +103,8 @@ const Index = () => {
             {/* التقويم */}
             <div className="flex flex-col items-center space-y-3">
               <div
-                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-2xl text-center"
-                style={{ background: "rgba(255, 255, 255, 0.75)", color: "#5F4F41" }}
+                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/50 shadow-2xl text-center"
+                style={{ background: "rgba(233, 221, 212, 0.85)", color: "#5F4F41" }}
               >
                 <div className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold" style={{ background: "#5F4F41", color: "#FFFFFF" }}>
                   <span>الثلاثاء</span>
@@ -120,8 +120,8 @@ const Index = () => {
 
               <button
                 onClick={() => alert("تم حفظ الموعد في التقويم!")}
-                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/40 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
-                style={{ background: "rgba(255, 255, 255, 0.75)", color: "#5F4F41" }}
+                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/50 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
+                style={{ background: "rgba(233, 221, 212, 0.85)", color: "#5F4F41" }}
               >
                 <Calendar className="w-4 h-4" style={{ color: "#5F4F41" }} />
                 <span className="font-arabic text-xs sm:text-sm font-bold">احفظ الموعد</span>
