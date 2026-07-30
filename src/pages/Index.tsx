@@ -58,7 +58,7 @@ const Index = () => {
               style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
             >
               {/* السطر الأول: بارك الله لهما وبارك عليهما وجمع بينهما في خير (Monasabat) */}
-              <p className="text- 7xl sm:text-8xl font-bold leading-relaxed" style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}>
+              <p className="text-[14rem] sm:text-[15rem] font-bold leading-[0.4]" style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}>
 2
               </p>
 
