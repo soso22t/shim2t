@@ -57,8 +57,8 @@ const Index = () => {
               className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
               style={{ background: "rgba(233, 221, 212, 0.85)", color: "#5F4F41" }}
             >
-              {/* تكبير الرقم 2 أكثر وأكثر وإلغاء الفراغات المحيطة بالكامل */}
-              <div className="flex items-center justify-center -my-8">
+              {/* الرقم 2 مع مسافة مناسبة ومتوازنة من الأعلى والأسفل */}
+              <div className="flex items-center justify-center my-4">
                 <span
                   className="inline-block text-6xl sm:text-7xl font-normal leading-none select-none"
                   style={{
