@@ -54,15 +54,15 @@ const Index = () => {
 
           <div className="relative z-10 w-full flex flex-col items-center pt-20 sm:pt-32 px-4 space-y-6">
             <div
-              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
-              style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
+              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/40 shadow-2xl space-y-2.5"
+              style={{ background: "rgba(255, 255, 255, 0.75)", color: "#5F4F41" }}
             >
-              {/* السطر الأول: بارك الله لهما وبارك عليهما وجمع بينهما في خير (Monasabat) */}
-              <p className="text-[14rem] sm:text-[15rem] font-bold leading-[0.4]" style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}>
-2
+              {/* السطر الأول: بارك الله لهما وبارك عليهما وجمع بينهما في خير (Monasabat) - بحجم واضح وطبيعي */}
+              <p className="text-lg sm:text-xl font-bold leading-relaxed" style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}>
+                بارك الله لهما وبارك عليهما وجمع بينهما في خير
               </p>
 
-              {/* الثلاث سطور تحته (نفسها تماماً بدون أي تغيير) */}
+              {/* الثلاث سطور تحته */}
               <p className="font-arabic text-sm sm:text-base" style={{ color: "#5F4F41" }}>
                 بمشاعر مليئة بالفرح والسعادة
               </p>
@@ -80,16 +80,16 @@ const Index = () => {
                 <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم طلال السعيد</span>
               </div>
 
-              {/* السطر السادس (نفسه تماماً بدون أي تغيير) */}
+              {/* السطر السادس */}
               <p className="font-arabic text-sm sm:text-base" style={{ color: "#5F4F41" }}>
                 بدعوتكن لحضور حفل عقد قران نجليهما
               </p>
 
-              {/* السطر الاخير في المربع: محمد & عهود (IranNastaliq مع علامة & بخط wa.ttf) */}
-              <div className="mt-2 py-2 px-6 rounded-2xl bg-white/40 border border-white/30 backdrop-blur-md flex items-center justify-center gap-2">
-                <span className="text-5xl sm:text-6xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
+              {/* السطر الاخير في المربع: محمد & عهود (بدون طبقة خلفية إضافية) */}
+              <div className="mt-2 py-2 flex items-center justify-center gap-2">
+                <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
                 <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
-                <span className="text-5xl sm:text-6xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عتـاب</span>
+                <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عتـاب</span>
               </div>
             </div>
 
@@ -168,7 +168,7 @@ const Index = () => {
 
               <div id="rsvp" className="w-full text-center space-y-1.5">
                 <Reveal>
-                  {/* محمد & عهود في الذيل (IranNastaliq مع علامة & بخط wa.ttf) */}
+                  {/* محمد & عهود في الذيل */}
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
                     <span className="text-xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
@@ -183,7 +183,6 @@ const Index = () => {
                   >
                     <Heart className="w-4 h-4 fill-current text-[#5F4F41]" />
                     <span className="font-arabic text-xs sm:text-sm font-semibold">
-                        {" "}
                       <a
                         href="https://www.tiktok.com/@shim2t?_r=1&_t=ZS-95w0d8f7vnk"
                         target="_blank"
@@ -191,7 +190,7 @@ const Index = () => {
                         className="underline underline-offset-4 font-bold hover:opacity-80 transition-opacity"
                         style={{ color: "#5F4F41" }}
                       >
-                     غيمة
+                        غيمة
                       </a>
                     </span>
                   </div>
