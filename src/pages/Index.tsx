@@ -77,24 +77,24 @@ const Index = () => {
               <p className="font-arabic text-sm sm:text-base" style={{ color: "#5F4F41" }}>
                 ولأن الفرحة لا تكتمل الا برويتكم
               </p>
-              <p className="font-arabic text-base sm:text-lg opacity-90" style={{ color: "#5F4F41" }}>
+              <p className="font-arabic text-base sm:text-lg opacity-90 pb-2" style={{ color: "#5F4F41" }}>
                 تتشرف
               </p>
 
               {/* السطر الخامس مقسم: أم محمد السلماني (Almarai) + & (wa.ttf) + أم طلال السعيد (Almarai) */}
-              <div className="flex items-center justify-center gap-1 text-lg sm:text-xl font-bold py-1" style={{ color: "#5F4F41" }}>
+              <div className="flex items-center justify-center gap-1 text-lg sm:text-xl font-bold py-2" style={{ color: "#5F4F41" }}>
                 <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم محمد السلماني</span>
                 <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif" }}>&</span>
                 <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم طلال السعيد</span>
               </div>
 
               {/* السطر السادس */}
-              <p className="font-arabic text-sm sm:text-base" style={{ color: "#5F4F41" }}>
+              <p className="font-arabic text-sm sm:text-base pt-2" style={{ color: "#5F4F41" }}>
                 بدعوتكن لحضور حفل عقد قران نجليهما
               </p>
 
               {/* السطر الاخير في المربع: محمد & عهود */}
-              <div className="mt-2 py-2 flex items-center justify-center gap-2">
+              <div className="mt-4 py-2 flex items-center justify-center gap-2">
                 <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
                 <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
                 <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عتـاب</span>
