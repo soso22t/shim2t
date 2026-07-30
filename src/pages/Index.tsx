@@ -57,16 +57,17 @@ const Index = () => {
               className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
               style={{ background: "rgba(233, 221, 212, 0.85)", color: "#5F4F41" }}
             >
-              {/* الرقم 2 بحجمه الأصلي تماماً */}
-              <<p
-  className="text-base sm:text-lg leading-snug"
-  style={{
-    fontFamily: "'Monasabat'",
-    color: "#5F4F41"
-  }}
->
-  2
-</p>
+              {/* الرقم 2 بخط Monasabat */}
+              <p
+                className="text-base sm:text-lg leading-snug font-bold"
+                style={{
+                  fontFamily: "'Monasabat', sans-serif",
+                  color: "#5F4F41"
+                }}
+              >
+                2
+              </p>
+
               {/* الثلاث سطور تحته */}
               <p className="font-arabic text-sm sm:text-base" style={{ color: "#5F4F41" }}>
                 بمشاعر مليئة بالفرح والسعادة
