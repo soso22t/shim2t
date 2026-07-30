@@ -167,9 +167,9 @@ const Index = () => {
               {/* وننتظركم بكل حب (Monasabat) */}
               <p
                 className="text-lg sm:text-xl font-bold text-center mb-3"
-                style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}
+                style={{ fontFamily: "'Sull', sans-serif", color: "#5F4F41" }}
               >
-                &#123; وننتظركم بكل حُب &#125;
+ننتظركم بكل حُب
               </p>
 
               <div className="w-[92%] max-w-md rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl mb-6">
@@ -185,7 +185,7 @@ const Index = () => {
                   {/* محمد & عهود في الذيل */}
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
-                    <span className="text-xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
+                    <span className="text-xl" style={{ fontFamily: "'Sull', sans-serif", color: "#5F4F41" }}>&</span>
                     <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عتـاب</span>
                   </div>
                 </Reveal>
