@@ -74,7 +74,7 @@ const Index = () => {
               </p>
 
               {/* السطر الخامس مقسم: أم محمد السلماني (Almarai) + & (wa.ttf) + أم طلال السعيد (Almarai) */}
-              <div className="flex items-center justify-center gap-1 text-xl sm:text-2xl font-bold py-1" style={{ color: "#5F4F41" }}>
+              <div className="flex items-center justify-center gap-1 text-lg sm:text-xl font-bold py-1" style={{ color: "#5F4F41" }}>
                 <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم محمد السلماني</span>
                 <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif" }}>&</span>
                 <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم طلال السعيد</span>
@@ -87,9 +87,9 @@ const Index = () => {
 
               {/* السطر الاخير في المربع: محمد & عهود (IranNastaliq مع علامة & بخط wa.ttf) */}
               <div className="mt-2 py-2 px-6 rounded-2xl bg-white/40 border border-white/30 backdrop-blur-md flex items-center justify-center gap-2">
-                <span className="text-7xl sm:text-8xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
+                <span className="text-5xl sm:text-6xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
                 <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
-                <span className="text-7xl sm:text-8xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عتـاب</span>
+                <span className="text-5xl sm:text-6xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عتـاب</span>
               </div>
             </div>
 
