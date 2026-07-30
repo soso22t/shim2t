@@ -58,38 +58,38 @@ const Index = () => {
               style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
             >
               {/* السطر الأول: بارك الله لهما وبارك عليهما وجمع بينهما في خير (Monasabat) */}
-              <p className="text-lg sm:text-xl font-bold leading-relaxed" style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}>
+              <p className="text- 6xl sm:text-7xl font-bold leading-relaxed" style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}>
 2
               </p>
 
               {/* الثلاث سطور تحته (نفسها تماماً بدون أي تغيير) */}
-              <p className="font-arabic text-xs sm:text-sm" style={{ color: "#5F4F41" }}>
+              <p className="font-arabic text-sm sm:text-base" style={{ color: "#5F4F41" }}>
                 بمشاعر مليئة بالفرح والسعادة
               </p>
-              <p className="font-arabic text-xs sm:text-sm" style={{ color: "#5F4F41" }}>
+              <p className="font-arabic text-sm sm:text-base" style={{ color: "#5F4F41" }}>
                 ولأن الفرحة لا تكتمل الا برويتكم
               </p>
-              <p className="font-arabic text-xs sm:text-sm opacity-90" style={{ color: "#5F4F41" }}>
+              <p className="font-arabic text-base sm:text-lg opacity-90" style={{ color: "#5F4F41" }}>
                 تتشرف
               </p>
 
               {/* السطر الخامس مقسم: أم محمد السلماني (Almarai) + & (wa.ttf) + أم طلال السعيد (Almarai) */}
-              <div className="flex items-center justify-center gap-1.5 text-base sm:text-lg font-bold py-0.5" style={{ color: "#5F4F41" }}>
+              <div className="flex items-center justify-center gap-1.5 text-xl sm:text-2xl font-bold py-1" style={{ color: "#5F4F41" }}>
                 <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم محمد السلماني</span>
-                <span className="text-lg" style={{ fontFamily: "'WaFont', sans-serif" }}>&</span>
+                <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif" }}>&</span>
                 <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم طلال السعيد</span>
               </div>
 
               {/* السطر السادس (نفسه تماماً بدون أي تغيير) */}
-              <p className="font-arabic text-xs sm:text-sm" style={{ color: "#5F4F41" }}>
+              <p className="font-arabic text-sm sm:text-base" style={{ color: "#5F4F41" }}>
                 بدعوتكن لحضور حفل عقد قران نجليهما
               </p>
 
               {/* السطر الاخير في المربع: محمد & عهود (IranNastaliq مع علامة & بخط wa.ttf) */}
               <div className="mt-2 py-2 px-6 rounded-2xl bg-white/40 border border-white/30 backdrop-blur-md flex items-center justify-center gap-2">
-                <span className="text-xl sm:text-2xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
-                <span className="text-lg" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
-                <span className="text-xl sm:text-2xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عتـاب</span>
+                <span className="text-3xl sm:text-4xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
+                <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
+                <span className="text-3xl sm:text-4xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عتـاب</span>
               </div>
             </div>
 
