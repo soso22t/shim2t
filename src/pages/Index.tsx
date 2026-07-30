@@ -58,7 +58,7 @@ const Index = () => {
               style={{ background: "rgba(255, 255, 255, 0.65)", color: "#5F4F41" }}
             >
               {/* السطر الأول: بارك الله لهما وبارك عليهما وجمع بينهما في خير (Monasabat) */}
-              <p className="text- 6xl sm:text-7xl font-bold leading-relaxed" style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}>
+              <p className="text- 7xl sm:text-8xl font-bold leading-relaxed" style={{ fontFamily: "'Monasabat', sans-serif", color: "#5F4F41" }}>
 2
               </p>
 
@@ -87,9 +87,9 @@ const Index = () => {
 
               {/* السطر الاخير في المربع: محمد & عهود (IranNastaliq مع علامة & بخط wa.ttf) */}
               <div className="mt-2 py-2 px-6 rounded-2xl bg-white/40 border border-white/30 backdrop-blur-md flex items-center justify-center gap-2">
-                <span className="text-3xl sm:text-4xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
+                <span className="text-7xl sm:text-8xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
                 <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
-                <span className="text-3xl sm:text-4xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عتـاب</span>
+                <span className="text-7xl sm:text-8xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عتـاب</span>
               </div>
             </div>
 
