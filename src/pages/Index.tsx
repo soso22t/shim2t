@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Heart, Calendar } from "lucide-react";
 import invitationImg from "@/assets/photo-output.png";
 import sosImg from "@/assets/sos.png";
@@ -16,6 +16,38 @@ import NavigationDock from "@/components/NavigationDock";
 
 const Index = () => {
   const [opened, setOpened] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // التمرير التلقائي: سرعة ثابتة ومستقرة تماماً من البداية للنهاية بدون أي تسارع أو تغيير
+  useEffect(() => {
+    if (!opened) return;
+    
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    let animationId: number;
+    const targetScroll = container.scrollHeight - container.clientHeight;
+    
+    // سرعة ثابتة وهادئة جداً
+    const scrollSpeed = 0.8; 
+
+    const startDelay = setTimeout(() => {
+      const step = () => {
+        if (!container) return;
+        
+        if (container.scrollTop < targetScroll) {
+          container.scrollTop += scrollSpeed;
+          animationId = requestAnimationFrame(step);
+        }
+      };
+      animationId = requestAnimationFrame(step);
+    }, 600);
+
+    return () => {
+      clearTimeout(startDelay);
+      if (animationId) cancelAnimationFrame(animationId);
+    };
+  }, [opened]);
 
   return (
     <div
@@ -33,7 +65,10 @@ const Index = () => {
       <Envelope onOpen={() => setOpened(true)} />
 
       {/* 2. محتوى الموقع */}
-      <main className="relative z-10 w-full pb-24">
+      <main 
+        ref={scrollContainerRef}
+        className={`relative z-10 w-full pb-24 ${!opened ? "h-screen overflow-hidden" : "h-screen overflow-y-auto"}`}
+      >
         
         {/* الصورة الأولى */}
         <section className="w-full">
@@ -54,13 +89,13 @@ const Index = () => {
 
           <div className="relative z-10 w-full flex flex-col items-center pt-20 sm:pt-32 px-4 space-y-6">
             <div
-              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
+              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5 animate-pulse"
               style={{ background: "rgba(233, 221, 212, 0.85)", color: "#5F4F41" }}
             >
               {/* الرقم 2 */}
               <div className="flex items-center justify-center my-4">
                 <span
-                  className="inline-block text-6xl sm:text-7xl font-normal leading-none select-none"
+                  className="inline-block text-6xl sm:text-7xl font-normal leading-none select-none animate-bounce"
                   style={{
                     fontFamily: "'Monasabat', sans-serif",
                     color: "#5F4F41",
@@ -117,7 +152,7 @@ const Index = () => {
             {/* التقويم */}
             <div className="flex flex-col items-center space-y-3">
               <div
-                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/50 shadow-2xl text-center"
+                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/50 shadow-2xl text-center animate-pulse"
                 style={{ background: "rgba(233, 221, 212, 0.85)", color: "#5F4F41" }}
               >
                 <div className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold" style={{ background: "#5F4F41", color: "#FFFFFF" }}>
