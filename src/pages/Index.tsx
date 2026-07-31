@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Heart, Calendar } from "lucide-react";
 import invitationImg from "@/assets/photo-output.png";
 import sosImg from "@/assets/sos.png";
@@ -16,32 +16,37 @@ import NavigationDock from "@/components/NavigationDock";
 
 const Index = () => {
   const [opened, setOpened] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!opened) return;
-    const container = scrollRef.current;
-    if (!container) return;
+    if (opened) {
+      const targetElement = document.getElementById("location");
+      if (targetElement) {
+        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        let startTime = null;
+        const duration = 2500; // سرعة هادئة وبطيئة وثابتة
 
-    let animationId: number;
-    const targetScroll = container.scrollHeight - container.clientHeight;
-    const speed = 0.8;
+        const animation = (currentTime) => {
+          if (startTime === null) startTime = currentTime;
+          const timeElapsed = currentTime - startTime;
+          const run = easeInOutQuad(timeElapsed, startPosition, distance, duration);
+          window.scrollTo(0, run);
+          if (timeElapsed < duration) {
+            requestAnimationFrame(animation);
+          }
+        };
 
-    const timer = setTimeout(() => {
-      const scrollStep = () => {
-        if (!container) return;
-        if (container.scrollTop < targetScroll) {
-          container.scrollTop += speed;
-          animationId = requestAnimationFrame(scrollStep);
-        }
-      };
-      animationId = requestAnimationFrame(scrollStep);
-    }, 600);
+        const easeInOutQuad = (t, b, c, d) => {
+          t /= d / 2;
+          if (t < 1) return (c / 2) * t * t + b;
+          t--;
+          return (-c / 2) * (t * (t - 2) - 1) + b;
+        };
 
-    return () => {
-      clearTimeout(timer);
-      if (animationId) cancelAnimationFrame(animationId);
-    };
+        requestAnimationFrame(animation);
+      }
+    }
   }, [opened]);
 
   return (
@@ -60,10 +65,7 @@ const Index = () => {
       <Envelope onOpen={() => setOpened(true)} />
 
       {/* 2. محتوى الموقع */}
-      <main 
-        ref={scrollRef}
-        className={`relative z-10 w-full pb-24 ${!opened ? "h-screen overflow-hidden" : "h-screen overflow-y-auto"}`}
-      >
+      <main className="relative z-10 w-full pb-24">
         
         {/* الصورة الأولى */}
         <section className="w-full">
