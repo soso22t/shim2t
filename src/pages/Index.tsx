@@ -16,17 +16,39 @@ import NavigationDock from "@/components/NavigationDock";
 
 const Index = () => {
   const [opened, setOpened] = useState(false);
-  const mainRef = useRef<HTMLElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const handleOpenEnvelope = () => {
     setOpened(true);
-    // التمرير التلقائي الهادئ والمناسب لأسفل بمجرد فتح الظرف
+    
+    // التمرير التلقائي الهادئ والتدريجي لأطول مسافة ممكنة في الموقع بشكل سينمائي سلس
     setTimeout(() => {
-      window.scrollTo({
-        top: window.innerHeight * 0.9,
-        behavior: "smooth"
-      });
-    }, 400);
+      const container = scrollContainerRef.current;
+      if (!container) return;
+
+      const targetScroll = container.scrollHeight - container.clientHeight;
+      const duration = 7000; // مدة الحركة (7 ثوانٍ) ليكون التمرير هادئاً وغير مزعج
+      const startTime = performance.now();
+      const startScroll = container.scrollTop;
+
+      const animateScroll = (currentTime: number) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // دالة تسهيل الحركة (EaseInOut) لضمان بداية ونهاية ناعمتين بدون تقطيع
+        const ease = progress < 0.5 
+          ? 2 * progress * progress 
+          : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+        container.scrollTop = startScroll + (targetScroll - startScroll) * ease;
+
+        if (progress < 1) {
+          requestAnimationFrame(animateScroll);
+        }
+      };
+
+      requestAnimationFrame(animateScroll);
+    }, 600);
   };
 
   return (
@@ -45,7 +67,10 @@ const Index = () => {
       <Envelope onOpen={handleOpenEnvelope} />
 
       {/* 2. محتوى الموقع */}
-      <main ref={mainRef} className="relative z-10 w-full pb-24">
+      <main 
+        ref={scrollContainerRef}
+        className={`relative z-10 w-full pb-24 ${!opened ? "h-screen overflow-hidden" : "h-screen overflow-y-auto"}`}
+      >
         
         {/* الصورة الأولى */}
         <section className="w-full">
