@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Heart, Calendar } from "lucide-react";
 import invitationImg from "@/assets/photo-output.png";
 import sosImg from "@/assets/sos.png";
@@ -16,6 +16,33 @@ import NavigationDock from "@/components/NavigationDock";
 
 const Index = () => {
   const [opened, setOpened] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!opened) return;
+    const container = scrollRef.current;
+    if (!container) return;
+
+    let animationId: number;
+    const targetScroll = container.scrollHeight - container.clientHeight;
+    const speed = 0.8;
+
+    const timer = setTimeout(() => {
+      const scrollStep = () => {
+        if (!container) return;
+        if (container.scrollTop < targetScroll) {
+          container.scrollTop += speed;
+          animationId = requestAnimationFrame(scrollStep);
+        }
+      };
+      animationId = requestAnimationFrame(scrollStep);
+    }, 600);
+
+    return () => {
+      clearTimeout(timer);
+      if (animationId) cancelAnimationFrame(animationId);
+    };
+  }, [opened]);
 
   return (
     <div
@@ -33,7 +60,10 @@ const Index = () => {
       <Envelope onOpen={() => setOpened(true)} />
 
       {/* 2. محتوى الموقع */}
-      <main className="relative z-10 w-full pb-24">
+      <main 
+        ref={scrollRef}
+        className={`relative z-10 w-full pb-24 ${!opened ? "h-screen overflow-hidden" : "h-screen overflow-y-auto"}`}
+      >
         
         {/* الصورة الأولى */}
         <section className="w-full">
