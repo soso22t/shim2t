@@ -21,13 +21,13 @@ const Index = () => {
   const handleOpenEnvelope = () => {
     setOpened(true);
     
-    // التمرير التلقائي الهادئ والتدريجي لأطول مسافة ممكنة في الموقع بشكل سينمائي سلس
+    // التمرير التلقائي البطيء جداً والهادئ (15 ثانية) ليمر على كامل الموقع بسلاسة تامة
     setTimeout(() => {
       const container = scrollContainerRef.current;
       if (!container) return;
 
       const targetScroll = container.scrollHeight - container.clientHeight;
-      const duration = 7000; // مدة الحركة (7 ثوانٍ) ليكون التمرير هادئاً وغير مزعج
+      const duration = 15000; // مدة الحركة (15 ثانية) ليكون التمرير بطيئاً ومريحاً للعين
       const startTime = performance.now();
       const startScroll = container.scrollTop;
 
