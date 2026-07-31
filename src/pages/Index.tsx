@@ -89,13 +89,13 @@ const Index = () => {
 
           <div className="relative z-10 w-full flex flex-col items-center pt-20 sm:pt-32 px-4 space-y-6">
             <div
-              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5 animate-pulse"
+              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
               style={{ background: "rgba(233, 221, 212, 0.85)", color: "#5F4F41" }}
             >
               {/* الرقم 2 */}
               <div className="flex items-center justify-center my-4">
                 <span
-                  className="inline-block text-6xl sm:text-7xl font-normal leading-none select-none animate-bounce"
+                  className="inline-block text-6xl sm:text-7xl font-normal leading-none select-none"
                   style={{
                     fontFamily: "'Monasabat', sans-serif",
                     color: "#5F4F41",
@@ -152,7 +152,7 @@ const Index = () => {
             {/* التقويم */}
             <div className="flex flex-col items-center space-y-3">
               <div
-                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/50 shadow-2xl text-center animate-pulse"
+                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/50 shadow-2xl text-center"
                 style={{ background: "rgba(233, 221, 212, 0.85)", color: "#5F4F41" }}
               >
                 <div className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold" style={{ background: "#5F4F41", color: "#FFFFFF" }}>
