@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Heart, Calendar } from "lucide-react";
 import invitationImg from "@/assets/photo-output.png";
 import sosImg from "@/assets/sos.png";
@@ -16,6 +16,18 @@ import NavigationDock from "@/components/NavigationDock";
 
 const Index = () => {
   const [opened, setOpened] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
+
+  const handleOpenEnvelope = () => {
+    setOpened(true);
+    // التمرير التلقائي الهادئ والمناسب لأسفل بمجرد فتح الظرف
+    setTimeout(() => {
+      window.scrollTo({
+        top: window.innerHeight * 0.9,
+        behavior: "smooth"
+      });
+    }, 400);
+  };
 
   return (
     <div
@@ -30,10 +42,10 @@ const Index = () => {
       <NavigationDock active={opened} />
 
       {/* 1. الظرف */}
-      <Envelope onOpen={() => setOpened(true)} />
+      <Envelope onOpen={handleOpenEnvelope} />
 
       {/* 2. محتوى الموقع */}
-      <main className="relative z-10 w-full pb-24">
+      <main ref={mainRef} className="relative z-10 w-full pb-24">
         
         {/* الصورة الأولى */}
         <section className="w-full">
@@ -87,7 +99,7 @@ const Index = () => {
               {/* السطر الخامس مقسم: أم محمد السلماني (Almarai) + & (wa.ttf) + أم طلال السعيد (Almarai) */}
               <div className="flex items-center justify-center gap-1 text-lg sm:text-xl font-bold py-2" style={{ color: "#5F4F41" }}>
                 <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم محمد السلماني</span>
-                <span className="text-2xl" style={{ fontFamily: "'‏Sull', sans-serif" }}>&</span>
+                <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif" }}>&</span>
                 <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم طلال السعيد</span>
               </div>
 
@@ -102,7 +114,7 @@ const Index = () => {
               {/* السطر الاخير في المربع: محمد & عهود */}
               <div className="py-2 flex items-center justify-center gap-2">
                 <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>محمـد</span>
-                <span className="text-2xl" style={{ fontFamily: "'‏Sull', sans-serif", color: "#5F4F41" }}>&</span>
+                <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#5F4F41" }}>&</span>
                 <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#5F4F41" }}>عتـاب</span>
               </div>
             </div>
@@ -166,7 +178,7 @@ const Index = () => {
             <div className="absolute inset-0 flex flex-col items-center justify-center px-4 py-6">
               {/* السطر المكبر في الفوتر */}
               <p
-                className="text-7xl sm:text-8xl font-bold text-center mb-3"
+                className="text-2xl sm:text-3xl font-bold text-center mb-3"
                 style={{ fontFamily: "'Sull', sans-serif", color: "#5F4F41" }}
               >
                 ننتظركم بكل حُب
