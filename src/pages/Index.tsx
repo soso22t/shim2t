@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { Heart, Calendar } from "lucide-react";
 import invitationImg from "@/assets/photo-output.png";
 import sosImg from "@/assets/sos.png";
@@ -16,38 +16,6 @@ import NavigationDock from "@/components/NavigationDock";
 
 const Index = () => {
   const [opened, setOpened] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  // التمرير التلقائي الثابت والبطيء من البداية للنهاية دون أي تسارع أو تغير في السرعة
-  useEffect(() => {
-    if (!opened) return;
-    
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    let animationId: number;
-    const targetScroll = container.scrollHeight - container.clientHeight;
-    
-    // سرعة ثابتة ومستقرة تماماً بكسل لكل إطار
-    const scrollSpeed = 0.8; 
-
-    const startDelay = setTimeout(() => {
-      const step = () => {
-        if (!container) return;
-        
-        if (container.scrollTop < targetScroll) {
-          container.scrollTop += scrollSpeed;
-          animationId = requestAnimationFrame(step);
-        }
-      };
-      animationId = requestAnimationFrame(step);
-    }, 600);
-
-    return () => {
-      clearTimeout(startDelay);
-      if (animationId) cancelAnimationFrame(animationId);
-    };
-  }, [opened]);
 
   return (
     <div
@@ -65,10 +33,7 @@ const Index = () => {
       <Envelope onOpen={() => setOpened(true)} />
 
       {/* 2. محتوى الموقع */}
-      <main 
-        ref={scrollContainerRef}
-        className={`relative z-10 w-full pb-24 ${!opened ? "h-screen overflow-hidden" : "h-screen overflow-y-auto"}`}
-      >
+      <main className="relative z-10 w-full pb-24">
         
         {/* الصورة الأولى */}
         <section className="w-full">
