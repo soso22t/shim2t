@@ -26,16 +26,19 @@ const distance = targetPosition - startPosition;
         let startTime: number | null = null;
 const duration = 18000; // 18 ثانية
 
-        const animation = (currentTime) => {
-          if (startTime === null) startTime = currentTime;
-          const timeElapsed = currentTime - startTime;
-          const progress = Math.min(timeElapsed / duration, 1);
-const run = startPosition + distance * progress;
-          window.scrollTo(0, run);
-          if (timeElapsed < duration) {
-            requestAnimationFrame(animation);
-          }
-        };
+        const animation = (currentTime: number) => {
+  if (startTime === null) startTime = currentTime;
+
+  const timeElapsed = currentTime - startTime;
+  const progress = Math.min(timeElapsed / duration, 1);
+  const run = startPosition + distance * progress;
+
+  window.scrollTo(0, run);
+
+  if (timeElapsed < duration) {
+    requestAnimationFrame(animation);
+  }
+};
 
         
 
