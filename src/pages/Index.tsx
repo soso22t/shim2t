@@ -33,9 +33,7 @@ const Index = () => {
         const progress = Math.min(timeElapsed / duration, 1);
 
 // حركة ناعمة جدًا
-const ease = 1 - Math.pow(1 - progress, 4);
-
-const run = startPosition + distance * ease;
+const run = startPosition + distance * progress;
 
         window.scrollTo(0, run);
 
@@ -46,7 +44,7 @@ const run = startPosition + distance * ease;
 
 setTimeout(() => {
   requestAnimationFrame(animation);
-}, 3000);
+}, 2000);
     }
   }, [opened]);
 
