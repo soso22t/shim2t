@@ -40,13 +40,13 @@ const run = startPosition + distance * ease;
         window.scrollTo(0, run);
 
         if (timeElapsed < duration) {
-          setTimeout(() => {
   requestAnimationFrame(animation);
-}, 3000);
-        }
+}
       };
 
-      requestAnimationFrame(animation);
+setTimeout(() => {
+  requestAnimationFrame(animation);
+}, 3000);
     }
   }, [opened]);
 
