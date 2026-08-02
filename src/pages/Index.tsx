@@ -19,30 +19,25 @@ const Index = () => {
 
   useEffect(() => {
     if (opened) {
-      const targetElement = document.getElementById("location");
-      if (targetElement) {
-        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-        const startPosition = window.pageYOffset;
-        const distance = targetPosition - startPosition;
+      const startPosition = window.pageYOffset;
+const targetPosition =
+  document.documentElement.scrollHeight - window.innerHeight;
+const distance = targetPosition - startPosition;
         let startTime = null;
-        const duration = 2500; // سرعة هادئة وبطيئة وثابتة
+const duration = 18000; // 18 ثانية
 
         const animation = (currentTime) => {
           if (startTime === null) startTime = currentTime;
           const timeElapsed = currentTime - startTime;
-          const run = easeInOutQuad(timeElapsed, startPosition, distance, duration);
+          const progress = Math.min(timeElapsed / duration, 1);
+const run = startPosition + distance * progress;
           window.scrollTo(0, run);
           if (timeElapsed < duration) {
             requestAnimationFrame(animation);
           }
         };
 
-        const easeInOutQuad = (t, b, c, d) => {
-          t /= d / 2;
-          if (t < 1) return (c / 2) * t * t + b;
-          t--;
-          return (-c / 2) * (t * (t - 2) - 1) + b;
-        };
+        
 
         requestAnimationFrame(animation);
       }
@@ -198,7 +193,7 @@ const Index = () => {
             <div className="absolute inset-0 flex flex-col items-center justify-center px-4 py-6">
               {/* السطر المكبر في الفوتر */}
               <p
-                className="text-2xl sm:text-3xl font-bold text-center mb-3"
+                className="text-6xl sm:text-7xl font-bold text-center mb-3"
                 style={{ fontFamily: "'Sull', sans-serif", color: "#5F4F41" }}
               >
                 ننتظركم بكل حُب
