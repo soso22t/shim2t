@@ -20,30 +20,27 @@ const Index = () => {
   useEffect(() => {
     if (opened) {
       const startPosition = window.pageYOffset;
-const targetPosition =
-  document.documentElement.scrollHeight - window.innerHeight;
-const distance = targetPosition - startPosition;
-        let startTime: number | null = null;
-const duration = 18000; // 18 ثانية
+      const targetPosition =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const distance = targetPosition - startPosition;
+      let startTime: number | null = null;
+      const duration = 18000; // 18 ثانية
 
-        const animation = (currentTime: number) => {
-  if (startTime === null) startTime = currentTime;
+      const animation = (currentTime: number) => {
+        if (startTime === null) startTime = currentTime;
 
-  const timeElapsed = currentTime - startTime;
-  const progress = Math.min(timeElapsed / duration, 1);
-  const run = startPosition + distance * progress;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+        const run = startPosition + distance * progress;
 
-  window.scrollTo(0, run);
+        window.scrollTo(0, run);
 
-  if (timeElapsed < duration) {
-    requestAnimationFrame(animation);
-  }
-};
+        if (timeElapsed < duration) {
+          requestAnimationFrame(animation);
+        }
+      };
 
-        
-
-        requestAnimationFrame(animation);
-      }
+      requestAnimationFrame(animation);
     }
   }, [opened]);
 
