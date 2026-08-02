@@ -31,12 +31,18 @@ const Index = () => {
 
         const timeElapsed = currentTime - startTime;
         const progress = Math.min(timeElapsed / duration, 1);
-        const run = startPosition + distance * progress;
+
+// حركة ناعمة جدًا
+const ease = 1 - Math.pow(1 - progress, 4);
+
+const run = startPosition + distance * ease;
 
         window.scrollTo(0, run);
 
         if (timeElapsed < duration) {
-          requestAnimationFrame(animation);
+          setTimeout(() => {
+  requestAnimationFrame(animation);
+}, 3000);
         }
       };
 
