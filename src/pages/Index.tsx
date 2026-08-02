@@ -23,7 +23,7 @@ const Index = () => {
 const targetPosition =
   document.documentElement.scrollHeight - window.innerHeight;
 const distance = targetPosition - startPosition;
-        let startTime = null;
+        let startTime: number | null = null;
 const duration = 18000; // 18 ثانية
 
         const animation = (currentTime) => {
