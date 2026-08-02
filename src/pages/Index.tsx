@@ -23,28 +23,29 @@ const Index = () => {
       const targetPosition =
         document.documentElement.scrollHeight - window.innerHeight;
       const distance = targetPosition - startPosition;
-      let startTime: number | null = null;
-      const duration = 18000; // 18 ثانية
+     let startTime: number;
+const duration = 18000; // 18 ثانية
 
-      const animation = (currentTime: number) => {
-        if (startTime === null) startTime = currentTime;
+const animation = () => {
+  const elapsed = Date.now() - startTime;
+  const progress = Math.min(elapsed / duration, 1);
 
-        const timeElapsed = currentTime - startTime;
-        const progress = Math.min(timeElapsed / duration, 1);
+  const run = startPosition + distance * progress;
 
-// حركة ناعمة جدًا
-const run = startPosition + distance * progress;
+  window.scrollTo({
+    top: run,
+    behavior: "instant",
+  });
 
-        window.scrollTo(0, run);
-
-        if (timeElapsed < duration) {
-  requestAnimationFrame(animation);
-}
-      };
+  if (progress < 1) {
+    requestAnimationFrame(animation);
+  }
+};
 
 setTimeout(() => {
+  startTime = Date.now();
   requestAnimationFrame(animation);
-}, 2000);
+}, 1500);
     }
   }, [opened]);
 
