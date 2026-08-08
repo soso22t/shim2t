@@ -160,7 +160,7 @@ setTimeout(() => {
                 <div className="py-4 px-4 space-y-0.5">
                   <div className="font-display text-4xl font-extrabold tracking-tight" style={{ color: "#5F4F41" }}>25</div>
                   <div className="font-arabic text-sm font-bold" style={{ color: "#5F4F41" }}>الثلاثاء</div>
-                  <div className="font-display text-xs font-semibold opacity-80" style={{ color: "#5F4F41" }}>PM 7:00</div>
+                  <div className="font-display text-xs font-semibold opacity-80" style={{ color: "#5F4F41" }}>PM 8:00</div>
                 </div>
               </div>
 
