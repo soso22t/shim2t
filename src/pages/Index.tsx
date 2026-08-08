@@ -165,13 +165,17 @@ setTimeout(() => {
               </div>
 
               <button
-                onClick={() => alert("تم حفظ الموعد في التقويم!")}
-                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/50 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
-                style={{ background: "rgba(233, 221, 212, 0.85)", color: "#5F4F41" }}
-              >
-                <Calendar className="w-4 h-4" style={{ color: "#5F4F41" }} />
-                <span className="font-arabic text-xs sm:text-sm font-bold">احفظ الموعد</span>
-              </button>
+  onClick={() => {
+    window.location.href = "/wedding.ics";
+  }}
+  className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/50 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
+  style={{ background: "rgba(233, 221, 212, 0.85)", color: "#5F4F41" }}
+>
+  <Calendar className="w-4 h-4" style={{ color: "#5F4F41" }} />
+  <span className="font-arabic text-xs sm:text-sm font-bold">
+    احفظ الموعد
+  </span>
+</button>
             </div>
 
             <div className="w-full max-w-md text-center space-y-2 pt-1">
