@@ -279,49 +279,14 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                 <div className="absolute inset-0 pointer-events-none flex flex-col justify-end p-6 text-center bg-gradient-to-t from-black/80 via-black/25 to-transparent">
                   <div className="pb-16 flex flex-col items-center gap-1.5 text-white drop-shadow-2xl">
                     
-                    {/* السطر الأول: بارك الله لهما */}
-                    <p style={{ fontFamily: "'Monasabat', sans-serif" }} className="text-2xl font-bold">
-                      بارك الله لهما
-                    </p>
-
-                    {/* الثلاث سطور تحته */}
-                    <p style={{ fontFamily: "'Almarai', sans-serif" }} className="text-sm font-medium">
-                      يشرفنا حضوركم لتشاركوا معنا فرحة
-                    </p>
-                    <p style={{ fontFamily: "'Almarai', sans-serif" }} className="text-sm font-medium">
-                      عقد قران ابنائنا
-                    </p>
-                    <p style={{ fontFamily: "'Monasabat', sans-serif" }} className="text-sm">
-                      يوم الأربعاء 2026/03/03
-                    </p>
-
-                    {/* السطر الخامس مقسم لثلاثة أجزاء في سطر واحد */}
-                    <div className="flex items-center justify-center gap-1.5 text-sm font-medium">
-                      <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم محمد السلماني</span>
-                      <span style={{ fontFamily: "'WaFont', sans-serif" }} className="text-base">&</span>
-                      <span style={{ fontFamily: "'Almarai', sans-serif" }}>محمد</span>
-                    </div>
-
-                    {/* السطر السادس */}
-                    <p style={{ fontFamily: "'Almarai', sans-serif" }} className="text-sm font-medium">
-                      وبحضوركم تكتمل أفراحنا
-                    </p>
-
-                    {/* وننتظركم بكل حب */}
-                    <p style={{ fontFamily: "'Monasabat', sans-serif" }} className="text-sm">
-                      وننتظركم بكل حب
-                    </p>
-
-                    {/* السطر السابع داخل المربع (محمد & عهود) */}
-                    <div className="mt-2 py-2 px-6 rounded-2xl bg-black/40 border border-white/20 backdrop-blur-md flex items-center justify-center gap-2">
-                      <span style={{ fontFamily: "'IranNastaliq', sans-serif" }} className="text-xl">محمد</span>
-                      <span style={{ fontFamily: "'WaFont', sans-serif" }} className="text-lg">&</span>
-                      <span style={{ fontFamily: "'IranNastaliq', sans-serif" }} className="text-xl">عهود</span>
-                    </div>
-
+                    <p
+  style={{ fontFamily: "'IranNastaliq', sans-serif" }}
+  className="text-3xl font-bold"
+>
+  عبـداللّٰه & ريسـان
+</p>
                   </div>
                 </div>
-
                 {/* زر التقاط الصورة */}
                 <div className="absolute bottom-6 z-20">
                   <button
@@ -438,14 +403,16 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
           {/* 4. الموقع */}
           <button
-            onClick={() => scrollToSection("location")}
-            className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
-          >
-            <MapPin className="w-5 h-5" style={{ color: "#5F4F41" }} />
-            <span className="font-arabic text-[11px] font-bold" style={{ color: "#5F4F41" }}>
-              الموقع
-            </span>
-          </button>
+  onClick={() => {
+    window.location.href = "https://maps.app.goo.gl/wME9accoybXmq5M6A?g_st=ic";
+  }}
+  className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
+>
+  <MapPin className="w-5 h-5" style={{ color: "#5F4F41" }} />
+  <span className="font-arabic text-[11px] font-bold" style={{ color: "#5F4F41" }}>
+    الموقع
+  </span>
+</button>
 
           {/* 5. تأكيد الحضور */}
           <button
