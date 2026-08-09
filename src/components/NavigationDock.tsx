@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Phone, Music, Camera, MapPin, Heart, X, Download, RefreshCw, Share2 } from "lucide-react";
-
+import etImg from "@/assets/et.svg";
 // 🎵 استيراد ملف الصوت m4a
 import bgMusic from "@/assets/music.m4a";
 
@@ -78,44 +78,120 @@ const [rsvpSent, setRsvpSent] = useState(false);
 
   // التقاط الصورة وتطبيق الخطوط المطلوبة بدقة على الكانفاس
   const capturePhoto = () => {
-    if (!videoRef.current || !canvasRef.current) return;
+  if (!videoRef.current || !canvasRef.current) return;
 
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+  const video = videoRef.current;
+  const canvas = canvasRef.current;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
 
-    canvas.width = 1080;
-    canvas.height = 1920;
+  canvas.width = 1080;
+  canvas.height = 1920;
 
-    const vRatio = video.videoWidth / video.videoHeight || 9 / 16;
-    const cRatio = canvas.width / canvas.height;
-    let renderWidth = canvas.width;
-    let renderHeight = canvas.height;
-    let offsetX = 0;
-    let offsetY = 0;
+  const vRatio = video.videoWidth / video.videoHeight || 9 / 16;
+  const cRatio = canvas.width / canvas.height;
 
-    if (vRatio > cRatio) {
-      renderWidth = canvas.height * vRatio;
-      offsetX = (canvas.width - renderWidth) / 2;
-    } else {
-      renderHeight = canvas.width / vRatio;
-      offsetY = (canvas.height - renderHeight) / 2;
-    }
+  let renderWidth = canvas.width;
+  let renderHeight = canvas.height;
+  let offsetX = 0;
+  let offsetY = 0;
 
-    ctx.fillStyle = "#000000";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
+  if (vRatio > cRatio) {
+    renderWidth = canvas.height * vRatio;
+    offsetX = (canvas.width - renderWidth) / 2;
+  } else {
+    renderHeight = canvas.width / vRatio;
+    offsetY = (canvas.height - renderHeight) / 2;
+  }
 
-ctx.drawImage(
-  video,
-  offsetX,
-  offsetY,
-  renderWidth,
-  renderHeight
-);
+  ctx.fillStyle = "#000000";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-const imageUrl = canvas.toDataURL("image/png");
-setCapturedImage(imageUrl);
+  ctx.drawImage(
+    video,
+    offsetX,
+    offsetY,
+    renderWidth,
+    renderHeight
+  );
+
+  const decoration = new Image();
+
+  decoration.onload = () => {
+    const cornerWidth = 190;
+    const cornerHeight = 255;
+
+    // أعلى يسار
+    ctx.drawImage(
+      decoration,
+      0,
+      0,
+      cornerWidth,
+      cornerHeight
+    );
+
+    // أعلى يمين
+    ctx.save();
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(
+      decoration,
+      0,
+      0,
+      cornerWidth,
+      cornerHeight
+    );
+    ctx.restore();
+
+    // أسفل يسار
+    ctx.save();
+    ctx.translate(0, canvas.height);
+    ctx.scale(1, -1);
+    ctx.drawImage(
+      decoration,
+      0,
+      0,
+      cornerWidth,
+      cornerHeight
+    );
+    ctx.restore();
+
+    // أسفل يمين
+    ctx.save();
+    ctx.translate(canvas.width, canvas.height);
+    ctx.scale(-1, -1);
+    ctx.drawImage(
+      decoration,
+      0,
+      0,
+      cornerWidth,
+      cornerHeight
+    );
+    ctx.restore();
+
+    // الاسم
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = "bold 52px IranNastaliq";
+
+    ctx.shadowColor = "rgba(0,0,0,0.45)";
+    ctx.shadowBlur = 10;
+
+    ctx.fillText(
+      "عبـداللّٰه & ريسـان",
+      canvas.width / 2,
+      canvas.height - 150
+    );
+
+    ctx.shadowColor = "transparent";
+    ctx.shadowBlur = 0;
+
+    const imageUrl = canvas.toDataURL("image/png");
+    setCapturedImage(imageUrl);
+  };
+
+  decoration.src = etImg;
 };
   // مشاركة الصورة
   const handleShare = async () => {
@@ -172,14 +248,39 @@ setCapturedImage(imageUrl);
               <>
                 {/* الكاميرا الخلفية بالعدسة العادية الطبيعية */}
                 <video
-                  ref={videoRef}
-                  autoPlay
-                  playsInline
-                  className="w-full h-full object-cover scale-100"
-                />
+  ref={videoRef}
+  autoPlay
+  playsInline
+  className="w-full h-full object-cover scale-100"
+/>
 
-                {/* النصوص على الشاشة بنفس الخطوط المطلوبة بدقة */}
-                <div className="absolute inset-0 pointer-events-none flex flex-col justify-end p-6 text-center bg-gradient-to-t from-black/80 via-black/25 to-transparent">
+{/* زخارف الزوايا */}
+<img
+  src={etImg}
+  className="absolute top-0 left-0 w-[95px] pointer-events-none"
+  alt=""
+/>
+
+<img
+  src={etImg}
+  className="absolute top-0 right-0 w-[95px] scale-x-[-1] pointer-events-none"
+  alt=""
+/>
+
+<img
+  src={etImg}
+  className="absolute bottom-0 left-0 w-[95px] scale-y-[-1] pointer-events-none"
+  alt=""
+/>
+
+<img
+  src={etImg}
+  className="absolute bottom-0 right-0 w-[95px] scale-x-[-1] scale-y-[-1] pointer-events-none"
+  alt=""
+/>
+
+{/* النصوص */}
+<div className="absolute inset-0 pointer-events-none flex flex-col justify-end p-6 text-center bg-gradient-to-t from-black/80 via-black/25 to-transparent">
                   <div className="pb-16 flex flex-col items-center gap-1.5 text-white drop-shadow-2xl">
                     
                     <p
