@@ -121,53 +121,54 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
       const cornerWidth = 190;
       const cornerHeight = 255;
 
-  // أعلى يسار
-ctx.drawImage(
-  decoration,
-  0,
-  0,
-  cornerWidth,
-  cornerHeight
-);
+      // أعلى يسار (0 درجة)
+      ctx.drawImage(
+        decoration,
+        0,
+        0,
+        cornerWidth,
+        cornerHeight
+      );
 
-// أعلى يمين
-ctx.save();
-ctx.translate(canvas.width, 0);
-ctx.scale(-1, 1);
-ctx.drawImage(
-  decoration,
-  -cornerWidth,
-  0,
-  cornerWidth,
-  cornerHeight
-);
-ctx.restore();
+      // أعلى يمين (تدوير 90 درجة)
+      ctx.save();
+      ctx.translate(canvas.width, 0);
+      ctx.rotate((90 * Math.PI) / 180);
+      ctx.drawImage(
+        decoration,
+        0,
+        0,
+        cornerWidth,
+        cornerHeight
+      );
+      ctx.restore();
 
-// أسفل يسار
-ctx.save();
-ctx.translate(0, canvas.height);
-ctx.scale(1, -1);
-ctx.drawImage(
-  decoration,
-  0,
-  -cornerHeight,
-  cornerWidth,
-  cornerHeight
-);
-ctx.restore();
+      // أسفل يسار (تدوير -90 درجة)
+      ctx.save();
+      ctx.translate(0, canvas.height);
+      ctx.rotate((-90 * Math.PI) / 180);
+      ctx.drawImage(
+        decoration,
+        0,
+        0,
+        cornerWidth,
+        cornerHeight
+      );
+      ctx.restore();
 
-// أسفل يمين
-ctx.save();
-ctx.translate(canvas.width, canvas.height);
-ctx.scale(-1, -1);
-ctx.drawImage(
-  decoration,
-  -cornerWidth,
-  -cornerHeight,
-  cornerWidth,
-  cornerHeight
-);
-ctx.restore();
+      // أسفل يمين (تدوير 180 درجة)
+      ctx.save();
+      ctx.translate(canvas.width, canvas.height);
+      ctx.rotate((180 * Math.PI) / 180);
+      ctx.drawImage(
+        decoration,
+        0,
+        0,
+        cornerWidth,
+        cornerHeight
+      );
+      ctx.restore();
+
       // الاسم
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
