@@ -122,52 +122,52 @@ const [rsvpSent, setRsvpSent] = useState(false);
     const cornerHeight = 255;
 
     // أعلى يسار
-    ctx.drawImage(
-      decoration,
-      0,
-      0,
-      cornerWidth,
-      cornerHeight
-    );
+ctx.drawImage(
+  decoration,
+  0,
+  0,
+  cornerWidth,
+  cornerHeight
+);
 
-    // أعلى يمين
-    ctx.save();
-    ctx.translate(canvas.width, 0);
-    ctx.scale(-1, 1);
-    ctx.drawImage(
-      decoration,
-      0,
-      0,
-      cornerWidth,
-      cornerHeight
-    );
-    ctx.restore();
+// أعلى يمين — انعكاس أفقي
+ctx.save();
+ctx.translate(canvas.width, 0);
+ctx.scale(-1, 1);
+ctx.drawImage(
+  decoration,
+  0,
+  0,
+  cornerWidth,
+  cornerHeight
+);
+ctx.restore();
 
-    // أسفل يسار
-    ctx.save();
-    ctx.translate(0, canvas.height);
-    ctx.scale(1, -1);
-    ctx.drawImage(
-      decoration,
-      0,
-      0,
-      cornerWidth,
-      cornerHeight
-    );
-    ctx.restore();
+// أسفل يسار — انعكاس عمودي
+ctx.save();
+ctx.translate(0, canvas.height);
+ctx.scale(1, -1);
+ctx.drawImage(
+  decoration,
+  0,
+  0,
+  cornerWidth,
+  cornerHeight
+);
+ctx.restore();
 
-    // أسفل يمين
-    ctx.save();
-    ctx.translate(canvas.width, canvas.height);
-    ctx.scale(-1, -1);
-    ctx.drawImage(
-      decoration,
-      0,
-      0,
-      cornerWidth,
-      cornerHeight
-    );
-    ctx.restore();
+// أسفل يمين — انعكاس أفقي + عمودي
+ctx.save();
+ctx.translate(canvas.width, canvas.height);
+ctx.scale(-1, -1);
+ctx.drawImage(
+  decoration,
+  0,
+  0,
+  cornerWidth,
+  cornerHeight
+);
+ctx.restore();
 
     // الاسم
     ctx.textAlign = "center";
