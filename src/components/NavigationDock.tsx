@@ -104,118 +104,18 @@ const [rsvpSent, setRsvpSent] = useState(false);
     }
 
     ctx.fillStyle = "#000000";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(video, offsetX, offsetY, renderWidth, renderHeight);
+ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // تظليل ناعم في الأسفل للنص
-    const gradient = ctx.createLinearGradient(0, canvas.height - 650, 0, canvas.height);
-    gradient.addColorStop(0, "rgba(0,0,0,0)");
-    gradient.addColorStop(1, "rgba(0,0,0,0.85)");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, canvas.height - 650, canvas.width, 650);
+ctx.drawImage(
+  video,
+  offsetX,
+  offsetY,
+  renderWidth,
+  renderHeight
+);
 
-    // إعداد الخطوط المطلوبة تماماً
-    const fontMonasabat = '46px "Monasabat", sans-serif';
-    const fontAlmarai = '42px "Almarai", sans-serif';
-    const fontWa = '46px "WaFont", sans-serif';
-    const fontNastaliq = '56px "IranNastaliq", sans-serif';
-
-    ctx.textAlign = "center";
-    ctx.fillStyle = "#FFFFFF";
-    ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
-    ctx.shadowBlur = 10;
-
-    const centerX = canvas.width / 2;
-    let startY = canvas.height - 520;
-    const lineHeight = 55;
-
-    // 1. السطر الأول: بارك الله لهما (Monasabat)
-    ctx.font = fontMonasabat;
-    ctx.fillText("بارك الله لهما", centerX, startY);
-
-    // 2. الثلاث سطور التي تحته (نفس ماهي بخط Almarai)
-    startY += lineHeight;
-    ctx.font = fontAlmarai;
-    ctx.fillText("يشرفنا حضوركم لتشاركوا معنا فرحة", centerX, startY);
-
-    startY += lineHeight;
-    ctx.fillText("عقد قران ابنائنا", centerX, startY);
-
-    startY += lineHeight;
-    // التاريخ والأرقام (Monasabat)
-    ctx.font = fontMonasabat;
-    ctx.fillText("يوم الأربعاء 2026/03/03", centerX, startY);
-
-    startY += lineHeight;
-    // السطر الخامس مقسم لثلاثة أقسام في نفس السطر: (أم محمد السلماني) + (& بخط wa) + (محمد)
-    const textPart1 = "أم محمد السلماني ";
-    const ampPart = "&";
-    const textPart2 = " محمد";
-
-    ctx.font = fontAlmarai;
-    const w1 = ctx.measureText(textPart1).width;
-    ctx.font = fontWa;
-    const wAmp = ctx.measureText(ampPart).width;
-    ctx.font = fontAlmarai;
-    const w2 = ctx.measureText(textPart2).width;
-
-    const totalWidth = w1 + wAmp + w2;
-    let currentX = centerX - totalWidth / 2;
-
-    ctx.textAlign = "left";
-    ctx.font = fontAlmarai;
-    ctx.fillText(textPart1, currentX, startY);
-    currentX += w1;
-
-    ctx.font = fontWa;
-    ctx.fillText(ampPart, currentX, startY);
-    currentX += wAmp;
-
-    ctx.font = fontAlmarai;
-    ctx.fillText(textPart2, currentX, startY);
-
-    // 6. السطر السادس (وبحضوركم تكتمل أفراحنا - نفس ماهو)
-    startY += lineHeight;
-    ctx.textAlign = "center";
-    ctx.font = fontAlmarai;
-    ctx.fillText("وبحضوركم تكتمل أفراحنا", centerX, startY);
-
-    // 7. عبارة "وننتظركم بكل حب" (Monasabat)
-    startY += lineHeight;
-    ctx.font = fontMonasabat;
-    ctx.fillText("وننتظركم بكل حب", centerX, startY);
-
-    // 8. السطر الأخير في المربع (محمد & عهود بخط IranNastaliq مع علامة & بخط wa)
-    startY += lineHeight + 15;
-    const name1 = "محمد";
-    const nameAmp = "&";
-    const name2 = "عهود";
-
-    ctx.font = fontNastaliq;
-    const nw1 = ctx.measureText(name1).width;
-    ctx.font = fontWa;
-    const nwAmp = ctx.measureText(nameAmp).width;
-    ctx.font = fontNastaliq;
-    const nw2 = ctx.measureText(name2).width;
-
-    const totalNameWidth = nw1 + nwAmp + nw2 + 40;
-    let currentNameX = centerX - totalNameWidth / 2;
-
-    ctx.textAlign = "left";
-    ctx.font = fontNastaliq;
-    ctx.fillText(name1, currentNameX, startY);
-    currentNameX += nw1 + 20;
-
-    ctx.font = fontWa;
-    ctx.fillText(nameAmp, currentNameX, startY);
-    currentNameX += nwAmp + 20;
-
-    ctx.font = fontNastaliq;
-    ctx.fillText(name2, currentNameX, startY);
-
-    const imageUrl = canvas.toDataURL("image/png");
-    setCapturedImage(imageUrl);
-  };
+const imageUrl = canvas.toDataURL("image/png");
+setCapturedImage(imageUrl);
 
   // مشاركة الصورة
   const handleShare = async () => {
@@ -387,14 +287,14 @@ const [rsvpSent, setRsvpSent] = useState(false);
               className="text-2xl font-bold"
               style={{ fontFamily: "'IranNastaliq', sans-serif" }}
             >
-              تأكيد الحضور
+              تأكيـد الحضور
             </h2>
 
             <p
               className="mt-2 text-sm"
               style={{ fontFamily: "'Almarai', sans-serif" }}
             >
-              يسعدنا معرفة ردكم الكريم
+              يسعدنا ويشرفنا حضوركم
             </p>
           </div>
 
@@ -514,8 +414,8 @@ const [rsvpSent, setRsvpSent] = useState(false);
             style={{ fontFamily: "'IranNastaliq', sans-serif" }}
           >
             {rsvpStatus === "attending"
-              ? "تم تأكيد حضوركم"
-              : "تم تسجيل اعتذاركم"}
+              ? "تم تأكيـد حضـوركم"
+              : "تم تسجيـل اعتـذاركم"}
           </h2>
 
           <p
