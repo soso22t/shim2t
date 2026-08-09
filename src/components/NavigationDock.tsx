@@ -12,6 +12,10 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [showRSVP, setShowRSVP] = useState(false);
+const [guestName, setGuestName] = useState("");
+const [rsvpStatus, setRsvpStatus] = useState<"attending" | "declined" | "">("");
+const [rsvpSent, setRsvpSent] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -225,8 +229,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
       if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
           files: [file],
-          title: "محمد & عهود",
-          text: "دعوة عقد قران محمد & عهود",
+          title: "عبـداللّٰه & ريسـان",
         });
       } else {
         alert("المشاركة غير مدعومة مباشرة على هذا المتصفح، يمكنك استخدام زر الحفظ.");
@@ -353,7 +356,200 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
           </div>
         </div>
       )}
+{/* نافذة تأكيد الحضور */}
+{showRSVP && (
+  <div className="fixed inset-0 z-[60] flex items-center justify-center p-5">
+    
+    {/* الخلفية المموهة */}
+    <div
+      className="absolute inset-0 bg-black/25 backdrop-blur-md"
+      onClick={() => setShowRSVP(false)}
+    />
 
+    {/* المربع */}
+    <div
+      className="relative w-full max-w-[380px] rounded-[32px] px-7 py-8 shadow-2xl border border-white/30"
+      style={{
+        background: "rgba(245, 239, 231, 0.96)",
+        color: "#5F4F41",
+      }}
+    >
+
+      {/* زخرفة الركن العلوي */}
+      <div className="absolute top-3 right-4 text-xl opacity-60">❈</div>
+      <div className="absolute top-3 left-4 text-xl opacity-60">❈</div>
+
+      {!rsvpSent ? (
+        <>
+          {/* العنوان */}
+          <div className="text-center mb-7">
+            <h2
+              className="text-2xl font-bold"
+              style={{ fontFamily: "'IranNastaliq', sans-serif" }}
+            >
+              تأكيد الحضور
+            </h2>
+
+            <p
+              className="mt-2 text-sm"
+              style={{ fontFamily: "'Almarai', sans-serif" }}
+            >
+              يسعدنا معرفة ردكم الكريم
+            </p>
+          </div>
+
+          {/* الاسم */}
+          <div className="mb-5">
+            <label
+              className="block text-right mb-2 text-sm font-bold"
+              style={{ fontFamily: "'Almarai', sans-serif" }}
+            >
+              الاسم الكريم
+            </label>
+
+            <input
+              type="text"
+              value={guestName}
+              onChange={(e) => setGuestName(e.target.value)}
+              placeholder="اكتب اسمك"
+              className="w-full rounded-2xl px-4 py-3 text-right outline-none border"
+              style={{
+                fontFamily: "'Almarai', sans-serif",
+                background: "rgba(255,255,255,0.65)",
+                borderColor: "rgba(95,79,65,0.25)",
+                color: "#5F4F41",
+              }}
+            />
+          </div>
+
+          {/* خيارات الحضور */}
+          <div className="flex gap-3 mb-6">
+
+            <button
+              type="button"
+              onClick={() => setRsvpStatus("attending")}
+              className="flex-1 py-3 rounded-2xl border transition-all"
+              style={{
+                fontFamily: "'Almarai', sans-serif",
+                background:
+                  rsvpStatus === "attending"
+                    ? "#5F4F41"
+                    : "rgba(255,255,255,0.65)",
+                color:
+                  rsvpStatus === "attending"
+                    ? "#FFFFFF"
+                    : "#5F4F41",
+                borderColor: "#5F4F41",
+              }}
+            >
+              تأكيد الحضور
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setRsvpStatus("declined")}
+              className="flex-1 py-3 rounded-2xl border transition-all"
+              style={{
+                fontFamily: "'Almarai', sans-serif",
+                background:
+                  rsvpStatus === "declined"
+                    ? "#5F4F41"
+                    : "rgba(255,255,255,0.65)",
+                color:
+                  rsvpStatus === "declined"
+                    ? "#FFFFFF"
+                    : "#5F4F41",
+                borderColor: "#5F4F41",
+              }}
+            >
+              الاعتذار عن الحضور
+            </button>
+
+          </div>
+
+          {/* إرسال */}
+          <button
+            type="button"
+            onClick={() => {
+              if (!guestName.trim() || !rsvpStatus) {
+                alert("فضلاً اكتب الاسم واختر الرد.");
+                return;
+              }
+
+              setRsvpSent(true);
+            }}
+            className="w-full py-3.5 rounded-2xl font-bold transition-all active:scale-95"
+            style={{
+              fontFamily: "'Almarai', sans-serif",
+              background: "#5F4F41",
+              color: "#FFFFFF",
+            }}
+          >
+            إرسال
+          </button>
+
+          {/* إغلاق */}
+          <button
+            type="button"
+            onClick={() => setShowRSVP(false)}
+            className="w-full mt-3 py-2 text-sm"
+            style={{
+              fontFamily: "'Almarai', sans-serif",
+              color: "#5F4F41",
+            }}
+          >
+            إلغاء
+          </button>
+
+        </>
+      ) : (
+
+        /* رسالة النجاح */
+        <div className="text-center py-6">
+
+          <div className="text-4xl mb-5">♡</div>
+
+          <h2
+            className="text-2xl font-bold mb-4"
+            style={{ fontFamily: "'IranNastaliq', sans-serif" }}
+          >
+            {rsvpStatus === "attending"
+              ? "تم تأكيد حضوركم"
+              : "تم تسجيل اعتذاركم"}
+          </h2>
+
+          <p
+            className="text-sm leading-8"
+            style={{ fontFamily: "'Almarai', sans-serif" }}
+          >
+            {rsvpStatus === "attending"
+              ? "نسعد بحضوركم ومشاركتكم لنا هذه الفرحة"
+              : "نشكر لكم تواصلكم، ونسأل الله أن يجمعنا بكم على خير"}
+          </p>
+
+          <button
+            type="button"
+            onClick={() => setShowRSVP(false)}
+            className="w-full mt-7 py-3.5 rounded-2xl font-bold"
+            style={{
+              fontFamily: "'Almarai', sans-serif",
+              background: "#5F4F41",
+              color: "#FFFFFF",
+            }}
+          >
+            العودة إلى الدعوة
+          </button>
+
+          {/* زخارف */}
+          <div className="absolute bottom-3 right-4 text-xl opacity-60">❈</div>
+          <div className="absolute bottom-3 left-4 text-xl opacity-60">❈</div>
+
+        </div>
+      )}
+
+    </div>
+  </div>
+)}
       {/* الشريط السفلي الرئيسي */}
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-md pointer-events-auto">
         <div
@@ -416,9 +612,14 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
           {/* 5. تأكيد الحضور */}
           <button
-            onClick={() => scrollToSection("rsvp")}
-            className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
-          >
+  onClick={() => {
+    setShowRSVP(true);
+    setRsvpSent(false);
+    setGuestName("");
+    setRsvpStatus("");
+  }}
+  className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
+>
             <Heart className="w-5 h-5" style={{ color: "#5F4F41" }} />
             <span className="font-arabic text-[11px] font-bold" style={{ color: "#5F4F41" }}>
               تأكيد الحضور
