@@ -121,7 +121,7 @@ const [rsvpSent, setRsvpSent] = useState(false);
     const cornerWidth = 190;
     const cornerHeight = 255;
 
-    // أعلى يسار
+   // أعلى يسار
 ctx.drawImage(
   decoration,
   0,
@@ -130,40 +130,40 @@ ctx.drawImage(
   cornerHeight
 );
 
-// أعلى يمين — انعكاس أفقي
+// أعلى يمين
 ctx.save();
 ctx.translate(canvas.width, 0);
 ctx.scale(-1, 1);
 ctx.drawImage(
   decoration,
-  0,
+  -cornerWidth,
   0,
   cornerWidth,
   cornerHeight
 );
 ctx.restore();
 
-// أسفل يسار — انعكاس عمودي
+// أسفل يسار
 ctx.save();
 ctx.translate(0, canvas.height);
 ctx.scale(1, -1);
 ctx.drawImage(
   decoration,
   0,
-  0,
+  -cornerHeight,
   cornerWidth,
   cornerHeight
 );
 ctx.restore();
 
-// أسفل يمين — انعكاس أفقي + عمودي
+// أسفل يمين
 ctx.save();
 ctx.translate(canvas.width, canvas.height);
 ctx.scale(-1, -1);
 ctx.drawImage(
   decoration,
-  0,
-  0,
+  -cornerWidth,
+  -cornerHeight,
   cornerWidth,
   cornerHeight
 );
