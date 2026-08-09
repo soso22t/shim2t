@@ -121,7 +121,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
       const cornerWidth = 190;
       const cornerHeight = 255;
 
-     // أعلى يسار ┌
+  // أعلى يسار
 ctx.drawImage(
   decoration,
   0,
@@ -130,7 +130,7 @@ ctx.drawImage(
   cornerHeight
 );
 
-// أعلى يمين ┐
+// أعلى يمين
 ctx.save();
 ctx.translate(canvas.width, 0);
 ctx.scale(-1, 1);
@@ -143,7 +143,7 @@ ctx.drawImage(
 );
 ctx.restore();
 
-// أسفل يسار └
+// أسفل يسار
 ctx.save();
 ctx.translate(0, canvas.height);
 ctx.scale(1, -1);
@@ -156,7 +156,7 @@ ctx.drawImage(
 );
 ctx.restore();
 
-// أسفل يمين ┘
+// أسفل يمين
 ctx.save();
 ctx.translate(canvas.width, canvas.height);
 ctx.scale(-1, -1);
