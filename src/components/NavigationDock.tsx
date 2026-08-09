@@ -116,7 +116,7 @@ ctx.drawImage(
 
 const imageUrl = canvas.toDataURL("image/png");
 setCapturedImage(imageUrl);
-
+};
   // مشاركة الصورة
   const handleShare = async () => {
     if (!capturedImage) return;
