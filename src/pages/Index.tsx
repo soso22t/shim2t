@@ -24,7 +24,7 @@ const Index = () => {
         document.documentElement.scrollHeight - window.innerHeight;
       const distance = targetPosition - startPosition;
       let startTime: number;
-      const duration = 25000; // 18 ثانية
+      const duration = 35000; // 18 ثانية
 
       const animation = () => {
         const elapsed = Date.now() - startTime;
