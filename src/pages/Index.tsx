@@ -130,46 +130,51 @@ const Index = () => {
                 وبكل الحـب والــود تتــشرف
               </p>
 
-              {/* السطر الخامس: السيدة فوق كل اسم */}
+              {/* السيدة فوق أسماء الأمهات */}
               <div
-                className="flex items-end justify-center gap-1 text-lg sm:text-xl font-bold py-2"
+                className="flex items-center justify-center gap-1 text-sm sm:text-base font-bold py-2"
+                style={{ color: "#641414" }}
+              >
+                <span style={{ fontFamily: "'Almarai', sans-serif" }}>
+                  السيدة
+                </span>
+
+                <span
+                  className="mx-5"
+                  style={{ fontFamily: "'Almarai', sans-serif" }}
+                >
+                  السيدة
+                </span>
+              </div>
+
+              {/* أسماء الأمهات في نفس السطر */}
+              <div
+                className="flex items-center justify-center gap-1 text-lg sm:text-xl font-bold"
                 style={{ color: "#B08A3C" }}
               >
-                {/* الاسم الأول */}
-                <div className="flex flex-col items-center">
-                  <span
-                    className="text-sm sm:text-base mb-1"
-                    style={{ fontFamily: "'Almarai', sans-serif" }}
-                  >
-                    السيدة
-                  </span>
+                <span
+                  className="whitespace-nowrap"
+                  style={{ fontFamily: "'Almarai', sans-serif" }}
+                >
+                  كوكب عبدالله الحميصي
+                </span>
 
-                  <span style={{ fontFamily: "'Almarai', sans-serif" }}>
-                    كوكب عبدالله الحميصي
-                  </span>
-                </div>
-
-                {/* علامة & */}
                 <span
                   className="text-2xl mx-1"
-                  style={{ fontFamily: "'WaFont', sans-serif" }}
+                  style={{
+                    fontFamily: "'WaFont', sans-serif",
+                    color: "#641414",
+                  }}
                 >
                   &
                 </span>
 
-                {/* الاسم الثاني */}
-                <div className="flex flex-col items-center">
-                  <span
-                    className="text-sm sm:text-base mb-1"
-                    style={{ fontFamily: "'Almarai', sans-serif" }}
-                  >
-                    السيدة
-                  </span>
-
-                  <span style={{ fontFamily: "'Almarai', sans-serif" }}>
-                    مريم باخشوين
-                  </span>
-                </div>
+                <span
+                  className="whitespace-nowrap"
+                  style={{ fontFamily: "'Almarai', sans-serif" }}
+                >
+                  مريم باخشوين
+                </span>
               </div>
 
               {/* السطر السادس */}
@@ -228,7 +233,7 @@ const Index = () => {
 
               <p
                 className="font-arabic text-sm font-semibold"
-                style={{ color: "#B08A3C" }}
+                style={{ color: "#641414" }}
               >
                 قاعة الف ليلة وليلة
               </p>
