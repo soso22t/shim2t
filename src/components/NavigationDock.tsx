@@ -34,6 +34,21 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     }
   }, [active]);
 
+  // استرجاع رد الحضور المحفوظ
+  useEffect(() => {
+    const savedStatus = localStorage.getItem("wedding_rsvp_status");
+    const savedName = localStorage.getItem("wedding_rsvp_name");
+
+    if (savedStatus === "attending" || savedStatus === "declined") {
+      setRsvpStatus(savedStatus);
+      setRsvpSent(true);
+    }
+
+    if (savedName) {
+      setGuestName(savedName);
+    }
+  }, []);
+
   const toggleMusic = () => {
     if (!audioRef.current) return;
 
@@ -217,6 +232,17 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
           },
           body: formData.toString(),
         }
+      );
+
+      // حفظ الرد والاسم حتى يبقى بعد تحديث الصفحة
+      localStorage.setItem(
+        "wedding_rsvp_status",
+        rsvpStatus
+      );
+
+      localStorage.setItem(
+        "wedding_rsvp_name",
+        guestName.trim()
       );
 
       setRsvpSent(true);
@@ -712,10 +738,30 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
           {/* 5. تأكيد الحضور */}
           <button
             onClick={() => {
+              const savedStatus = localStorage.getItem(
+                "wedding_rsvp_status"
+              );
+              const savedName = localStorage.getItem(
+                "wedding_rsvp_name"
+              );
+
+              if (
+                savedStatus === "attending" ||
+                savedStatus === "declined"
+              ) {
+                setRsvpStatus(savedStatus);
+                setRsvpSent(true);
+
+                if (savedName) {
+                  setGuestName(savedName);
+                }
+              } else {
+                setRsvpSent(false);
+                setGuestName("");
+                setRsvpStatus("");
+              }
+
               setShowRSVP(true);
-              setRsvpSent(false);
-              setGuestName("");
-              setRsvpStatus("");
             }}
             className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
           >
