@@ -14,7 +14,7 @@ interface DetailItem {
 
 const details: DetailItem[] = [
   {
-    title: "دعوة شخصية",
+    title: "الدعوة شخصية",
     icon: (
       <UserRoundCheck
         className="w-5 h-5 opacity-90"
