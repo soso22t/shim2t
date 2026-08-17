@@ -1,5 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import { Phone, Music, Camera, MapPin, Heart, X, Download, RefreshCw, Share2 } from "lucide-react";
+import {
+  Phone,
+  Music,
+  Camera,
+  MapPin,
+  Heart,
+  X,
+  Download,
+  RefreshCw,
+  Share2,
+} from "lucide-react";
 
 // 🎵 استيراد ملف الصوت m4a
 import bgMusic from "@/assets/rh.m4a";
@@ -12,9 +22,14 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
+
   const [showRSVP, setShowRSVP] = useState(false);
+  const [showContact, setShowContact] = useState(false);
+
   const [guestName, setGuestName] = useState("");
-  const [rsvpStatus, setRsvpStatus] = useState<"attending" | "declined" | "">("");
+  const [rsvpStatus, setRsvpStatus] = useState<
+    "attending" | "declined" | ""
+  >("");
   const [rsvpSent, setRsvpSent] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -193,8 +208,14 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
     }
   };
 
+  // فتح نافذة التواصل
   const handlePhoneClick = () => {
-    window.location.href = "tel:0000000000";
+    setShowContact(true);
+  };
+
+  // الاتصال بالرقم
+  const handleCall = () => {
+    window.location.href = "tel:0561544851";
   };
 
   // إرسال الرد مباشرة إلى Google Form
@@ -247,8 +268,14 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
       setRsvpSent(true);
     } catch (error) {
-      console.error("حدث خطأ أثناء إرسال الرد:", error);
-      alert("تعذر إرسال الرد، يرجى المحاولة مرة أخرى.");
+      console.error(
+        "حدث خطأ أثناء إرسال الرد:",
+        error
+      );
+
+      alert(
+        "تعذر إرسال الرد، يرجى المحاولة مرة أخرى."
+      );
     }
   };
 
@@ -389,6 +416,131 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* نافذة التواصل */}
+      {showContact && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-5">
+
+          {/* الخلفية المموهة */}
+          <div
+            className="absolute inset-0 bg-black/25 backdrop-blur-md"
+            onClick={() => setShowContact(false)}
+          />
+
+          {/* المربع */}
+          <div
+            className="relative w-full max-w-[380px] rounded-[32px] px-7 py-8 shadow-2xl border border-white/30"
+            style={{
+              background:
+                "rgba(245, 239, 231, 0.96)",
+              color: "#641414",
+            }}
+          >
+
+            {/* زخرفة الركن العلوي */}
+            <div
+              className="absolute top-3 right-4 text-xl opacity-60"
+              style={{ color: "#B08A3C" }}
+            >
+              ❈
+            </div>
+
+            <div
+              className="absolute top-3 left-4 text-xl opacity-60"
+              style={{ color: "#B08A3C" }}
+            >
+              ❈
+            </div>
+
+            <div className="text-center py-5">
+
+              {/* عنوان */}
+              <h2
+                className="text-2xl font-bold mb-6"
+                style={{
+                  fontFamily:
+                    "'IranNastaliq', sans-serif",
+                  color: "#B08A3C",
+                }}
+              >
+                للتواصل
+              </h2>
+
+              {/* الرقم */}
+              <p
+                dir="ltr"
+                className="text-2xl font-bold mb-3"
+                style={{
+                  fontFamily:
+                    "'Almarai', sans-serif",
+                  color: "#641414",
+                }}
+              >
+                0561544851
+              </p>
+
+              {/* وقت الاتصال */}
+              <p
+                className="text-sm mb-7"
+                style={{
+                  fontFamily:
+                    "'Almarai', sans-serif",
+                  color: "#641414",
+                }}
+              >
+                الاتصال من الساعة 5:00 م الى 8:00 م
+              </p>
+
+              {/* زر الاتصال */}
+              <button
+                type="button"
+                onClick={handleCall}
+                className="w-full py-3.5 rounded-2xl font-bold transition-all active:scale-95 flex items-center justify-center gap-2"
+                style={{
+                  fontFamily:
+                    "'Almarai', sans-serif",
+                  background: "#641414",
+                  color: "#FFFFFF",
+                }}
+              >
+                <Phone className="w-5 h-5" />
+                اتصال
+              </button>
+
+              {/* إلغاء */}
+              <button
+                type="button"
+                onClick={() => setShowContact(false)}
+                className="w-full mt-3 py-2 text-sm"
+                style={{
+                  fontFamily:
+                    "'Almarai', sans-serif",
+                  color: "#641414",
+                }}
+              >
+                إلغاء
+              </button>
+
+            </div>
+
+            {/* زخارف سفلية */}
+            <div
+              className="absolute bottom-3 right-4 text-xl opacity-60"
+              style={{ color: "#B08A3C" }}
+            >
+              ❈
+            </div>
+
+            <div
+              className="absolute bottom-3 left-4 text-xl opacity-60"
+              style={{ color: "#B08A3C" }}
+            >
+              ❈
+            </div>
+
           </div>
         </div>
       )}
@@ -741,6 +893,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
               const savedStatus = localStorage.getItem(
                 "wedding_rsvp_status"
               );
+
               const savedName = localStorage.getItem(
                 "wedding_rsvp_name"
               );
