@@ -7,8 +7,8 @@ interface DetailItem {
 }
 
 const details: DetailItem[] = [
-  { title: "جنة الأطفال منازلهم", icon: <Baby className="w-5 h-5 opacity-80" style={{ color: "#5F4F41" }} /> },
-  { title: "يمنع التصوير", icon: <CameraOff className="w-5 h-5 opacity-80" style={{ color: "#5F4F41" }} /> },
+  { title: "جنة الأطفال منازلهم", icon: <Baby className="w-5 h-5 opacity-90" style={{ color: "#B08A3C" }} /> },
+  { title: "يمنع التصوير", icon: <CameraOff className="w-5 h-5 opacity-90" style={{ color: "#B08A3C" }} /> },
 ];
 
 const EventDetails = () => {
@@ -46,7 +46,7 @@ const EventDetails = () => {
       {/* عنوان تفاصيل الحفل بدون خلفية زجاجية */}
       <h3
         className="font-arabic text-xl sm:text-2xl font-bold text-center mb-6"
-        style={{ color: "#5F4F41" }}
+        style={{ color: "#B08A3C" }}
       >
         تفاصيل الحفل
       </h3>
@@ -57,7 +57,7 @@ const EventDetails = () => {
         {/* 1. الخط العمودي الخلفي الباهت (خارج المستطيلات على اليسار) */}
         <div
           className="absolute left-2.5 top-6 bottom-6 w-[2px] opacity-30"
-          style={{ backgroundColor: "#5F4F41" }}
+          style={{ backgroundColor: "#641414" }}
         />
 
         {/* 2. الخط المضيء المتحرك مع السكرول */}
@@ -65,8 +65,8 @@ const EventDetails = () => {
           className="absolute left-2.5 top-6 w-[2px] rounded-full transition-all duration-150 ease-out"
           style={{
             height: `${scrollProgress * 82}%`,
-            backgroundColor: "#5F4F41",
-            boxShadow: "0 0 10px rgba(95, 79, 65, 0.8)",
+            backgroundColor: "#B08A3C",
+            boxShadow: "0 0 10px rgba(176, 138, 60, 0.8)",
           }}
         />
 
@@ -83,11 +83,11 @@ const EventDetails = () => {
                 <div
                   className="absolute -left-[27px] w-4 h-4 rounded-full border-2 transition-all duration-500 ease-out z-20"
                   style={{
-                    borderColor: "#5F4F41",
-                    backgroundColor: isActive ? "#5F4F41" : "rgba(255, 255, 255, 0.5)",
+                    borderColor: isActive ? "#B08A3C" : "#641414",
+                    backgroundColor: isActive ? "#B08A3C" : "rgba(255, 255, 255, 0.5)",
                     transform: isActive ? "scale(1.25)" : "scale(1)",
                     boxShadow: isActive
-                      ? "0 0 12px 3px rgba(95, 79, 65, 0.9), 0 0 20px 5px rgba(255, 255, 255, 0.8)"
+                      ? "0 0 12px 3px rgba(176, 138, 60, 0.9), 0 0 20px 5px rgba(255, 255, 255, 0.8)"
                       : "none",
                   }}
                 />
@@ -103,7 +103,7 @@ const EventDetails = () => {
                   {/* النص على اليمين */}
                   <span
                     className="font-arabic text-sm sm:text-base font-bold"
-                    style={{ color: "#5F4F41" }}
+                    style={{ color: "#641414" }}
                   >
                     {item.title}
                   </span>
