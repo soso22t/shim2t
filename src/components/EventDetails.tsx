@@ -40,15 +40,15 @@ const details: DetailItem[] = [
       />
     ),
   },
-  {
-    title: "يمنع التصوير",
-    icon: (
-      <CameraOff
-        className="w-5 h-5 opacity-90"
-        style={{ color: "#B08A3C" }}
-      />
-    ),
-  },
+//  }
+   // title: "يمنع التصوير",
+  //  icon: (
+   //   <CameraOff
+      //  className="w-5 h-5 opacity-90"
+    //    style={{ color: "#B08A3C" }}
+   //   />
+  //  ),
+ // },
 ];
 
 const EventDetails = () => {
