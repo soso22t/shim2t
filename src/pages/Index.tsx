@@ -415,7 +415,10 @@ const Index = () => {
                 <Reveal delay={100}>
                   <div
                     className="flex items-center justify-center gap-2 pt-0.5"
-                    style={{ color: "#641414" }}
+                  style={{
+                      color: "#641414",
+                      transform: "translateY(130px)"
+                    }}
                   >
                     <Heart
                       className="w-4 h-4 fill-current"
