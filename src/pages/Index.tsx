@@ -87,7 +87,7 @@ setTimeout(() => {
           <div className="relative z-10 w-full flex flex-col items-center pt-20 sm:pt-32 px-4 space-y-6">
             <div
               className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
-              style={{ background: "rgba(233, 221, 212, 0.85)", color: "#6B5140" }}
+              style={{ background: "rgba(233, 221, 212, 0.85)", color: "#641414" }}
             >
               {/* الرقم 2 */}
               <div className="flex items-center justify-center my-4">
@@ -106,13 +106,13 @@ setTimeout(() => {
               </div>
 
               {/* الثلاث سطور تحته */}
-              <p className="font-arabic text-sm sm:text-base pt-2" style={{ color: "#6B5140" }}>
+              <p className="font-arabic text-sm sm:text-base pt-2" style={{ color: "#641414" }}>
                 بمشاعر مليئة بالفرح والسعادة
               </p>
-              <p className="font-arabic text-sm sm:text-base" style={{ color: "#6B5140" }}>
+              <p className="font-arabic text-sm sm:text-base" style={{ color: "#641414" }}>
                 ولأن الفرحة لا تكتمل الا برويتكم
               </p>
-              <p className="font-arabic text-base sm:text-lg opacity-90 pb-2" style={{ color: "#6B5140" }}>
+              <p className="font-arabic text-base sm:text-lg opacity-90 pb-2" style={{ color: "#641414" }}>
                 نتشرف بدعوتكم لحضور حفل زفاف
               </p>
 
@@ -124,14 +124,14 @@ setTimeout(() => {
               </div>
 
               {/* السطر السادس */}
-            {/*  <p className="font-arabic text-sm sm:text-base pt-2" style={{ color: "#6B5140" }}>
+            {/*  <p className="font-arabic text-sm sm:text-base pt-2" style={{ color: "#641414" }}>
                 بدعوتكن لحضور حفل عقد قران نجليهما
               </p>
 
               {/* مسافة واضحة ومقصودة قبل سطر أسماء العروسين */}
             {/*  <div className="h-6"></div>
 
-              {/* السطر الاخير في المربع: محمد & عهود */}
+              {/* السطر الاخير في المربع: عبـداللّٰه & ريسـان */}
               <div className="py-2 flex items-center justify-center gap-2">
                 <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#B08A3C" }}>عبـداللّٰه</span>
                 <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#B08A3C" }}>&</span>
@@ -143,24 +143,24 @@ setTimeout(() => {
             <div id="location" className="text-center space-y-0.5 py-1">
               <h3 className="font-arabic text-base sm:text-lg font-bold" style={{ color: "#B08A3C" }}>الموقع</h3>
               <p className="font-arabic text-sm font-semibold" style={{ color: "#B08A3C" }}>قاعـة لافينا للإحتفالات</p>
-              <p className="font-arabic text-xs font-medium opacity-90" style={{ color: "#6B5140" }}>جدة</p>
+              <p className="font-arabic text-xs font-medium opacity-90" style={{ color: "#641414" }}>جدة</p>
             </div>
 
             {/* التقويم */}
             <div className="flex flex-col items-center space-y-3">
               <div
                 className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/50 shadow-2xl text-center"
-                style={{ background: "rgba(233, 221, 212, 0.85)", color: "#6B5140" }}
+                style={{ background: "rgba(233, 221, 212, 0.85)", color: "#641414" }}
               >
-                <div className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold" style={{ background: "#6B5140", color: "#FFFFFF" }}>
+                <div className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold" style={{ background: "#641414", color: "#FFFFFF" }}>
                   <span>الثلاثاء</span>
                   <span className="text-sm font-extrabold" style={{ color: "#B08A3C" }}>أغسطس</span>
                   <span className="font-display">2026</span>
                 </div>
                 <div className="py-4 px-4 space-y-0.5">
                   <div className="font-display text-4xl font-extrabold tracking-tight" style={{ color: "#B08A3C" }}>25</div>
-                  <div className="font-arabic text-sm font-bold" style={{ color: "#6B5140" }}>الثلاثاء</div>
-                  <div className="font-display text-xs font-semibold opacity-80" style={{ color: "#6B5140" }}>PM 8:00</div>
+                  <div className="font-arabic text-sm font-bold" style={{ color: "#641414" }}>الثلاثاء</div>
+                  <div className="font-display text-xs font-semibold opacity-80" style={{ color: "#641414" }}>PM 8:00</div>
                 </div>
               </div>
 
@@ -169,10 +169,10 @@ setTimeout(() => {
     window.location.href = "/wedding.ics";
   }}
   className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/50 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
-  style={{ background: "rgba(233, 221, 212, 0.85)", color: "#6B5140" }}
+  style={{ background: "rgba(233, 221, 212, 0.85)", color: "#641414" }}
 >
-  <Calendar className="w-4 h-4" style={{ color: "#6B5140" }} />
-  <span className="font-arabic text-xs sm:text-sm font-bold" style={{ color: "#6B5140" }}>
+  <Calendar className="w-4 h-4" style={{ color: "#641414" }} />
+  <span className="font-arabic text-xs sm:text-sm font-bold" style={{ color: "#641414" }}>
     احفظ الموعد
   </span>
 </button>
@@ -218,7 +218,7 @@ setTimeout(() => {
 
               <div id="rsvp" className="w-full text-center space-y-1.5">
                 <Reveal>
-                  {/* محمد & عهود في الذيل */}
+                  {/* عبـداللّٰه & ريسـان في الذيل */}
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#B08A3C" }}>عبـداللّٰه</span>
                     <span className="text-xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#B08A3C" }}>&</span>
@@ -229,9 +229,9 @@ setTimeout(() => {
                 <Reveal delay={100}>
                   <div
                     className="flex items-center justify-center gap-2 pt-0.5"
-                    style={{ color: "#6B5140" }}
+                    style={{ color: "#641414" }}
                   >
-                    <Heart className="w-4 h-4 fill-current" style={{ color: "#B08A3C" }} />
+                    <Heart className="w-4 h-4 fill-current" style={{ color: "#641414" }} />
                     <span className="font-arabic text-xs sm:text-sm font-semibold">
                       <a
                         href="https://www.tiktok.com/@shim2t?_r=1&_t=ZS-95w0d8f7vnk"
