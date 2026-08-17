@@ -594,7 +594,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   }}
                 >
                   {rsvpStatus === "attending"
-                    ? "تم تأكيـد حضـوركم"
+                    ? "تم تأكيـد حضــوركم"
                     : "تم تسجيـل اعتـذاركم"}
                 </h2>
 
