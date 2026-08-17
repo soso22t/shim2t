@@ -232,28 +232,28 @@ const Index = () => {
             </div>
 
             {/* قسم الموقع */}
-            <div id="location" className="text-center space-y-0.5 py-1">
-              <h3
-  className="font-arabic text-lg sm:text-xl font-bold"
-  style={{ color: "#B08A3C" }}
->
-  الموقع
-</h3>
+            <div id="location" className="text-center space-y-1 py-2">
+  <h3
+    className="font-arabic text-xl sm:text-2xl font-bold"
+    style={{ color: "#B08A3C" }}
+  >
+    الموقع
+  </h3>
 
-<p
-  className="font-arabic text-lg sm:text-xl font-bold"
-  style={{ color: "#641414" }}
->
-  قاعة الف ليلة وليلة
-</p>
+  <p
+    className="font-arabic text-xl sm:text-2xl font-bold"
+    style={{ color: "#641414" }}
+  >
+    قاعة الف ليلة وليلة
+  </p>
 
-<p
-  className="font-arabic text-base sm:text-lg font-semibold"
-  style={{ color: "#641414" }}
->
-  فندق تاج سيلين
-</p>
-            </div>
+  <p
+    className="font-arabic text-lg sm:text-xl font-semibold"
+    style={{ color: "#641414" }}
+  >
+    فندق تاج سيلين
+  </p>
+</div>
 
             {/* التقويم */}
             <div className="flex flex-col items-center space-y-3">
