@@ -47,18 +47,18 @@ const Countdown = () => {
           className="w-16 h-20 sm:w-20 sm:h-24 rounded-2xl flex flex-col items-center justify-center backdrop-blur-md border border-white/40 shadow-md transition-transform"
           style={{
             background: "rgba(255, 255, 255, 0.25)",
-            color: "#5F4F41",
+            color: "#641414",
           }}
         >
           <span
             className="font-display text-xl sm:text-2xl font-bold tracking-tight leading-none mb-1"
-            style={{ color: "#5F4F41" }}
+            style={{ color: "#B08A3C" }}
           >
             {item.value}
           </span>
           <span
             className="font-sans text-[9px] sm:text-[10px] font-bold tracking-widest uppercase opacity-85"
-            style={{ color: "#5F4F41" }}
+            style={{ color: "#641414" }}
           >
             {item.label}
           </span>
