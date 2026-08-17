@@ -160,7 +160,7 @@ const Index = () => {
                     className="font-arabic text-lg sm:text-xl font-bold whitespace-nowrap text-center"
                     style={{ color: "#B08A3C" }}
                   >
-                    كوكب الحميصي
+                    كوكب الحمصي
                   </span>
                 </div>
 
