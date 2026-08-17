@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Phone, Music, Camera, MapPin, Heart, X, Download, RefreshCw, Share2 } from "lucide-react";
 import etImg from "@/assets/et.svg";
 // 🎵 استيراد ملف الصوت m4a
-import bgMusic from "@/assets/music.m4a";
+import bgMusic from "@/assets/rh.m4a";
 
 interface NavigationDockProps {
   active: boolean;
