@@ -1,5 +1,11 @@
 import { useRef, useState, useEffect } from "react";
-import { Baby, CameraOff, QrCode } from "lucide-react";
+import {
+  Baby,
+  CameraOff,
+  QrCode,
+  UserRoundCheck,
+  Music2,
+} from "lucide-react";
 
 interface DetailItem {
   title: string;
@@ -7,8 +13,42 @@ interface DetailItem {
 }
 
 const details: DetailItem[] = [
-  { title: "جنة الأطفال منازلهم", icon: <Baby className="w-5 h-5 opacity-90" style={{ color: "#B08A3C" }} /> },
-  { title: "يمنع التصوير", icon: <CameraOff className="w-5 h-5 opacity-90" style={{ color: "#B08A3C" }} /> },
+  {
+    title: "دعوة شخصية",
+    icon: (
+      <UserRoundCheck
+        className="w-5 h-5 opacity-90"
+        style={{ color: "#B08A3C" }}
+      />
+    ),
+  },
+  {
+    title: "الحفل موسيقي",
+    icon: (
+      <Music2
+        className="w-5 h-5 opacity-90"
+        style={{ color: "#B08A3C" }}
+      />
+    ),
+  },
+  {
+    title: "جنة الأطفال منازلهم",
+    icon: (
+      <Baby
+        className="w-5 h-5 opacity-90"
+        style={{ color: "#B08A3C" }}
+      />
+    ),
+  },
+  {
+    title: "يمنع التصوير",
+    icon: (
+      <CameraOff
+        className="w-5 h-5 opacity-90"
+        style={{ color: "#B08A3C" }}
+      />
+    ),
+  },
 ];
 
 const EventDetails = () => {
@@ -53,7 +93,7 @@ const EventDetails = () => {
 
       {/* منطقة المستطيلات مع الخط والدوائر الخارجة على اليسار */}
       <div className="w-full relative pl-8 pr-1">
-        
+
         {/* 1. الخط العمودي الخلفي الباهت (خارج المستطيلات على اليسار) */}
         <div
           className="absolute left-2.5 top-6 bottom-6 w-[2px] opacity-30"
@@ -78,13 +118,15 @@ const EventDetails = () => {
 
             return (
               <div key={index} className="relative flex items-center">
-                
+
                 {/* الدائرة المضيئة التفاعلية (على الخط خارج المستطيل من اليسار) */}
                 <div
                   className="absolute -left-[27px] w-4 h-4 rounded-full border-2 transition-all duration-500 ease-out z-20"
                   style={{
                     borderColor: isActive ? "#B08A3C" : "#641414",
-                    backgroundColor: isActive ? "#B08A3C" : "rgba(255, 255, 255, 0.5)",
+                    backgroundColor: isActive
+                      ? "#B08A3C"
+                      : "rgba(255, 255, 255, 0.5)",
                     transform: isActive ? "scale(1.25)" : "scale(1)",
                     boxShadow: isActive
                       ? "0 0 12px 3px rgba(176, 138, 60, 0.9), 0 0 20px 5px rgba(255, 255, 255, 0.8)"
