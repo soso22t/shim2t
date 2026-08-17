@@ -417,7 +417,7 @@ const Index = () => {
                     className="flex items-center justify-center gap-2 pt-0.5"
                   style={{
                       color: "#641414",
-                      transform: "translateY(130px)"
+                      transform: "translateY(100px)"
                     }}
                   >
                     <Heart
