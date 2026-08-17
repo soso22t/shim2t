@@ -172,7 +172,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
       // الاسم
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillStyle = "#FFFFFF";
+      ctx.fillStyle = "#B08A3C";
       ctx.font = "bold 52px IranNastaliq";
 
       ctx.shadowColor = "rgba(0,0,0,0.45)";
@@ -275,9 +275,9 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
                 {/* النصوص */}
                 <div className="absolute inset-0 pointer-events-none flex flex-col justify-end p-6 text-center bg-gradient-to-t from-black/80 via-black/25 to-transparent">
-                  <div className="pb-16 flex flex-col items-center gap-1.5 text-white drop-shadow-2xl">
+                  <div className="pb-16 flex flex-col items-center gap-1.5 drop-shadow-2xl">
                     <p
-                      style={{ fontFamily: "'IranNastaliq', sans-serif" }}
+                      style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#B08A3C" }}
                       className="text-3xl font-bold"
                     >
                       عبـداللّٰه & ريسـان
@@ -291,7 +291,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                     onClick={capturePhoto}
                     className="w-20 h-20 rounded-full border-4 border-white/80 bg-white/20 flex items-center justify-center cursor-pointer active:scale-95 transition-transform backdrop-blur-sm"
                   >
-                    <div className="w-16 h-16 rounded-full bg-white shadow-xl" />
+                    <div className="w-16 h-16 rounded-full shadow-xl" style={{ backgroundColor: "#B08A3C" }} />
                   </button>
                 </div>
               </>
@@ -337,7 +337,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                       onClick={handleShare}
                       className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-xl font-arabic text-sm font-bold shadow-lg transition-all active:scale-95 cursor-pointer"
                       style={{
-                        backgroundColor: "#8C7A6B",
+                        backgroundColor: "#B08A3C",
                         color: "#FFFFFF",
                       }}
                     >
@@ -366,12 +366,12 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
             className="relative w-full max-w-[380px] rounded-[32px] px-7 py-8 shadow-2xl border border-white/30"
             style={{
               background: "rgba(245, 239, 231, 0.96)",
-              color: "#5F4F41",
+              color: "#641414",
             }}
           >
             {/* زخرفة الركن العلوي */}
-            <div className="absolute top-3 right-4 text-xl opacity-60">❈</div>
-            <div className="absolute top-3 left-4 text-xl opacity-60">❈</div>
+            <div className="absolute top-3 right-4 text-xl opacity-60" style={{ color: "#B08A3C" }}>❈</div>
+            <div className="absolute top-3 left-4 text-xl opacity-60" style={{ color: "#B08A3C" }}>❈</div>
 
             {!rsvpSent ? (
               <>
@@ -379,14 +379,14 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                 <div className="text-center mb-7">
                   <h2
                     className="text-2xl font-bold"
-                    style={{ fontFamily: "'IranNastaliq', sans-serif" }}
+                    style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#B08A3C" }}
                   >
                     تأكيـد الحضور
                   </h2>
 
                   <p
                     className="mt-2 text-sm"
-                    style={{ fontFamily: "'Almarai', sans-serif" }}
+                    style={{ fontFamily: "'Almarai', sans-serif", color: "#641414" }}
                   >
                     يسعدنا ويشرفنا حضوركم
                   </p>
@@ -396,7 +396,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                 <div className="mb-5">
                   <label
                     className="block text-right mb-2 text-sm font-bold"
-                    style={{ fontFamily: "'Almarai', sans-serif" }}
+                    style={{ fontFamily: "'Almarai', sans-serif", color: "#641414" }}
                   >
                     الاسم الكريم
                   </label>
@@ -410,8 +410,8 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                     style={{
                       fontFamily: "'Almarai', sans-serif",
                       background: "rgba(255,255,255,0.65)",
-                      borderColor: "rgba(95,79,65,0.25)",
-                      color: "#5F4F41",
+                      borderColor: "rgba(100,20,20,0.25)",
+                      color: "#641414",
                     }}
                   />
                 </div>
@@ -426,13 +426,13 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                       fontFamily: "'Almarai', sans-serif",
                       background:
                         rsvpStatus === "attending"
-                          ? "#5F4F41"
+                          ? "#641414"
                           : "rgba(255,255,255,0.65)",
                       color:
                         rsvpStatus === "attending"
                           ? "#FFFFFF"
-                          : "#5F4F41",
-                      borderColor: "#5F4F41",
+                          : "#641414",
+                      borderColor: "#641414",
                     }}
                   >
                     تأكيد الحضور
@@ -446,13 +446,13 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                       fontFamily: "'Almarai', sans-serif",
                       background:
                         rsvpStatus === "declined"
-                          ? "#5F4F41"
+                          ? "#641414"
                           : "rgba(255,255,255,0.65)",
                       color:
                         rsvpStatus === "declined"
                           ? "#FFFFFF"
-                          : "#5F4F41",
-                      borderColor: "#5F4F41",
+                          : "#641414",
+                      borderColor: "#641414",
                     }}
                   >
                     الاعتذار عن الحضور
@@ -473,7 +473,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   className="w-full py-3.5 rounded-2xl font-bold transition-all active:scale-95"
                   style={{
                     fontFamily: "'Almarai', sans-serif",
-                    background: "#5F4F41",
+                    background: "#641414",
                     color: "#FFFFFF",
                   }}
                 >
@@ -487,7 +487,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   className="w-full mt-3 py-2 text-sm"
                   style={{
                     fontFamily: "'Almarai', sans-serif",
-                    color: "#5F4F41",
+                    color: "#641414",
                   }}
                 >
                   إلغاء
@@ -496,11 +496,11 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
             ) : (
               /* رسالة النجاح */
               <div className="text-center py-6">
-                <div className="text-4xl mb-5">♡</div>
+                <div className="text-4xl mb-5" style={{ color: "#B08A3C" }}>♡</div>
 
                 <h2
                   className="text-2xl font-bold mb-4"
-                  style={{ fontFamily: "'IranNastaliq', sans-serif" }}
+                  style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#B08A3C" }}
                 >
                   {rsvpStatus === "attending"
                     ? "تم تأكيـد حضـوركم"
@@ -509,7 +509,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
                 <p
                   className="text-sm leading-8"
-                  style={{ fontFamily: "'Almarai', sans-serif" }}
+                  style={{ fontFamily: "'Almarai', sans-serif", color: "#641414" }}
                 >
                   {rsvpStatus === "attending"
                     ? "نسعد بحضوركم ومشاركتكم لنا هذه الفرحة"
@@ -522,7 +522,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   className="w-full mt-7 py-3.5 rounded-2xl font-bold"
                   style={{
                     fontFamily: "'Almarai', sans-serif",
-                    background: "#5F4F41",
+                    background: "#641414",
                     color: "#FFFFFF",
                   }}
                 >
@@ -530,8 +530,8 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                 </button>
 
                 {/* زخارف */}
-                <div className="absolute bottom-3 right-4 text-xl opacity-60">❈</div>
-                <div className="absolute bottom-3 left-4 text-xl opacity-60">❈</div>
+                <div className="absolute bottom-3 right-4 text-xl opacity-60" style={{ color: "#B08A3C" }}>❈</div>
+                <div className="absolute bottom-3 left-4 text-xl opacity-60" style={{ color: "#B08A3C" }}>❈</div>
               </div>
             )}
           </div>
@@ -544,7 +544,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
           className="w-full px-3 py-2.5 rounded-3xl border border-white/50 shadow-2xl flex items-center justify-around backdrop-blur-md"
           style={{
             background: "rgba(255, 255, 255, 0.45)",
-            boxShadow: "0 10px 30px rgba(95, 79, 65, 0.2)",
+            boxShadow: "0 10px 30px rgba(100, 20, 20, 0.2)",
           }}
         >
           {/* 1. تواصل */}
@@ -552,8 +552,8 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
             onClick={handlePhoneClick}
             className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
           >
-            <Phone className="w-5 h-5" style={{ color: "#5F4F41" }} />
-            <span className="font-arabic text-[11px] font-bold" style={{ color: "#5F4F41" }}>
+            <Phone className="w-5 h-5" style={{ color: "#641414" }} />
+            <span className="font-arabic text-[11px] font-bold" style={{ color: "#641414" }}>
               تواصل
             </span>
           </button>
@@ -565,9 +565,9 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
           >
             <Music
               className={`w-5 h-5 transition-opacity ${isPlaying ? "opacity-100 animate-pulse" : "opacity-50"}`}
-              style={{ color: "#5F4F41" }}
+              style={{ color: "#641414" }}
             />
-            <span className="font-arabic text-[11px] font-bold" style={{ color: "#5F4F41" }}>
+            <span className="font-arabic text-[11px] font-bold" style={{ color: "#641414" }}>
               موسيقى
             </span>
           </button>
@@ -579,7 +579,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
           >
             <div
               className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg border border-white/40"
-              style={{ background: "#5F4F41" }}
+              style={{ background: "#641414" }}
             >
               <Camera className="w-6 h-6 text-white" />
             </div>
@@ -592,8 +592,8 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
             }}
             className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
           >
-            <MapPin className="w-5 h-5" style={{ color: "#5F4F41" }} />
-            <span className="font-arabic text-[11px] font-bold" style={{ color: "#5F4F41" }}>
+            <MapPin className="w-5 h-5" style={{ color: "#641414" }} />
+            <span className="font-arabic text-[11px] font-bold" style={{ color: "#641414" }}>
               الموقع
             </span>
           </button>
@@ -608,8 +608,8 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
             }}
             className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
           >
-            <Heart className="w-5 h-5" style={{ color: "#5F4F41" }} />
-            <span className="font-arabic text-[11px] font-bold" style={{ color: "#5F4F41" }}>
+            <Heart className="w-5 h-5" style={{ color: "#641414" }} />
+            <span className="font-arabic text-[11px] font-bold" style={{ color: "#641414" }}>
               تأكيد الحضور
             </span>
           </button>
