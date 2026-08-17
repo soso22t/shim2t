@@ -113,37 +113,37 @@ setTimeout(() => {
                 ولأن الفرحة لا تكتمل الا برويتكم
               </p>
               <p className="font-arabic text-base sm:text-lg opacity-90 pb-2" style={{ color: "#641414" }}>
-                نتشرف بدعوتكم لحضور حفل زفاف
+                وبكل الحـب والــود تتــشرف
               </p>
 
               {/* السطر الخامس مقسم: أم محمد السلماني (Almarai) + & (wa.ttf) + أم طلال السعيد (Almarai) */}
-             {/* <div className="flex items-center justify-center gap-1 text-lg sm:text-xl font-bold py-2" style={{ color: "#B08A3C" }}>
-                <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم محمد السلماني</span>
+              <div className="flex items-center justify-center gap-1 text-lg sm:text-xl font-bold py-2" style={{ color: "#B08A3C" }}>
+                <span style={{ fontFamily: "'Almarai', sans-serif" }}>السيدة كوكب عبدالله الحميصي</span>
                 <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif" }}>&</span>
-                <span style={{ fontFamily: "'Almarai', sans-serif" }}>أم طلال السعيد</span>
+                <span style={{ fontFamily: "'Almarai', sans-serif" }}>السيدة مريم باخشوين</span>
               </div>
 
               {/* السطر السادس */}
-            {/*  <p className="font-arabic text-sm sm:text-base pt-2" style={{ color: "#641414" }}>
-                بدعوتكن لحضور حفل عقد قران نجليهما
+            <p className="font-arabic text-sm sm:text-base pt-2" style={{ color: "#641414" }}>
+                بدعوتكم لحضور حفل زفاف
               </p>
 
               {/* مسافة واضحة ومقصودة قبل سطر أسماء العروسين */}
-            {/*  <div className="h-6"></div>
+             <div className="h-6"></div>
 
               {/* السطر الاخير في المربع: عبـداللّٰه & ريسـان */}
               <div className="py-2 flex items-center justify-center gap-2">
-                <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#B08A3C" }}>عبـداللّٰه</span>
+                <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#B08A3C" }}>عبـدالرحيم</span>
                 <span className="text-2xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#B08A3C" }}>&</span>
-                <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#B08A3C" }}>ريسـان</span>
+                <span className="text-4xl sm:text-5xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#B08A3C" }}>آيسـات</span>
               </div>
             </div>
 
             {/* قسم الموقع */}
             <div id="location" className="text-center space-y-0.5 py-1">
               <h3 className="font-arabic text-base sm:text-lg font-bold" style={{ color: "#B08A3C" }}>الموقع</h3>
-              <p className="font-arabic text-sm font-semibold" style={{ color: "#B08A3C" }}>قاعـة لافينا للإحتفالات</p>
-              <p className="font-arabic text-xs font-medium opacity-90" style={{ color: "#641414" }}>جدة</p>
+              <p className="font-arabic text-sm font-semibold" style={{ color: "#B08A3C" }}>قاعة الف ليلة وليلة</p>
+              <p className="font-arabic text-xs font-medium opacity-90" style={{ color: "#641414" }}>فندق تاج سيلين</p>
             </div>
 
             {/* التقويم */}
@@ -153,14 +153,14 @@ setTimeout(() => {
                 style={{ background: "rgba(233, 221, 212, 0.85)", color: "#641414" }}
               >
                 <div className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold" style={{ background: "#641414", color: "#FFFFFF" }}>
-                  <span>الثلاثاء</span>
-                  <span className="text-sm font-extrabold" style={{ color: "#B08A3C" }}>أغسطس</span>
+                  <span>الجمعة</span>
+                  <span className="text-sm font-extrabold" style={{ color: "#B08A3C" }}>سبتمبر</span>
                   <span className="font-display">2026</span>
                 </div>
                 <div className="py-4 px-4 space-y-0.5">
-                  <div className="font-display text-4xl font-extrabold tracking-tight" style={{ color: "#B08A3C" }}>25</div>
-                  <div className="font-arabic text-sm font-bold" style={{ color: "#641414" }}>الثلاثاء</div>
-                  <div className="font-display text-xs font-semibold opacity-80" style={{ color: "#641414" }}>PM 8:00</div>
+                  <div className="font-display text-4xl font-extrabold tracking-tight" style={{ color: "#B08A3C" }}>18</div>
+                  <div className="font-arabic text-sm font-bold" style={{ color: "#641414" }}>الجمعة</div>
+                  {/* <div className="font-display text-xs font-semibold opacity-80" style={{ color: "#641414" }}>PM 8:00</div>*/}
                 </div>
               </div>
 
@@ -220,9 +220,9 @@ setTimeout(() => {
                 <Reveal>
                   {/* عبـداللّٰه & ريسـان في الذيل */}
                   <div className="flex items-center justify-center gap-2">
-                    <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#B08A3C" }}>عبـداللّٰه</span>
+                    <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#B08A3C" }}>عبـدالرحيم</span>
                     <span className="text-xl" style={{ fontFamily: "'WaFont', sans-serif", color: "#B08A3C" }}>&</span>
-                    <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#B08A3C" }}>ريسـان</span>
+                    <span className="text-2xl sm:text-3xl" style={{ fontFamily: "'IranNastaliq', sans-serif", color: "#B08A3C" }}>آيسـات</span>
                   </div>
                 </Reveal>
 
