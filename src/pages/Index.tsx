@@ -24,7 +24,7 @@ const Index = () => {
         document.documentElement.scrollHeight - window.innerHeight;
       const distance = targetPosition - startPosition;
       let startTime: number;
-      const duration = 35000; // 18 ثانية
+      const duration = 50000; // 18 ثانية
 
       const animation = () => {
         const elapsed = Date.now() - startTime;
@@ -234,25 +234,25 @@ const Index = () => {
             {/* قسم الموقع */}
             <div id="location" className="text-center space-y-0.5 py-1">
               <h3
-                className="font-arabic text-base sm:text-lg font-bold"
-                style={{ color: "#B08A3C" }}
-              >
-                الموقع
-              </h3>
+  className="font-arabic text-lg sm:text-xl font-bold"
+  style={{ color: "#B08A3C" }}
+>
+  الموقع
+</h3>
 
-              <p
-                className="font-arabic text-sm font-semibold"
-                style={{ color: "#641414" }}
-              >
-                قاعة الف ليلة وليلة
-              </p>
+<p
+  className="font-arabic text-lg sm:text-xl font-bold"
+  style={{ color: "#641414" }}
+>
+  قاعة الف ليلة وليلة
+</p>
 
-              <p
-                className="font-arabic text-xs font-medium opacity-90"
-                style={{ color: "#641414" }}
-              >
-                فندق تاج سيلين
-              </p>
+<p
+  className="font-arabic text-base sm:text-lg font-semibold"
+  style={{ color: "#641414" }}
+>
+  فندق تاج سيلين
+</p>
             </div>
 
             {/* التقويم */}
