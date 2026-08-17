@@ -120,7 +120,7 @@ const Index = () => {
                 className="font-arabic text-sm sm:text-base"
                 style={{ color: "#641414" }}
               >
-                ولأن الفرحة لا تكتمل الا برويتكم
+                ولأن الفرحة لا تكتمل الا برؤيتكم
               </p>
 
               <p
