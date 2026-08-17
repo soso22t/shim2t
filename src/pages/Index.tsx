@@ -130,51 +130,60 @@ const Index = () => {
                 وبكل الحـب والــود تتــشرف
               </p>
 
-              {/* السيدة فوق أسماء الأمهات */}
-              <div
-                className="flex items-center justify-center gap-1 text-sm sm:text-base font-bold py-2"
-                style={{ color: "#641414" }}
-              >
-                <span style={{ fontFamily: "'Almarai', sans-serif" }}>
-                  السيدة
-                </span>
+              {/* السيدة فوق منتصف كل اسم */}
+              <div className="flex items-center justify-center gap-1 py-2">
+                <div className="w-[45%] flex justify-center">
+                  <span
+                    className="font-arabic text-sm sm:text-base font-bold"
+                    style={{ color: "#641414" }}
+                  >
+                    السيدة
+                  </span>
+                </div>
 
-                <span
-                  className="mx-5"
-                  style={{ fontFamily: "'Almarai', sans-serif" }}
-                >
-                  السيدة
-                </span>
+                <div className="w-[10%]" />
+
+                <div className="w-[45%] flex justify-center">
+                  <span
+                    className="font-arabic text-sm sm:text-base font-bold"
+                    style={{ color: "#641414" }}
+                  >
+                    السيدة
+                  </span>
+                </div>
               </div>
 
-              {/* أسماء الأمهات في نفس السطر */}
-              <div
-                className="flex items-center justify-center gap-1 text-lg sm:text-xl font-bold"
-                style={{ color: "#B08A3C" }}
-              >
-                <span
-                  className="whitespace-nowrap"
-                  style={{ fontFamily: "'Almarai', sans-serif" }}
-                >
-                  كوكب عبدالله الحميصي
-                </span>
+              {/* أسماء الأمهات بنفس الحجم والمساحة ومتوازية */}
+              <div className="flex items-center justify-center gap-1">
+                <div className="w-[45%] flex justify-center">
+                  <span
+                    className="font-arabic text-lg sm:text-xl font-bold whitespace-nowrap text-center"
+                    style={{ color: "#B08A3C" }}
+                  >
+                    كوكب عبدالله الحميصي
+                  </span>
+                </div>
 
-                <span
-                  className="text-2xl mx-1"
-                  style={{
-                    fontFamily: "'WaFont', sans-serif",
-                    color: "#641414",
-                  }}
-                >
-                  &
-                </span>
+                <div className="w-[10%] flex items-center justify-center">
+                  <span
+                    className="text-2xl"
+                    style={{
+                      fontFamily: "'WaFont', sans-serif",
+                      color: "#641414",
+                    }}
+                  >
+                    &
+                  </span>
+                </div>
 
-                <span
-                  className="whitespace-nowrap"
-                  style={{ fontFamily: "'Almarai', sans-serif" }}
-                >
-                  مريم باخشوين
-                </span>
+                <div className="w-[45%] flex justify-center">
+                  <span
+                    className="font-arabic text-lg sm:text-xl font-bold whitespace-nowrap text-center"
+                    style={{ color: "#B08A3C" }}
+                  >
+                    مريم باخشوين
+                  </span>
+                </div>
               </div>
 
               {/* السطر السادس */}
@@ -385,7 +394,7 @@ const Index = () => {
                       className="text-xl"
                       style={{
                         fontFamily: "'WaFont', sans-serif",
-                        color: "#B08A3C",
+                        color: "#641414",
                       }}
                     >
                       &
