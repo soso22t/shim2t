@@ -24,7 +24,7 @@ const Index = () => {
         document.documentElement.scrollHeight - window.innerHeight;
       const distance = targetPosition - startPosition;
       let startTime: number;
-      const duration = 18000; // 18 ثانية
+      const duration = 25000; // 18 ثانية
 
       const animation = () => {
         const elapsed = Date.now() - startTime;
@@ -160,7 +160,7 @@ const Index = () => {
                     className="font-arabic text-lg sm:text-xl font-bold whitespace-nowrap text-center"
                     style={{ color: "#B08A3C" }}
                   >
-                    كوكب عبدالله الحميصي
+                    كوكب الحميصي
                   </span>
                 </div>
 
