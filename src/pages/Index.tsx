@@ -90,10 +90,10 @@ const Index = () => {
             <div
               className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-xl shadow-2xl space-y-2.5"
               style={{
-                background: "rgba(48, 0, 16, 0.62)",
+                background: "transparent",
                 color: "#FFFFFF",
-                border: "1px solid #B08A3C",
-                boxShadow: "0 0 15px rgba(176, 138, 60, 0.35), 0 20px 50px rgba(0, 0, 0, 0.35)",
+                border: "0.5px solid #B08A3C",
+                boxShadow: "0 0 12px rgba(176, 138, 60, 0.4), 0 20px 50px rgba(0, 0, 0, 0.2)",
               }}
             >
               {/* الرقم 2 */}
@@ -266,18 +266,18 @@ const Index = () => {
               <div
                 className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-xl shadow-2xl text-center"
                 style={{
-                  background: "rgba(48, 0, 16, 0.62)",
+                  background: "transparent",
                   color: "#FFFFFF",
-                  border: "1px solid #B08A3C",
-                  boxShadow: "0 0 15px rgba(176, 138, 60, 0.35), 0 20px 50px rgba(0, 0, 0, 0.35)",
+                  border: "0.5px solid #B08A3C",
+                  boxShadow: "0 0 12px rgba(176, 138, 60, 0.4), 0 20px 50px rgba(0, 0, 0, 0.2)",
                 }}
               >
                 <div
-                  className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold"
+                  className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold backdrop-blur-md"
                   style={{
-                    background: "rgba(35, 0, 12, 0.82)",
+                    background: "rgba(0, 0, 0, 0.15)",
                     color: "#FFFFFF",
-                    borderBottom: "1px solid rgba(176, 138, 60, 0.5)",
+                    borderBottom: "0.5px solid rgba(176, 138, 60, 0.5)",
                   }}
                 >
                   <span>الجمعة</span>
@@ -306,8 +306,6 @@ const Index = () => {
                   >
                     الجمعة
                   </div>
-
-                  {/* <div className="font-display text-xs font-semibold opacity-80" style={{ color: "#FFFFFF" }}>PM 8:00</div> */}
                 </div>
               </div>
 
@@ -318,10 +316,10 @@ const Index = () => {
                 }}
                 className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-xl shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
                 style={{
-                  background: "rgba(48, 0, 16, 0.62)",
+                  background: "transparent",
                   color: "#FFFFFF",
-                  border: "1px solid #B08A3C",
-                  boxShadow: "0 0 12px rgba(176, 138, 60, 0.3), 0 12px 30px rgba(0, 0, 0, 0.3)",
+                  border: "0.5px solid #B08A3C",
+                  boxShadow: "0 0 10px rgba(176, 138, 60, 0.35)",
                 }}
               >
                 <Calendar
@@ -383,8 +381,8 @@ const Index = () => {
               <div 
                 className="w-[92%] max-w-md rounded-3xl overflow-hidden backdrop-blur-md shadow-xl mb-6"
                 style={{
-                  border: "1px solid #B08A3C",
-                  boxShadow: "0 0 15px rgba(176, 138, 60, 0.3)",
+                  border: "0.5px solid #B08A3C",
+                  boxShadow: "0 0 12px rgba(176, 138, 60, 0.3)",
                 }}
               >
                 <img
@@ -438,7 +436,6 @@ const Index = () => {
                       transform: "translateY(100px)",
                     }}
                   >
-                    {/* القلب: باللون العودي */}
                     <Heart
                       className="w-4 h-4 fill-current"
                       style={{ color: "#641414" }}
