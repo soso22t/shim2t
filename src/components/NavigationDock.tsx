@@ -301,7 +301,8 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
             {/* زر الإغلاق */}
             <button
               onClick={closeCamera}
-              className="absolute top-6 right-6 z-30 p-2.5 rounded-full bg-black/40 text-white border border-white/20 backdrop-blur-md cursor-pointer"
+              className="absolute top-6 right-6 z-30 p-2.5 rounded-full bg-black/40 text-white backdrop-blur-md cursor-pointer"
+              style={{ border: "none" }}
             >
               <X className="w-6 h-6" />
             </button>
@@ -360,10 +361,11 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                 {/* الكارت السفلي بأزرار التحكم */}
                 <div className="absolute bottom-6 z-30 w-[90%] max-w-[360px]">
                   <div
-                    className="w-full p-4 rounded-3xl backdrop-blur-xl border border-white/30 flex flex-col items-center gap-3 shadow-2xl"
+                    className="w-full p-4 rounded-3xl backdrop-blur-xl flex flex-col items-center gap-3 shadow-2xl"
                     style={{
-                      background:
-                        "rgba(35, 28, 23, 0.82)",
+                      background: "rgba(35, 28, 23, 0.82)",
+                      border: "none",
+                      boxShadow: "0 0 12px rgba(176, 138, 60, 0.4)",
                     }}
                   >
 
@@ -373,10 +375,10 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                       <a
                         href={capturedImage}
                         download="mohammed-ahood.png"
-                        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-white/20 text-white font-arabic text-sm font-semibold transition-all active:scale-95"
+                        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-white font-arabic text-sm font-semibold transition-all active:scale-95"
                         style={{
-                          background:
-                            "rgba(255, 255, 255, 0.12)",
+                          background: "rgba(255, 255, 255, 0.12)",
+                          border: "none",
                         }}
                       >
                         <Download className="w-4 h-4" />
@@ -387,10 +389,10 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                         onClick={() =>
                           setCapturedImage(null)
                         }
-                        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-white/20 text-white font-arabic text-sm font-semibold transition-all active:scale-95 cursor-pointer"
+                        className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-white font-arabic text-sm font-semibold transition-all active:scale-95 cursor-pointer"
                         style={{
-                          background:
-                            "rgba(255, 255, 255, 0.12)",
+                          background: "rgba(255, 255, 255, 0.12)",
+                          border: "none",
                         }}
                       >
                         <RefreshCw className="w-4 h-4" />
@@ -406,6 +408,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                       style={{
                         backgroundColor: "#B08A3C",
                         color: "#FFFFFF",
+                        border: "none",
                       }}
                     >
                       <Share2 className="w-4 h-4" />
@@ -426,17 +429,18 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
           {/* الخلفية المموهة */}
           <div
-            className="absolute inset-0 bg-black/25 backdrop-blur-md"
+            className="absolute inset-0 bg-black/40 backdrop-blur-md"
             onClick={() => setShowContact(false)}
           />
 
-          {/* المربع */}
+          {/* المربع بدون حدود مع توهج ذهبي */}
           <div
-            className="relative w-full max-w-[380px] rounded-[32px] px-7 py-8 shadow-2xl border border-white/30"
+            className="relative w-full max-w-[380px] rounded-[32px] px-7 py-8 shadow-2xl backdrop-blur-xl"
             style={{
-              background:
-                "rgba(245, 239, 231, 0.96)",
-              color: "#641414",
+              background: "rgba(24, 18, 20, 0.88)",
+              color: "#FFFFFF",
+              border: "none",
+              boxShadow: "0 0 16px rgba(176, 138, 60, 0.4), 0 20px 50px rgba(0, 0, 0, 0.5)",
             }}
           >
 
@@ -476,7 +480,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                 style={{
                   fontFamily:
                     "'Almarai', sans-serif",
-                  color: "#641414",
+                  color: "#FFFFFF",
                 }}
               >
                 0561544851
@@ -484,11 +488,11 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
               {/* وقت الاتصال */}
               <p
-                className="text-sm mb-7"
+                className="text-sm mb-7 opacity-80"
                 style={{
                   fontFamily:
                     "'Almarai', sans-serif",
-                  color: "#641414",
+                  color: "#FFFFFF",
                 }}
               >
                 الاتصال من الساعة 5:00 م الى 8:00 م
@@ -498,12 +502,13 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
               <button
                 type="button"
                 onClick={handleCall}
-                className="w-full py-3.5 rounded-2xl font-bold transition-all active:scale-95 flex items-center justify-center gap-2"
+                className="w-full py-3.5 rounded-2xl font-bold transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer shadow-lg"
                 style={{
                   fontFamily:
                     "'Almarai', sans-serif",
-                  background: "#641414",
+                  background: "#B08A3C",
                   color: "#FFFFFF",
+                  border: "none",
                 }}
               >
                 <Phone className="w-5 h-5" />
@@ -514,11 +519,11 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
               <button
                 type="button"
                 onClick={() => setShowContact(false)}
-                className="w-full mt-3 py-2 text-sm"
+                className="w-full mt-3 py-2 text-sm opacity-80 cursor-pointer"
                 style={{
                   fontFamily:
                     "'Almarai', sans-serif",
-                  color: "#641414",
+                  color: "#FFFFFF",
                 }}
               >
                 إلغاء
@@ -551,17 +556,18 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
           {/* الخلفية المموهة */}
           <div
-            className="absolute inset-0 bg-black/25 backdrop-blur-md"
+            className="absolute inset-0 bg-black/40 backdrop-blur-md"
             onClick={() => setShowRSVP(false)}
           />
 
-          {/* المربع */}
+          {/* المربع بدون حدود مع توهج ذهبي */}
           <div
-            className="relative w-full max-w-[380px] rounded-[32px] px-7 py-8 shadow-2xl border border-white/30"
+            className="relative w-full max-w-[380px] rounded-[32px] px-7 py-8 shadow-2xl backdrop-blur-xl"
             style={{
-              background:
-                "rgba(245, 239, 231, 0.96)",
-              color: "#641414",
+              background: "rgba(24, 18, 20, 0.88)",
+              color: "#FFFFFF",
+              border: "none",
+              boxShadow: "0 0 16px rgba(176, 138, 60, 0.4), 0 20px 50px rgba(0, 0, 0, 0.5)",
             }}
           >
 
@@ -597,11 +603,11 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   </h2>
 
                   <p
-                    className="mt-2 text-sm"
+                    className="mt-2 text-sm opacity-90"
                     style={{
                       fontFamily:
                         "'Almarai', sans-serif",
-                      color: "#641414",
+                      color: "#FFFFFF",
                     }}
                   >
                     يسعدنا ويشرفنا حضوركم
@@ -617,7 +623,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                     style={{
                       fontFamily:
                         "'Almarai', sans-serif",
-                      color: "#641414",
+                      color: "#FFFFFF",
                     }}
                   >
                     الاسم الكريم
@@ -630,15 +636,14 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                       setGuestName(e.target.value)
                     }
                     placeholder="اكتب اسمك"
-                    className="w-full rounded-2xl px-4 py-3 text-right outline-none border"
+                    className="w-full rounded-2xl px-4 py-3 text-right outline-none backdrop-blur-md"
                     style={{
                       fontFamily:
                         "'Almarai', sans-serif",
-                      background:
-                        "rgba(255,255,255,0.65)",
-                      borderColor:
-                        "rgba(100,20,20,0.25)",
-                      color: "#641414",
+                      background: "rgba(255, 255, 255, 0.1)",
+                      border: "none",
+                      boxShadow: "0 0 8px rgba(176, 138, 60, 0.2)",
+                      color: "#FFFFFF",
                     }}
                   />
 
@@ -652,19 +657,17 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                     onClick={() =>
                       setRsvpStatus("attending")
                     }
-                    className="flex-1 py-3 rounded-2xl border transition-all"
+                    className="flex-1 py-3 rounded-2xl transition-all cursor-pointer"
                     style={{
                       fontFamily:
                         "'Almarai', sans-serif",
                       background:
                         rsvpStatus === "attending"
-                          ? "#641414"
-                          : "rgba(255,255,255,0.65)",
-                      color:
-                        rsvpStatus === "attending"
-                          ? "#FFFFFF"
-                          : "#641414",
-                      borderColor: "#641414",
+                          ? "#B08A3C"
+                          : "rgba(255, 255, 255, 0.1)",
+                      color: "#FFFFFF",
+                      border: "none",
+                      boxShadow: rsvpStatus === "attending" ? "0 0 10px rgba(176, 138, 60, 0.5)" : "none",
                     }}
                   >
                     تاكيد الحضور
@@ -675,19 +678,17 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                     onClick={() =>
                       setRsvpStatus("declined")
                     }
-                    className="flex-1 py-3 rounded-2xl border transition-all"
+                    className="flex-1 py-3 rounded-2xl transition-all cursor-pointer"
                     style={{
                       fontFamily:
                         "'Almarai', sans-serif",
                       background:
                         rsvpStatus === "declined"
                           ? "#641414"
-                          : "rgba(255,255,255,0.65)",
-                      color:
-                        rsvpStatus === "declined"
-                          ? "#FFFFFF"
-                          : "#641414",
-                      borderColor: "#641414",
+                          : "rgba(255, 255, 255, 0.1)",
+                      color: "#FFFFFF",
+                      border: "none",
+                      boxShadow: rsvpStatus === "declined" ? "0 0 10px rgba(100, 20, 20, 0.5)" : "none",
                     }}
                   >
                     الاعتذار عن الحضور
@@ -699,12 +700,13 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                 <button
                   type="button"
                   onClick={handleRSVPSubmit}
-                  className="w-full py-3.5 rounded-2xl font-bold transition-all active:scale-95"
+                  className="w-full py-3.5 rounded-2xl font-bold transition-all active:scale-95 cursor-pointer shadow-lg"
                   style={{
                     fontFamily:
                       "'Almarai', sans-serif",
-                    background: "#641414",
+                    background: "#B08A3C",
                     color: "#FFFFFF",
+                    border: "none",
                   }}
                 >
                   إرسال
@@ -716,11 +718,11 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   onClick={() =>
                     setShowRSVP(false)
                   }
-                  className="w-full mt-3 py-2 text-sm"
+                  className="w-full mt-3 py-2 text-sm opacity-80 cursor-pointer"
                   style={{
                     fontFamily:
                       "'Almarai', sans-serif",
-                    color: "#641414",
+                    color: "#FFFFFF",
                   }}
                 >
                   إلغاء
@@ -751,11 +753,11 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                 </h2>
 
                 <p
-                  className="text-sm leading-8"
+                  className="text-sm leading-8 opacity-90"
                   style={{
                     fontFamily:
                       "'Almarai', sans-serif",
-                    color: "#641414",
+                    color: "#FFFFFF",
                   }}
                 >
                   {rsvpStatus === "attending"
@@ -768,12 +770,13 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   onClick={() =>
                     setShowRSVP(false)
                   }
-                  className="w-full mt-7 py-3.5 rounded-2xl font-bold"
+                  className="w-full mt-7 py-3.5 rounded-2xl font-bold cursor-pointer shadow-lg"
                   style={{
                     fontFamily:
                       "'Almarai', sans-serif",
-                    background: "#641414",
+                    background: "#B08A3C",
                     color: "#FFFFFF",
+                    border: "none",
                   }}
                 >
                   العودة إلى الدعوة
@@ -800,16 +803,15 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
         </div>
       )}
 
-      {/* الشريط السفلي الرئيسي */}
+      {/* الشريط السفلي الرئيسي بدون حدود مع توهج ذهبي */}
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[92%] max-w-md pointer-events-auto">
 
         <div
-          className="w-full px-3 py-2.5 rounded-3xl border border-white/50 shadow-2xl flex items-center justify-around backdrop-blur-md"
+          className="w-full px-3 py-2.5 rounded-3xl shadow-2xl flex items-center justify-around backdrop-blur-md"
           style={{
-            background:
-              "rgba(255, 255, 255, 0.45)",
-            boxShadow:
-              "0 10px 30px rgba(100, 20, 20, 0.2)",
+            background: "transparent",
+            border: "none",
+            boxShadow: "0 0 12px rgba(176, 138, 60, 0.4), 0 10px 25px rgba(0, 0, 0, 0.3)",
           }}
         >
 
@@ -820,12 +822,12 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
           >
             <Phone
               className="w-5 h-5"
-              style={{ color: "#641414" }}
+              style={{ color: "#FFFFFF" }}
             />
 
             <span
               className="font-arabic text-[11px] font-bold"
-              style={{ color: "#641414" }}
+              style={{ color: "#FFFFFF" }}
             >
               تواصل
             </span>
@@ -842,12 +844,12 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   ? "opacity-100 animate-pulse"
                   : "opacity-50"
               }`}
-              style={{ color: "#641414" }}
+              style={{ color: "#FFFFFF" }}
             />
 
             <span
               className="font-arabic text-[11px] font-bold"
-              style={{ color: "#641414" }}
+              style={{ color: "#FFFFFF" }}
             >
               موسيقى
             </span>
@@ -859,8 +861,12 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
             className="relative -top-2 flex flex-col items-center justify-center cursor-pointer transition-transform active:scale-95"
           >
             <div
-              className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg border border-white/40"
-              style={{ background: "#641414" }}
+              className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg"
+              style={{ 
+                background: "#B08A3C",
+                border: "none",
+                boxShadow: "0 0 10px rgba(176, 138, 60, 0.6)"
+              }}
             >
               <Camera className="w-6 h-6 text-white" />
             </div>
@@ -876,12 +882,12 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
           >
             <MapPin
               className="w-5 h-5"
-              style={{ color: "#641414" }}
+              style={{ color: "#FFFFFF" }}
             />
 
             <span
               className="font-arabic text-[11px] font-bold"
-              style={{ color: "#641414" }}
+              style={{ color: "#FFFFFF" }}
             >
               الموقع
             </span>
@@ -920,12 +926,12 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
           >
             <Heart
               className="w-5 h-5"
-              style={{ color: "#641414" }}
+              style={{ color: "#FFFFFF" }}
             />
 
             <span
               className="font-arabic text-[11px] font-bold"
-              style={{ color: "#641414" }}
+              style={{ color: "#FFFFFF" }}
             >
               تأكيد الحضور
             </span>
