@@ -31,7 +31,7 @@ const details: DetailItem[] = [
   //  ),
  // },
   {
-    title: "ادارة القاعة تمنع اصطحاب الاطفال منعاّ باتاّ",
+    title: "ادارة القاعة تمنع اصطحاب الاطفال منعاََ باتاََ",
     icon: (
       <Baby
         className="w-5 h-5 opacity-90"
