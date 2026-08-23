@@ -8,7 +8,7 @@ interface EventItem {
 const events: EventItem[] = [
   { time: "9:30 PM", title: "الاستقبال" },
   { time: "12:00 AM", title: "الـزفــة" },
- // { time: "10:30 PM", title: "العشاء" },
+  // { time: "10:30 PM", title: "العشاء" },
 ];
 
 const EventTimeline = () => {
@@ -41,23 +41,28 @@ const EventTimeline = () => {
   return (
     <div
       ref={containerRef}
-      className="w-[92%] max-w-md p-6 sm:p-8 rounded-3xl text-center backdrop-blur-md border border-white/40 shadow-xl relative overflow-hidden my-4"
+      className="w-[92%] max-w-md p-6 sm:p-8 rounded-3xl text-center backdrop-blur-md shadow-xl relative overflow-hidden my-4"
       style={{
-        background: "rgba(255, 255, 255, 0.25)",
-        color: "#641414",
+        background: "rgba(24, 18, 20, 0.45)",
+        color: "#FFFFFF",
+        border: "none",
+        boxShadow: "0 0 16px rgba(176, 138, 60, 0.4), 0 10px 30px rgba(0, 0, 0, 0.3)",
       }}
     >
       {/* عنوان برنامج المناسبة */}
-      <h3 className="font-arabic text-xl sm:text-2xl font-bold mb-8" style={{ color: "#B08A3C" }}>
+      <h3
+        className="font-arabic text-xl sm:text-2xl font-bold mb-8"
+        style={{ color: "#B08A3C" }}
+      >
         برنامج المناسبة
       </h3>
 
       {/* منطقة الخط والدوائر */}
       <div className="relative max-w-xs mx-auto py-2">
-        {/* الخط الخلفي الباهت */}
+        {/* الخط الخلفي الشفاف */}
         <div
           className="absolute left-1/2 top-3 bottom-3 -translate-x-1/2 w-[2px] opacity-30"
-          style={{ backgroundColor: "#641414" }}
+          style={{ backgroundColor: "#FFFFFF" }}
         />
 
         {/* الخط المضيء الذهبي الذي ينزل مع السكرول */}
@@ -78,11 +83,17 @@ const EventTimeline = () => {
             const isActive = scrollProgress >= threshold - 0.1;
 
             return (
-              <div key={index} className="grid grid-cols-5 items-center dir-rtl">
+              <div
+                key={index}
+                className="grid grid-cols-5 items-center dir-rtl"
+              >
                 {/* اسم المناسبة */}
                 <div
                   className="col-span-2 text-left pl-2 sm:pl-3 font-arabic text-sm sm:text-base font-bold transition-opacity duration-300"
-                  style={{ color: "#641414", opacity: isActive ? 1 : 0.5 }}
+                  style={{
+                    color: isActive ? "#B08A3C" : "#FFFFFF",
+                    opacity: isActive ? 1 : 0.6,
+                  }}
                 >
                   {event.title}
                 </div>
@@ -92,8 +103,10 @@ const EventTimeline = () => {
                   <div
                     className="w-4 h-4 rounded-full border-2 transition-all duration-500 ease-out"
                     style={{
-                      borderColor: isActive ? "#B08A3C" : "#641414",
-                      backgroundColor: isActive ? "#B08A3C" : "rgba(255, 255, 255, 0.4)",
+                      borderColor: isActive ? "#B08A3C" : "rgba(255, 255, 255, 0.5)",
+                      backgroundColor: isActive
+                        ? "#B08A3C"
+                        : "rgba(255, 255, 255, 0.2)",
                       transform: isActive ? "scale(1.3)" : "scale(1)",
                       /* توهج ذهبي قوي وواضح */
                       boxShadow: isActive
@@ -106,7 +119,10 @@ const EventTimeline = () => {
                 {/* الوقت */}
                 <div
                   className="col-span-2 text-right pr-2 sm:pr-3 font-display text-xs sm:text-sm font-semibold tracking-wider dir-ltr transition-opacity duration-300"
-                  style={{ color: "#641414", opacity: isActive ? 1 : 0.5 }}
+                  style={{
+                    color: isActive ? "#B08A3C" : "#FFFFFF",
+                    opacity: isActive ? 1 : 0.6,
+                  }}
                 >
                   {event.time}
                 </div>
