@@ -333,7 +333,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   </div>
                 </div>
 
-                {/* زر التقاط الصورة: دائرة ذهبية تحته فقط */}
+                {/* زر التقاط الصورة */}
                 <div className="absolute bottom-6 z-20">
                   <button
                     onClick={capturePhoto}
@@ -854,30 +854,23 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
             </span>
           </button>
 
-          {/* 3. الكاميرا والفلتر */}
+          {/* 3. الكاميرا والفلتر (أيقونة فقط متواسطة الشريط) */}
           <button
             onClick={openCamera}
-            className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
+            className="flex items-center justify-center cursor-pointer transition-transform active:scale-95"
           >
             <div
-              className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg"
+              className="w-11 h-11 rounded-full flex items-center justify-center shadow-lg"
               style={{
                 backgroundColor: "#B08A3C",
                 boxShadow: "0 0 10px rgba(176, 138, 60, 0.5)",
               }}
             >
               <Camera
-                className="w-6 h-6"
+                className="w-5 h-5"
                 style={{ color: "#FFFFFF" }}
               />
             </div>
-
-            <span
-              className="font-arabic text-[11px] font-bold"
-              style={{ color: "#FFFFFF" }}
-            >
-              الكاميرا
-            </span>
           </button>
 
           {/* 4. الموقع */}
