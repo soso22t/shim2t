@@ -88,12 +88,12 @@ const Index = () => {
 
             {/* مربع الزجاج الأول */}
             <div
-              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-xl border border-white/30 shadow-2xl space-y-2.5"
+              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-xl border shadow-2xl space-y-2.5"
               style={{
-                background: "rgba(48, 0, 16, 0.62)",
+                background: "rgba(100, 20, 20, 0.45)",
                 color: "#FFFFFF",
-                border: "1px solid rgba(255, 255, 255, 0.35)",
-                boxShadow: "0 20px 50px rgba(0, 0, 0, 0.35)",
+                border: "1px solid rgba(176, 138, 60, 0.4)",
+                boxShadow: "0 20px 50px rgba(0, 0, 0, 0.4)",
               }}
             >
               {/* الرقم 2 */}
@@ -264,19 +264,20 @@ const Index = () => {
 
               {/* مربع التاريخ */}
               <div
-                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-xl border border-white/30 shadow-2xl text-center"
+                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-xl border shadow-2xl text-center"
                 style={{
-                  background: "rgba(48, 0, 16, 0.62)",
+                  background: "rgba(100, 20, 20, 0.45)",
                   color: "#FFFFFF",
-                  border: "1px solid rgba(255, 255, 255, 0.35)",
-                  boxShadow: "0 20px 50px rgba(0, 0, 0, 0.35)",
+                  border: "1px solid rgba(176, 138, 60, 0.4)",
+                  boxShadow: "0 20px 50px rgba(0, 0, 0, 0.4)",
                 }}
               >
                 <div
-                  className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold"
+                  className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold border-b"
                   style={{
-                    background: "rgba(35, 0, 12, 0.82)",
+                    background: "rgba(60, 10, 10, 0.6)",
                     color: "#FFFFFF",
+                    borderColor: "rgba(176, 138, 60, 0.3)",
                   }}
                 >
                   <span>الجمعة</span>
@@ -305,8 +306,6 @@ const Index = () => {
                   >
                     الجمعة
                   </div>
-
-                  {/* <div className="font-display text-xs font-semibold opacity-80" style={{ color: "#FFFFFF" }}>PM 8:00</div> */}
                 </div>
               </div>
 
@@ -315,11 +314,11 @@ const Index = () => {
                 onClick={() => {
                   window.location.href = "/wedding.ics";
                 }}
-                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-xl border border-white/30 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
+                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-xl border shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
                 style={{
-                  background: "rgba(48, 0, 16, 0.62)",
+                  background: "rgba(100, 20, 20, 0.45)",
                   color: "#FFFFFF",
-                  border: "1px solid rgba(255, 255, 255, 0.35)",
+                  border: "1px solid rgba(176, 138, 60, 0.4)",
                   boxShadow: "0 12px 30px rgba(0, 0, 0, 0.3)",
                 }}
               >
@@ -379,7 +378,7 @@ const Index = () => {
                 ننتظركم بكل حُب
               </p>
 
-              <div className="w-[92%] max-w-md rounded-3xl overflow-hidden backdrop-blur-md border border-white/40 shadow-xl mb-6">
+              <div className="w-[92%] max-w-md rounded-3xl overflow-hidden backdrop-blur-md border border-[#B08A3C]/40 shadow-xl mb-6">
                 <img
                   src={cardImg}
                   alt="بطاقة تذكارية"
@@ -428,11 +427,9 @@ const Index = () => {
                   <div
                     className="flex items-center justify-center gap-2 pt-0.5"
                     style={{
-                      color: "#641414",
                       transform: "translateY(100px)",
                     }}
                   >
-                    {/* القلب: تركته كما هو بدون تغيير */}
                     <Heart
                       className="w-4 h-4 fill-current"
                       style={{ color: "#641414" }}
