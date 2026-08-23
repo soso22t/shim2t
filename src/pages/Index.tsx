@@ -24,7 +24,7 @@ const Index = () => {
         document.documentElement.scrollHeight - window.innerHeight;
       const distance = targetPosition - startPosition;
       let startTime: number;
-      const duration = 50000; // 18 ثانية
+      const duration = 50000; // 50 ثانية
 
       const animation = () => {
         const elapsed = Date.now() - startTime;
@@ -54,7 +54,7 @@ const Index = () => {
       className={`relative min-h-screen text-white ${
         !opened ? "overflow-hidden h-screen" : "overflow-x-hidden"
       }`}
-      style={{ backgroundColor: "#E9DDD4" }}
+      style={{ backgroundColor: "#24000D" }}
     >
       <SprayParticles />
 
@@ -85,11 +85,15 @@ const Index = () => {
           />
 
           <div className="relative z-10 w-full flex flex-col items-center pt-20 sm:pt-32 px-4 space-y-6">
+
+            {/* مربع الزجاج الأول */}
             <div
-              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-md border border-white/50 shadow-2xl space-y-2.5"
+              className="w-[92%] max-w-md p-5 sm:p-7 rounded-3xl text-center backdrop-blur-xl border border-white/30 shadow-2xl space-y-2.5"
               style={{
-                background: "rgba(233, 221, 212, 0.85)",
-                color: "#641414",
+                background: "rgba(48, 0, 16, 0.62)",
+                color: "#FFFFFF",
+                border: "1px solid rgba(255, 255, 255, 0.35)",
+                boxShadow: "0 20px 50px rgba(0, 0, 0, 0.35)",
               }}
             >
               {/* الرقم 2 */}
@@ -111,21 +115,21 @@ const Index = () => {
               {/* الثلاث سطور تحته */}
               <p
                 className="font-arabic text-sm sm:text-base pt-2"
-                style={{ color: "#641414" }}
+                style={{ color: "#FFFFFF" }}
               >
                 بمشاعر مليئة بالفرح والسعادة
               </p>
 
               <p
                 className="font-arabic text-sm sm:text-base"
-                style={{ color: "#641414" }}
+                style={{ color: "#FFFFFF" }}
               >
                 ولأن الفرحة لا تكتمل الا برؤيتكم
               </p>
 
               <p
                 className="font-arabic text-base sm:text-lg opacity-90 pb-2"
-                style={{ color: "#641414" }}
+                style={{ color: "#FFFFFF" }}
               >
                 وبكل الحـب والــود تتــشرف
               </p>
@@ -135,7 +139,7 @@ const Index = () => {
                 <div className="w-[45%] flex justify-center">
                   <span
                     className="font-arabic text-sm sm:text-base font-bold"
-                    style={{ color: "#641414" }}
+                    style={{ color: "#FFFFFF" }}
                   >
                     السيدة
                   </span>
@@ -146,7 +150,7 @@ const Index = () => {
                 <div className="w-[45%] flex justify-center">
                   <span
                     className="font-arabic text-sm sm:text-base font-bold"
-                    style={{ color: "#641414" }}
+                    style={{ color: "#FFFFFF" }}
                   >
                     السيدة
                   </span>
@@ -169,7 +173,7 @@ const Index = () => {
                     className="text-2xl"
                     style={{
                       fontFamily: "'WaFont', sans-serif",
-                      color: "#641414",
+                      color: "#FFFFFF",
                     }}
                   >
                     &
@@ -189,7 +193,7 @@ const Index = () => {
               {/* السطر السادس */}
               <p
                 className="font-arabic text-sm sm:text-base pt-2"
-                style={{ color: "#641414" }}
+                style={{ color: "#FFFFFF" }}
               >
                 بدعوتكم لحضور حفل زفاف
               </p>
@@ -197,7 +201,7 @@ const Index = () => {
               {/* مسافة واضحة ومقصودة قبل سطر أسماء العروسين */}
               <div className="h-6"></div>
 
-              {/* السطر الاخير في المربع: عبـداللّٰه & ريسـان */}
+              {/* السطر الاخير في المربع: عبـدالرحيم & آيسـات */}
               <div className="py-2 flex items-center justify-center gap-2">
                 <span
                   className="text-4xl sm:text-5xl"
@@ -233,41 +237,45 @@ const Index = () => {
 
             {/* قسم الموقع */}
             <div id="location" className="text-center space-y-1 py-2">
-  <h3
-    className="font-arabic text-xl sm:text-2xl font-bold"
-    style={{ color: "#B08A3C" }}
-  >
-    الموقع
-  </h3>
+              <h3
+                className="font-arabic text-xl sm:text-2xl font-bold"
+                style={{ color: "#B08A3C" }}
+              >
+                الموقع
+              </h3>
 
-  <p
-    className="font-arabic text-xl sm:text-2xl font-bold"
-    style={{ color: "#641414" }}
-  >
-    قاعة الف ليلة وليلة
-  </p>
+              <p
+                className="font-arabic text-xl sm:text-2xl font-bold"
+                style={{ color: "#FFFFFF" }}
+              >
+                قاعة الف ليلة وليلة
+              </p>
 
-  <p
-    className="font-arabic text-lg sm:text-xl font-semibold"
-    style={{ color: "#641414" }}
-  >
-    فندق تاج سيلين
-  </p>
-</div>
+              <p
+                className="font-arabic text-lg sm:text-xl font-semibold"
+                style={{ color: "#FFFFFF" }}
+              >
+                فندق تاج سيلين
+              </p>
+            </div>
 
             {/* التقويم */}
             <div className="flex flex-col items-center space-y-3">
+
+              {/* مربع التاريخ */}
               <div
-                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-md border border-white/50 shadow-2xl text-center"
+                className="w-60 sm:w-68 rounded-3xl overflow-hidden backdrop-blur-xl border border-white/30 shadow-2xl text-center"
                 style={{
-                  background: "rgba(233, 221, 212, 0.85)",
-                  color: "#641414",
+                  background: "rgba(48, 0, 16, 0.62)",
+                  color: "#FFFFFF",
+                  border: "1px solid rgba(255, 255, 255, 0.35)",
+                  boxShadow: "0 20px 50px rgba(0, 0, 0, 0.35)",
                 }}
               >
                 <div
                   className="relative px-4 py-2 flex justify-between items-center font-arabic text-xs sm:text-sm font-bold"
                   style={{
-                    background: "#641414",
+                    background: "rgba(35, 0, 12, 0.82)",
                     color: "#FFFFFF",
                   }}
                 >
@@ -293,39 +301,43 @@ const Index = () => {
 
                   <div
                     className="font-arabic text-sm font-bold"
-                    style={{ color: "#641414" }}
+                    style={{ color: "#FFFFFF" }}
                   >
                     الجمعة
                   </div>
 
-                  {/* <div className="font-display text-xs font-semibold opacity-80" style={{ color: "#641414" }}>PM 8:00</div>*/}
+                  {/* <div className="font-display text-xs font-semibold opacity-80" style={{ color: "#FFFFFF" }}>PM 8:00</div> */}
                 </div>
               </div>
 
+              {/* زر حفظ الموعد */}
               <button
                 onClick={() => {
                   window.location.href = "/wedding.ics";
                 }}
-                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-md border border-white/50 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
+                className="flex items-center justify-center gap-2 px-5 py-2 rounded-full backdrop-blur-xl border border-white/30 shadow-md transition-transform active:scale-95 hover:scale-105 cursor-pointer"
                 style={{
-                  background: "rgba(233, 221, 212, 0.85)",
-                  color: "#641414",
+                  background: "rgba(48, 0, 16, 0.62)",
+                  color: "#FFFFFF",
+                  border: "1px solid rgba(255, 255, 255, 0.35)",
+                  boxShadow: "0 12px 30px rgba(0, 0, 0, 0.3)",
                 }}
               >
                 <Calendar
                   className="w-4 h-4"
-                  style={{ color: "#641414" }}
+                  style={{ color: "#FFFFFF" }}
                 />
 
                 <span
                   className="font-arabic text-xs sm:text-sm font-bold"
-                  style={{ color: "#641414" }}
+                  style={{ color: "#FFFFFF" }}
                 >
                   احفظ الموعد
                 </span>
               </button>
             </div>
 
+            {/* العد التنازلي */}
             <div className="w-full max-w-md text-center space-y-2 pt-1">
               <h3
                 className="font-arabic text-base sm:text-lg font-bold"
@@ -378,7 +390,7 @@ const Index = () => {
               <div id="rsvp" className="w-full text-center space-y-1.5">
                 <Reveal>
 
-                  {/* عبـداللّٰه & ريسـان في الذيل */}
+                  {/* عبـدالرحيم & آيسـات في الذيل */}
                   <div className="flex items-center justify-center gap-2">
                     <span
                       className="text-2xl sm:text-3xl"
@@ -394,7 +406,7 @@ const Index = () => {
                       className="text-xl"
                       style={{
                         fontFamily: "'WaFont', sans-serif",
-                        color: "#641414",
+                        color: "#FFFFFF",
                       }}
                     >
                       &
@@ -415,11 +427,12 @@ const Index = () => {
                 <Reveal delay={100}>
                   <div
                     className="flex items-center justify-center gap-2 pt-0.5"
-                  style={{
+                    style={{
                       color: "#641414",
-                      transform: "translateY(100px)"
+                      transform: "translateY(100px)",
                     }}
                   >
+                    {/* القلب: تركته كما هو بدون تغيير */}
                     <Heart
                       className="w-4 h-4 fill-current"
                       style={{ color: "#641414" }}
