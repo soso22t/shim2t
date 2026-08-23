@@ -44,10 +44,12 @@ const Countdown = () => {
       {items.map((item, idx) => (
         <div
           key={idx}
-          className="w-16 h-20 sm:w-20 sm:h-24 rounded-2xl flex flex-col items-center justify-center backdrop-blur-md border border-white/40 shadow-md transition-transform"
+          className="w-16 h-20 sm:w-20 sm:h-24 rounded-2xl flex flex-col items-center justify-center backdrop-blur-md shadow-md transition-transform"
           style={{
-            background: "rgba(255, 255, 255, 0.25)",
-            color: "#641414",
+            background: "transparent",
+            color: "#FFFFFF",
+            border: "none",
+            boxShadow: "0 0 12px rgba(176, 138, 60, 0.4), 0 10px 25px rgba(0, 0, 0, 0.2)",
           }}
         >
           <span
@@ -57,8 +59,8 @@ const Countdown = () => {
             {item.value}
           </span>
           <span
-            className="font-sans text-[9px] sm:text-[10px] font-bold tracking-widest uppercase opacity-85"
-            style={{ color: "#641414" }}
+            className="font-sans text-[9px] sm:text-[10px] font-bold tracking-widest uppercase opacity-90"
+            style={{ color: "#FFFFFF" }}
           >
             {item.label}
           </span>
