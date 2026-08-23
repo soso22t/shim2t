@@ -366,6 +366,27 @@ const Index = () => {
 
             <div className="absolute inset-0 flex flex-col items-center justify-center px-4 py-6">
 
+              {/* مربع زجاج للتنبيه بتأكيد الحضور */}
+              <div
+                className="w-[92%] max-w-md p-4 rounded-3xl text-center backdrop-blur-xl shadow-2xl mb-6 flex flex-col items-center justify-center gap-2"
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  boxShadow: "0 0 12px rgba(176, 138, 60, 0.4), 0 20px 50px rgba(0, 0, 0, 0.2)",
+                }}
+              >
+                <Heart
+                  className="w-5 h-5 fill-current"
+                  style={{ color: "#B08A3C" }}
+                />
+                <p
+                  className="font-arabic text-xs sm:text-sm font-semibold"
+                  style={{ color: "#FFFFFF" }}
+                >
+                  نرجو تأكيد الحضور لاستلام بطاقات الدخول الشخصية
+                </p>
+              </div>
+
               {/* السطر المكبر في الفوتر */}
               <p
                 className="text-6xl sm:text-7xl font-bold text-center mb-3"
