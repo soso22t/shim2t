@@ -482,11 +482,11 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   color: "#FFFFFF",
                 }}
               >
-                0561544851
+                0545252599
               </p>
 
               {/* وقت الاتصال */}
-              <p
+             {/*   <p
                 className="text-sm mb-7 opacity-80"
                 style={{
                   fontFamily:
@@ -495,7 +495,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                 }}
               >
                 الاتصال من الساعة 5:00 م الى 8:00 م
-              </p>
+              </p> */}
 
               {/* زر الاتصال */}
               <button
