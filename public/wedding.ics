@@ -3,12 +3,12 @@ VERSION:2.0
 PRODID:-//Wedding Invitation//AR
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-UID:wedding-20260918@invitation
-DTSTAMP:20260918T000000Z
-DTSTART:20260918T170000Z
-DTEND:20260918T190000Z
-SUMMARY:حفل زفاف عبدالرحيم & ايات
-LOCATION:قاعة الف ليلة وليلة , فندق تاج سيلين
+UID:wedding-20261008@invitation
+DTSTAMP:20261008T000000Z
+DTSTART:20261008T170000Z
+DTEND:20261008T190000Z
+SUMMARY:حفل زفاف محمد & اميمه
+LOCATION:قاعة رسال للاحتفالات والمؤتمرات, الرياض
 DESCRIPTION:يسعدنا تشريفكم ومشاركتنا فرحتنا 🤍💍
 END:VEVENT
 END:VCALENDAR
