@@ -40,15 +40,6 @@ const details: DetailItem[] = [
       />
     ),
   },
-//  }
-   // title: "يمنع التصوير",
-  //  icon: (
-   //   <CameraOff
-      //  className="w-5 h-5 opacity-90"
-    //    style={{ color: "#B08A3C" }}
-   //   />
-  //  ),
- // },
 ];
 
 const EventDetails = () => {
@@ -134,18 +125,19 @@ const EventDetails = () => {
                   }}
                 />
 
-                {/* المستطيل الزجاجي لكل عنصر */}
+                {/* المستطيل الزجاجي لكل عنصر بدون حدود مع توهج ذهبي */}
                 <div
-                  className="w-full flex items-center justify-between px-4 py-3.5 rounded-2xl border transition-all duration-300 shadow-md backdrop-blur-md"
+                  className="w-full flex items-center justify-between px-4 py-3.5 rounded-2xl transition-all duration-300 shadow-md backdrop-blur-md"
                   style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.25)",
-                    borderColor: "rgba(255, 255, 255, 0.4)",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    boxShadow: "0 0 12px rgba(176, 138, 60, 0.4), 0 10px 25px rgba(0, 0, 0, 0.2)",
                   }}
                 >
-                  {/* النص على اليمين */}
+                  {/* النص على اليمين باللون الأبيض */}
                   <span
                     className="font-arabic text-sm sm:text-base font-bold"
-                    style={{ color: "#641414" }}
+                    style={{ color: "#FFFFFF" }}
                   >
                     {item.title}
                   </span>
