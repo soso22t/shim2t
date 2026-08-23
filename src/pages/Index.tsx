@@ -24,7 +24,7 @@ const Index = () => {
         document.documentElement.scrollHeight - window.innerHeight;
       const distance = targetPosition - startPosition;
       let startTime: number;
-      const duration = 50000; // 50 ثانية
+      const duration = 40000; // 50 ثانية
 
       const animation = () => {
         const elapsed = Date.now() - startTime;
@@ -117,25 +117,25 @@ const Index = () => {
                 className="font-arabic text-sm sm:text-base pt-2"
                 style={{ color: "#FFFFFF" }}
               >
-                بمشاعر مليئة بالفرح والسعادة
+                في ليلة يكتمل بها أنسنا، وتحت سماء تتلألأ فرحاً
               </p>
 
               <p
                 className="font-arabic text-sm sm:text-base"
                 style={{ color: "#FFFFFF" }}
               >
-                ولأن الفرحة لا تكتمل الا برؤيتكم
+                ولأن الفرحة لا تكتمل إلا بجميل حضوركم
               </p>
 
               <p
                 className="font-arabic text-base sm:text-lg opacity-90 pb-2"
                 style={{ color: "#FFFFFF" }}
               >
-                وبكل الحـب والــود تتــشرف
+               تتــشرف
               </p>
 
               {/* السيدة فوق منتصف كل اسم */}
-              <div className="flex items-center justify-center gap-1 py-2">
+            {/*   <div className="flex items-center justify-center gap-1 py-2">
                 <div className="w-[45%] flex justify-center">
                   <span
                     className="font-arabic text-sm sm:text-base font-bold"
@@ -154,7 +154,7 @@ const Index = () => {
                   >
                     السيدة
                   </span>
-                </div>
+                </div>*/}
               </div>
 
               {/* أسماء الأمهات بنفس الحجم والمساحة ومتوازية */}
@@ -164,11 +164,11 @@ const Index = () => {
                     className="font-arabic text-lg sm:text-xl font-bold whitespace-nowrap text-center"
                     style={{ color: "#B08A3C" }}
                   >
-                    كوكب الحمصي
+                    أم يزيد
                   </span>
                 </div>
 
-                <div className="w-[10%] flex items-center justify-center">
+            {/*     <div className="w-[10%] flex items-center justify-center">
                   <span
                     className="text-2xl"
                     style={{
@@ -178,16 +178,16 @@ const Index = () => {
                   >
                     &
                   </span>
-                </div>
+                </div>*/}
 
-                <div className="w-[45%] flex justify-center">
+              {/*   <div className="w-[45%] flex justify-center">
                   <span
                     className="font-arabic text-lg sm:text-xl font-bold whitespace-nowrap text-center"
                     style={{ color: "#B08A3C" }}
                   >
                     مريم باخشوين
                   </span>
-                </div>
+                </div>*/}
               </div>
 
               {/* السطر السادس */}
@@ -195,7 +195,7 @@ const Index = () => {
                 className="font-arabic text-sm sm:text-base pt-2"
                 style={{ color: "#FFFFFF" }}
               >
-                بدعوتكم لحضور حفل زفاف
+                بدعوتكم لحضور حفل زفاف اميرها
               </p>
 
               {/* مسافة واضحة ومقصودة قبل سطر أسماء العروسين */}
@@ -210,7 +210,7 @@ const Index = () => {
                     color: "#B08A3C",
                   }}
                 >
-                  عبـدالرحيم
+                 محمـد
                 </span>
 
                 <span
@@ -230,7 +230,7 @@ const Index = () => {
                     color: "#B08A3C",
                   }}
                 >
-                  آيسـات
+                  اميمـه
                 </span>
               </div>
             </div>
@@ -245,17 +245,17 @@ const Index = () => {
               </h3>
 
               <p
-                className="font-arabic text-xl sm:text-2xl font-bold"
+                className="font-arabic text-xl sm:text-xl font-bold"
                 style={{ color: "#FFFFFF" }}
               >
-                قاعة الف ليلة وليلة
+               قاعة رسال للمناسبات والاحتفالات
               </p>
 
               <p
                 className="font-arabic text-lg sm:text-xl font-semibold"
                 style={{ color: "#FFFFFF" }}
               >
-                فندق تاج سيلين
+                الرياض 
               </p>
             </div>
 
@@ -279,13 +279,13 @@ const Index = () => {
                     color: "#FFFFFF",
                   }}
                 >
-                  <span>الجمعة</span>
+                  <span>الخميس</span>
 
                   <span
                     className="text-sm font-extrabold"
                     style={{ color: "#B08A3C" }}
                   >
-                    سبتمبر
+                    اكتوبر
                   </span>
 
                   <span className="font-display">2026</span>
@@ -296,14 +296,14 @@ const Index = () => {
                     className="font-display text-4xl font-extrabold tracking-tight"
                     style={{ color: "#B08A3C" }}
                   >
-                    18
+                    8
                   </div>
 
                   <div
                     className="font-arabic text-sm font-bold"
                     style={{ color: "#FFFFFF" }}
                   >
-                    الجمعة
+                    الخميس
                   </div>
                 </div>
               </div>
@@ -371,7 +371,7 @@ const Index = () => {
                 className="text-6xl sm:text-7xl font-bold text-center mb-3"
                 style={{
                   fontFamily: "'Sull', sans-serif",
-                  color: "#B08A3C",
+                  color: "#FFFFFF",
                 }}
               >
                 ننتظركم بكل حُب
@@ -403,7 +403,7 @@ const Index = () => {
                         color: "#B08A3C",
                       }}
                     >
-                      عبـدالرحيم
+                      محمـد
                     </span>
 
                     <span
@@ -423,7 +423,7 @@ const Index = () => {
                         color: "#B08A3C",
                       }}
                     >
-                      آيسـات
+                      اميمـه
                     </span>
                   </div>
                 </Reveal>
