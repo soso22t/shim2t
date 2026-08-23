@@ -5,6 +5,8 @@ import {
   QrCode,
   UserRoundCheck,
   Music2,
+  Smartphone,
+  Camera,
 } from "lucide-react";
 
 interface DetailItem {
@@ -13,28 +15,43 @@ interface DetailItem {
 }
 
 const details: DetailItem[] = [
+ // { title: "الدعوة شخصية",icon: (  <UserRoundCheck
+        //className="w-5 h-5 opacity-90"
+        //style={{ color: "#B08A3C" }}
+    //  />
+    //),
+  //},
+ // {
+  //  title: "الحفل موسيقي",
+  //  icon: (
+  //    <Music2
+  //      className="w-5 h-5 opacity-90"
+    //    style={{ color: "#B08A3C" }}
+    //  />
+  //  ),
+ // },
   {
-    title: "الدعوة شخصية",
-    icon: (
-      <UserRoundCheck
-        className="w-5 h-5 opacity-90"
-        style={{ color: "#B08A3C" }}
-      />
-    ),
-  },
-  {
-    title: "الحفل موسيقي",
-    icon: (
-      <Music2
-        className="w-5 h-5 opacity-90"
-        style={{ color: "#B08A3C" }}
-      />
-    ),
-  },
-  {
-    title: "جنة الأطفال منازلهم",
+    title: "ادارة القاعة تمنع اصطحاب الاطفال منعاّ باتاّ",
     icon: (
       <Baby
+        className="w-5 h-5 opacity-90"
+        style={{ color: "#B08A3C" }}
+      />
+    ),
+  },
+  {
+    title: "يمنع دخول جوالات الكاميرا",
+    icon: (
+      <Smartphone
+        className="w-5 h-5 opacity-90"
+        style={{ color: "#B08A3C" }}
+      />
+    ),
+  },
+  {
+    title: "يمنع التصوير",
+    icon: (
+      <Camera
         className="w-5 h-5 opacity-90"
         style={{ color: "#B08A3C" }}
       />
