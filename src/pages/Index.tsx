@@ -92,7 +92,7 @@ const Index = () => {
               style={{
                 background: "transparent",
                 color: "#FFFFFF",
-                border: "0.5px solid #B08A3C",
+                border: "none",
                 boxShadow: "0 0 12px rgba(176, 138, 60, 0.4), 0 20px 50px rgba(0, 0, 0, 0.2)",
               }}
             >
@@ -268,7 +268,7 @@ const Index = () => {
                 style={{
                   background: "transparent",
                   color: "#FFFFFF",
-                  border: "0.5px solid #B08A3C",
+                  border: "none",
                   boxShadow: "0 0 12px rgba(176, 138, 60, 0.4), 0 20px 50px rgba(0, 0, 0, 0.2)",
                 }}
               >
@@ -277,7 +277,6 @@ const Index = () => {
                   style={{
                     background: "rgba(0, 0, 0, 0.15)",
                     color: "#FFFFFF",
-                    borderBottom: "0.5px solid rgba(176, 138, 60, 0.5)",
                   }}
                 >
                   <span>الجمعة</span>
@@ -318,7 +317,7 @@ const Index = () => {
                 style={{
                   background: "transparent",
                   color: "#FFFFFF",
-                  border: "0.5px solid #B08A3C",
+                  border: "none",
                   boxShadow: "0 0 10px rgba(176, 138, 60, 0.35)",
                 }}
               >
@@ -381,7 +380,7 @@ const Index = () => {
               <div 
                 className="w-[92%] max-w-md rounded-3xl overflow-hidden backdrop-blur-md shadow-xl mb-6"
                 style={{
-                  border: "0.5px solid #B08A3C",
+                  border: "none",
                   boxShadow: "0 0 12px rgba(176, 138, 60, 0.3)",
                 }}
               >
