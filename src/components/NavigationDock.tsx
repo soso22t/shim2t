@@ -876,9 +876,9 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
           {/* 4. الموقع */}
           <button
             onClick={() => {
-              window.location.href =
-                "https://maps.app.goo.gl/nyTQL8RY9NaFwFEu5?g_st=ic";
-            }}
+  window.location.href =
+    "https://maps.app.goo.gl/hg7hXZAC4AoeKaYL9?g_st=ic";
+}}
             className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
           >
             <MapPin
