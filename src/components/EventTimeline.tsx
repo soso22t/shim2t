@@ -91,8 +91,8 @@ const EventTimeline = () => {
                 <div
                   className="col-span-2 text-left pl-2 sm:pl-3 font-arabic text-sm sm:text-base font-bold transition-opacity duration-300"
                   style={{
-                    color: isActive ? "#B08A3C" : "#FFFFFF",
-                    opacity: isActive ? 1 : 0.6,
+                    color: "#FFFFFF",
+                    opacity: 1,
                   }}
                 >
                   {event.title}
@@ -120,8 +120,8 @@ const EventTimeline = () => {
                 <div
                   className="col-span-2 text-right pr-2 sm:pr-3 font-display text-xs sm:text-sm font-semibold tracking-wider dir-ltr transition-opacity duration-300"
                   style={{
-                    color: isActive ? "#B08A3C" : "#FFFFFF",
-                    opacity: isActive ? 1 : 0.6,
+                    color: "#FFFFFF",
+                    opacity: 1,
                   }}
                 >
                   {event.time}
