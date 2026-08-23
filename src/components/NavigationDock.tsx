@@ -634,7 +634,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                     onChange={(e) =>
                       setGuestName(e.target.value)
                     }
-                    placeholder="اكتب اسمك"
+                    placeholder="اكتب اسمك الثلاثي"
                     className="w-full rounded-2xl px-4 py-3 text-right outline-none backdrop-blur-md"
                     style={{
                       fontFamily:
