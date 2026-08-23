@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 // 🎵 استيراد ملف الصوت m4a
-import bgMusic from "@/assets/rh.m4a";
+import bgMusic from "@/assets/m.m4a";
 
 interface NavigationDockProps {
   active: boolean;
@@ -153,19 +153,19 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
       renderHeight
     );
 
-    // الاسم
+    // الاسم (مكبر بنفس نسبة معاينة الشاشة وبنفس الموقع)
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillStyle = "#B08A3C";
-    ctx.font = "bold 52px IranNastaliq";
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = "bold 80px IranNastaliq";
 
     ctx.shadowColor = "rgba(0,0,0,0.45)";
     ctx.shadowBlur = 10;
 
     ctx.fillText(
-      "عبـدالرحيم & آيسـات",
+      "محمـد & اميمـه",
       canvas.width / 2,
-      canvas.height - 150
+      canvas.height - 180
     );
 
     ctx.shadowColor = "transparent";
@@ -196,7 +196,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
       ) {
         await navigator.share({
           files: [file],
-          title: "عبـدالرحيم & آيسـات",
+          title: "محمـد & اميمـه",
         });
       } else {
         alert(
@@ -319,32 +319,31 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
                 {/* النص */}
                 <div className="absolute inset-0 pointer-events-none flex flex-col justify-end p-6 text-center bg-gradient-to-t from-black/80 via-black/25 to-transparent">
-                  <div className="pb-16 flex flex-col items-center gap-1.5 drop-shadow-2xl">
+                  <div className="pb-24 flex flex-col items-center gap-1.5 drop-shadow-2xl">
                     <p
                       style={{
                         fontFamily:
                           "'IranNastaliq', sans-serif",
-                        color: "#B08A3C",
+                        color: "#FFFFFF",
                       }}
-                      className="text-3xl font-bold"
+                      className="text-5xl font-bold"
                     >
-                      عبـدالرحيم & آيسـات
+                      محمـد & اميمـه
                     </p>
                   </div>
                 </div>
 
-                {/* زر التقاط الصورة */}
+                {/* زر التقاط الصورة: دائرة ذهبية تحته فقط */}
                 <div className="absolute bottom-6 z-20">
                   <button
                     onClick={capturePhoto}
-                    className="w-20 h-20 rounded-full border-4 border-white/80 bg-white/20 flex items-center justify-center cursor-pointer active:scale-95 transition-transform backdrop-blur-sm"
+                    className="w-20 h-20 rounded-full flex items-center justify-center cursor-pointer active:scale-95 transition-transform shadow-2xl"
+                    style={{
+                      backgroundColor: "#B08A3C",
+                      border: "none",
+                      boxShadow: "0 0 15px rgba(176, 138, 60, 0.6)",
+                    }}
                   >
-                    <div
-                      className="w-16 h-16 rounded-full shadow-xl"
-                      style={{
-                        backgroundColor: "#B08A3C",
-                      }}
-                    />
                   </button>
                 </div>
               </>
