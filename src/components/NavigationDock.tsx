@@ -227,15 +227,15 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
     const formData = new URLSearchParams();
 
-    // حقل الاسم
+    // حقل الاسم - الفورم الجديد
     formData.append(
-      "entry.1242947391",
+      "entry.1456442516",
       guestName.trim()
     );
 
-    // حقل الرد
+    // حقل الرد - الفورم الجديد
     formData.append(
-      "entry.861158564",
+      "entry.2082093714",
       rsvpStatus === "attending"
         ? "تاكيد الحضور"
         : "الاعتذار عن الحضور"
@@ -243,7 +243,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
     try {
       await fetch(
-        "https://docs.google.com/forms/d/e/1FAIpQLSfry0we-Wq4O4N4ngl7CasWDEvKqV3_kGkI3Lp_nqFXdQvBXg/formResponse",
+        "https://docs.google.com/forms/d/e/1FAIpQLSeXZ4ZlKGRpjYRxylObWh32sctV27XBmcsR5hFIDuNLdfBZ5A/formResponse",
         {
           method: "POST",
           mode: "no-cors",
@@ -876,9 +876,9 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
           {/* 4. الموقع */}
           <button
             onClick={() => {
-  window.location.href =
-    "https://maps.app.goo.gl/hg7hXZAC4AoeKaYL9?g_st=ic";
-}}
+              window.location.href =
+                "https://maps.app.goo.gl/hg7hXZAC4AoeKaYL9?g_st=ic";
+            }}
             className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
           >
             <MapPin
