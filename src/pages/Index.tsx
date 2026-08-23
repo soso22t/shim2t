@@ -135,7 +135,7 @@ const Index = () => {
               </p>
 
               {/* السيدة فوق منتصف كل اسم */}
-            {/*   <div className="flex items-center justify-center gap-1 py-2">
+              {/*   <div className="flex items-center justify-center gap-1 py-2">
                 <div className="w-[45%] flex justify-center">
                   <span
                     className="font-arabic text-sm sm:text-base font-bold"
@@ -154,8 +154,8 @@ const Index = () => {
                   >
                     السيدة
                   </span>
-                </div>*/}
-              </div>
+                </div>
+              </div> */}
 
               {/* أسماء الأمهات بنفس الحجم والمساحة ومتوازية */}
               <div className="flex items-center justify-center gap-1">
@@ -168,7 +168,7 @@ const Index = () => {
                   </span>
                 </div>
 
-            {/*     <div className="w-[10%] flex items-center justify-center">
+                {/*     <div className="w-[10%] flex items-center justify-center">
                   <span
                     className="text-2xl"
                     style={{
@@ -180,7 +180,7 @@ const Index = () => {
                   </span>
                 </div>*/}
 
-              {/*   <div className="w-[45%] flex justify-center">
+                {/*   <div className="w-[45%] flex justify-center">
                   <span
                     className="font-arabic text-lg sm:text-xl font-bold whitespace-nowrap text-center"
                     style={{ color: "#B08A3C" }}
