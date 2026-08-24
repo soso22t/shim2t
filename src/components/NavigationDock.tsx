@@ -215,7 +215,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
   // الاتصال بالرقم
   const handleCall = () => {
-    window.location.href = "tel:0561544851";
+    window.location.href = "tel:0545252599";
   };
 
   // إرسال الرد مباشرة إلى Google Form
