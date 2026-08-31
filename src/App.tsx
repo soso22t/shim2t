@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Scan from "./pages/Scan.tsx";
 import Manage from "./pages/Manage.tsx";
+import Invite from "./pages/Invite.tsx";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,9 @@ const App = () => (
         <Routes>
           {/* الدعوة الأصلية — لا تغيير */}
           <Route path="/" element={<Index />} />
+
+          {/* رابط الدعوة الخاص بالضيف */}
+          <Route path="/invite/:code" element={<Invite />} />
 
           {/* مسح QR */}
           <Route path="/scan/:token" element={<Scan />} />
