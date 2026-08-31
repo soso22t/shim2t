@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Scan from "./pages/Scan.tsx";
 import Manage from "./pages/Manage.tsx";
@@ -22,8 +21,7 @@ const App = () => (
           {/* الدعوة الأصلية — لا تغيير */}
           <Route path="/" element={<Index />} />
 
-          {/* رابط الدعوة الخاص بالمدعو */}
-          <Route path="/invite/:code" element={<Invite />} />
+    
 
           {/* مسح QR */}
           <Route path="/scan/:token" element={<Scan />} />
