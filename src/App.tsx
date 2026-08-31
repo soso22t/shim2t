@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Scan from "./pages/Scan.tsx";
 import Manage from "./pages/Manage.tsx";
+import Invite from "./pages/Invite.tsx";
 
 const queryClient = new QueryClient();
 
@@ -15,12 +16,21 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+
       <BrowserRouter>
         <Routes>
+          {/* الدعوة الأصلية — لا تغيير */}
           <Route path="/" element={<Index />} />
+
+          {/* رابط الدعوة الخاص بالمدعو */}
+          <Route path="/invite/:code" element={<Invite />} />
+
+          {/* مسح QR */}
           <Route path="/scan/:token" element={<Scan />} />
+
+          {/* إدارة المدعوين */}
           <Route path="/manage/:id" element={<Manage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
