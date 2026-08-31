@@ -1,95 +1,111 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-
 type Guest = {
   id: string;
   name: string;
   phone: string;
   status: string | null;
+  invite_code: string;
+  replaced?: string | null;
+  created_at?: string;
 };
-
 const Manage = () => {
   const { id } = useParams();
-
   const [maxGuests, setMaxGuests] = useState(0);
   const [invitationId, setInvitationId] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
   const [guests, setGuests] = useState<Guest[]>([]);
-
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-
   useEffect(() => {
     const loadInvitation = async () => {
-      const { data, error } = await supabase
-        .from("invitations")
-        .select("*")
-        .eq("manage_code", id)
-        .single();
-
-      if (error) {
-        console.log(error);
+      if (!id) {
+        setError("رابط الإدارة غير صحيح");
+        setLoading(false);
         return;
       }
-
-      setMaxGuests(data.guest_limit);
-      setInvitationId(data.id);
-
-      const { data: guestsData, error: guestsError } = await supabase
-        .from("guests")
-        .select("*")
-        .eq("invitation_id", data.id)
-        .order("created_at");
-
-      if (!guestsError && guestsData) {
-        setGuests(guestsData);
+      setLoading(true);
+      const { data: invitation, error: invitationError } =
+        await supabase
+          .from("invitations")
+          .select("id, guest_limit, manage_code")
+          .eq("manage_code", id)
+          .maybeSingle();
+      if (invitationError) {
+        console.error(invitationError);
+        setError("حدث خطأ أثناء تحميل الدعوة");
+        setLoading(false);
+        return;
       }
+      if (!invitation) {
+        setError("لم يتم العثور على الدعوة");
+        setLoading(false);
+        return;
+      }
+      setMaxGuests(invitation.guest_limit ?? 0);
+      setInvitationId(invitation.id);
+      const { data: guestsData, error: guestsError } =
+        await supabase
+          .from("guests")
+          .select(
+            "id, name, phone, status, invite_code, replaced, created_at"
+          )
+          .eq("invitation_id", invitation.id)
+          .order("created_at", { ascending: true });
+      if (guestsError) {
+        console.error(guestsError);
+        setError("حدث خطأ أثناء تحميل المدعوين");
+        setLoading(false);
+        return;
+      }
+      setGuests((guestsData as Guest[]) || []);
+      setError("");
+      setLoading(false);
     };
-
     loadInvitation();
   }, [id]);
-
-  const addGuest = async () => {
-    const cleanName = name.trim();
-    const cleanPhone = phone.trim();
-
-    if (!cleanName) {
-      setError("يرجى كتابة اسم المدعو");
-      return;
-    }
-
-    if (!cleanPhone) {
-      setError("يرجى كتابة رقم الجوال");
-      return;
-    }
-
-    if (!/^05\d{8}$/.test(cleanPhone)) {
-      setError("رقم الجوال يجب أن يتكون من 10 أرقام ويبدأ بـ 05");
-      return;
-    }
-
-    if (guests.length >= maxGuests) {
-      setError("تم الوصول للحد الأقصى من المدعوين");
-      return;
-    }
-
-    const exists = guests.some(
-      (guest) => guest.phone === cleanPhone
-    );
-
-    if (exists) {
-      setError("رقم الجوال مضاف مسبقًا");
-      return;
-    }
-
-    const inviteCode = crypto
+  const generateInviteCode = () => {
+    return crypto
       .randomUUID()
       .replace(/-/g, "")
       .slice(0, 8)
       .toUpperCase();
-
-    const { data, error } = await supabase
+  };
+  const addGuest = async () => {
+    const cleanName = name.trim();
+    const cleanPhone = phone.trim();
+    setError("");
+    if (!cleanName) {
+      setError("يرجى كتابة اسم المدعو");
+      return;
+    }
+    if (!cleanPhone) {
+      setError("يرجى كتابة رقم الجوال");
+      return;
+    }
+    if (!/^05\d{8}$/.test(cleanPhone)) {
+      setError("رقم الجوال يجب أن يتكون من 10 أرقام ويبدأ بـ 05");
+      return;
+    }
+    if (!invitationId) {
+      setError("لم يتم العثور على الدعوة");
+      return;
+    }
+    if (guests.length >= maxGuests) {
+      setError("تم الوصول للحد الأقصى من المدعوين");
+      return;
+    }
+    const exists = guests.some(
+      (guest) => guest.phone === cleanPhone
+    );
+    if (exists) {
+      setError("رقم الجوال مضاف مسبقًا");
+      return;
+    }
+    const inviteCode = generateInviteCode();
+    const { data, error: insertError } = await supabase
       .from("guests")
       .insert({
         invitation_id: invitationId,
@@ -98,72 +114,62 @@ const Manage = () => {
         invite_code: inviteCode,
         status: "pending",
       })
-      .select()
+      .select(
+        "id, name, phone, status, invite_code, replaced, created_at"
+      )
       .single();
-
-    if (error) {
-      console.log(error);
+    if (insertError || !data) {
+      console.error(insertError);
       setError("حدث خطأ أثناء إضافة المدعو");
       return;
     }
-
-    setGuests((prev) => [...prev, data]);
-    setError("");
+    setGuests((prev) => [...prev, data as Guest]);
     setName("");
     setPhone("");
+    setError("");
   };
-
   const confirmedCount = guests.filter(
     (guest) => guest.status === "attending"
   ).length;
-
   const declinedCount = guests.filter(
     (guest) => guest.status === "declined"
   ).length;
-
   const pendingCount = guests.filter(
     (guest) =>
       guest.status === "pending" ||
       !guest.status
   ).length;
-
   const replaceGuest = async (guest: Guest) => {
-    const newName = window.prompt("اكتب اسم المدعو الجديد");
-
+    if (!invitationId) return;
+    const newName = window.prompt(
+      "اكتب اسم المدعو الجديد"
+    );
     if (!newName?.trim()) return;
-
     const newPhone = window.prompt(
       "اكتب رقم جوال المدعو الجديد\nمثال: 05xxxxxxxx"
     );
-
     if (!newPhone) return;
-
     const cleanNewName = newName.trim();
     const cleanNewPhone = newPhone.replace(/\D/g, "");
-
     if (!/^05\d{8}$/.test(cleanNewPhone)) {
       window.alert(
         "رقم الجوال يجب أن يتكون من 10 أرقام ويبدأ بـ 05"
       );
       return;
     }
-
     const exists = guests.some(
       (item) => item.phone === cleanNewPhone
     );
-
     if (exists) {
       window.alert("رقم الجوال مضاف مسبقًا");
       return;
     }
-
-    const newInviteCode = crypto
-      .randomUUID()
-      .replace(/-/g, "")
-      .slice(0, 8)
-      .toUpperCase();
-
-    const { data, error } = await supabase
+    if (guests.length >= maxGuests) {
+      window.alert("تم الوصول للحد الأقصى من المدعوين");
+      return;
+    }
+    const newInviteCode = generateInviteCode();
+    const { data, error: insertError } = await supabase
       .from("guests")
       .insert({
         invitation_id: invitationId,
@@ -172,29 +178,79 @@ const Manage = () => {
         invite_code: newInviteCode,
         status: "pending",
       })
-      .select()
+      .select(
+        "id, name, phone, status, invite_code, replaced, created_at"
+      )
       .single();
-
-    if (error || !data) {
+    if (insertError || !data) {
+      console.error(insertError);
       window.alert("حدث خطأ أثناء استبدال المدعو");
       return;
     }
-
     const { error: updateError } = await supabase
       .from("guests")
       .update({
         replaced: data.id,
       })
       .eq("id", guest.id);
-
     if (updateError) {
-      window.alert("تمت الإضافة ولكن حدث خطأ في ربط الاستبدال");
+      console.error(updateError);
+      window.alert(
+        "تمت الإضافة ولكن حدث خطأ في ربط الاستبدال"
+      );
       return;
     }
-
-    setGuests((prev) => [...prev, data]);
+    setGuests((prev) => [
+      ...prev,
+      data as Guest,
+    ]);
   };
-
+  if (loading) {
+    return (
+      <div
+        dir="rtl"
+        className="min-h-screen flex items-center justify-center font-arabic"
+        style={{
+          background: "#F9FBFC",
+          color: "#26343B",
+        }}
+      >
+        <div
+          className="text-sm"
+          style={{ color: "#81939B" }}
+        >
+          جاري تحميل الدعوة...
+        </div>
+      </div>
+    );
+  }
+  if (error && !invitationId) {
+    return (
+      <div
+        dir="rtl"
+        className="min-h-screen flex items-center justify-center px-5 font-arabic"
+        style={{
+          background: "#F9FBFC",
+          color: "#26343B",
+        }}
+      >
+        <div className="text-center">
+          <div
+            className="text-lg font-medium"
+            style={{ color: "#26343B" }}
+          >
+            تعذر فتح صفحة الإدارة
+          </div>
+          <div
+            className="mt-2 text-sm"
+            style={{ color: "#C77F8A" }}
+          >
+            {error}
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div
       dir="rtl"
@@ -205,7 +261,6 @@ const Manage = () => {
       }}
     >
       <div className="mx-auto w-full max-w-2xl px-5 py-10 sm:px-7">
-
         {/* Header */}
         <header className="mb-12 text-center">
           <div
@@ -214,20 +269,17 @@ const Manage = () => {
           >
             غيمة
           </div>
-
           <div
             className="mt-3 text-sm font-light"
             style={{ color: "#81939B" }}
           >
             مساحة دعوتك
           </div>
-
           <div
             className="mx-auto mt-5 h-px w-12"
             style={{ background: "#A9DCEB" }}
           />
         </header>
-
         {/* Invitation Preview */}
         <section className="mb-12">
           <div
@@ -236,13 +288,13 @@ const Manage = () => {
           >
             دعوتك
           </div>
-
           <div
             className="overflow-hidden rounded-[28px]"
             style={{
               background: "#FFFFFF",
               border: "1px solid #E5EEF1",
-              boxShadow: "0 18px 45px rgba(75, 120, 135, 0.08)",
+              boxShadow:
+                "0 18px 45px rgba(75, 120, 135, 0.08)",
             }}
           >
             <div
@@ -260,9 +312,11 @@ const Manage = () => {
                 معاينة الدعوة
               </span>
             </div>
-
             <div className="p-5">
               <button
+                onClick={() => {
+                  window.open("/", "_blank");
+                }}
                 className="w-full rounded-2xl py-3 text-sm font-medium transition-all"
                 style={{
                   background: "#73C3DC",
@@ -276,7 +330,6 @@ const Manage = () => {
             </div>
           </div>
         </section>
-
         {/* Statistics */}
         <section className="mb-12">
           <div className="mb-5 text-center">
@@ -286,7 +339,6 @@ const Manage = () => {
             >
               ملخص الدعوة
             </div>
-
             <div
               className="mt-3 text-5xl font-light tracking-tight"
               style={{ color: "#26343B" }}
@@ -305,7 +357,6 @@ const Manage = () => {
                 {maxGuests}
               </span>
             </div>
-
             <div
               className="mt-1 text-xs"
               style={{ color: "#94A5AB" }}
@@ -313,7 +364,6 @@ const Manage = () => {
               المدعوون
             </div>
           </div>
-
           <div
             className="h-[2px] w-full overflow-hidden rounded-full"
             style={{ background: "#E6F0F3" }}
@@ -333,7 +383,6 @@ const Manage = () => {
               }}
             />
           </div>
-
           <div
             className="mt-7 grid grid-cols-3 text-center"
             style={{ color: "#6F8189" }}
@@ -349,7 +398,6 @@ const Manage = () => {
                 تم التأكيد
               </div>
             </div>
-
             <div
               className="border-x"
               style={{ borderColor: "#E2ECEF" }}
@@ -364,7 +412,6 @@ const Manage = () => {
                 بانتظار الرد
               </div>
             </div>
-
             <div>
               <div
                 className="text-2xl font-light"
@@ -378,7 +425,6 @@ const Manage = () => {
             </div>
           </div>
         </section>
-
         {/* Add Guest */}
         <section className="mb-12">
           <div className="mb-5 text-center">
@@ -388,7 +434,6 @@ const Manage = () => {
             >
               إضافة مدعو
             </div>
-
             <div
               className="mt-1 text-xs"
               style={{ color: "#94A5AB" }}
@@ -396,7 +441,6 @@ const Manage = () => {
               أضف الاسم ورقم الجوال لإرسال الدعوة
             </div>
           </div>
-
           <div
             className="rounded-[26px] p-5 sm:p-6"
             style={{
@@ -421,7 +465,6 @@ const Manage = () => {
                   color: "#26343B",
                 }}
               />
-
               <input
                 placeholder="05xxxxxxxx"
                 inputMode="numeric"
@@ -440,7 +483,6 @@ const Manage = () => {
                   color: "#26343B",
                 }}
               />
-
               <button
                 onClick={addGuest}
                 className="w-full rounded-2xl py-3 text-sm font-medium transition-all"
@@ -453,7 +495,6 @@ const Manage = () => {
               >
                 إضافة المدعو
               </button>
-
               {error && (
                 <p
                   className="pt-1 text-center text-xs"
@@ -465,7 +506,6 @@ const Manage = () => {
             </div>
           </div>
         </section>
-
         {/* Guests */}
         <section>
           <div className="mb-5 flex items-end justify-between">
@@ -476,7 +516,6 @@ const Manage = () => {
               >
                 المدعوون
               </div>
-
               <div
                 className="mt-1 text-xs"
                 style={{ color: "#94A5AB" }}
@@ -484,7 +523,6 @@ const Manage = () => {
                 قائمة المدعوين وحالة الرد
               </div>
             </div>
-
             <div
               className="text-xs"
               style={{ color: "#81939B" }}
@@ -492,7 +530,6 @@ const Manage = () => {
               {guests.length} / {maxGuests}
             </div>
           </div>
-
           <div
             className="overflow-hidden rounded-[26px]"
             style={{
@@ -517,14 +554,12 @@ const Manage = () => {
                     : guest.status === "declined"
                     ? "اعتذر"
                     : "بانتظار الرد";
-
                 const dotColor =
                   guest.status === "attending"
                     ? "#73C3DC"
                     : guest.status === "declined"
                     ? "#C7A0AC"
                     : "#B9C4C8";
-
                 return (
                   <div
                     key={guest.id}
@@ -543,15 +578,19 @@ const Manage = () => {
                       >
                         {guest.name}
                       </div>
-
                       <div
                         className="mt-1 text-xs"
                         style={{ color: "#91A1A7" }}
                       >
                         {guest.phone}
                       </div>
+                      <div
+                        className="mt-1 text-[10px]"
+                        style={{ color: "#B0BDC2" }}
+                      >
+                        كود الدعوة: {guest.invite_code}
+                      </div>
                     </div>
-
                     <div className="flex shrink-0 items-center gap-3">
                       <div
                         className="flex items-center gap-1.5 text-xs"
@@ -565,7 +604,6 @@ const Manage = () => {
                         />
                         {status}
                       </div>
-
                       {guest.status === "declined" && (
                         <button
                           onClick={() =>
@@ -586,7 +624,6 @@ const Manage = () => {
             )}
           </div>
         </section>
-
         <footer
           className="mt-14 pb-4 text-center text-xs"
           style={{ color: "#A2B0B5" }}
@@ -597,5 +634,4 @@ const Manage = () => {
     </div>
   );
 };
-
 export default Manage;
