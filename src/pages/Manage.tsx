@@ -790,7 +790,7 @@ const Manage = () => {
               }}
             >
               <img
-                src="https://m.shim2t.com/K.png"
+                src="https://mo.shim2t.com/K.png"
                 alt="معاينة الدعوة"
                 className="w-full h-auto block"
               />
