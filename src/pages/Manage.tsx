@@ -197,9 +197,6 @@ const Manage = () => {
 
   /*
    * إضافة مدعو من جهات الاتصال
-   *
-   * تعمل في المتصفحات التي تدعم Contact Picker API.
-   * إذا لم يكن النظام يدعمها تظهر نافذة منسقة بدل تنبيه الجوال.
    */
   const addFromContacts = async () => {
     try {
@@ -241,11 +238,17 @@ const Manage = () => {
 
       let finalPhone = cleanPhone;
 
-      if (cleanPhone.startsWith("9665") && cleanPhone.length === 12) {
+      if (
+        cleanPhone.startsWith("9665") &&
+        cleanPhone.length === 12
+      ) {
         finalPhone = "0" + cleanPhone.slice(3);
       }
 
-      if (cleanPhone.startsWith("5") && cleanPhone.length === 9) {
+      if (
+        cleanPhone.startsWith("5") &&
+        cleanPhone.length === 9
+      ) {
         finalPhone = "0" + cleanPhone;
       }
 
@@ -278,32 +281,30 @@ const Manage = () => {
   ).length;
 
   /*
-   * إعادة تعيين جهاز جميع الدعوات
+   * إعادة تعيين جهاز مدعو واحد فقط
    */
-  const resetAllDevices = async () => {
-    if (!invitationId) return;
-
+  const resetDevice = async (guest: Guest) => {
     const { error: updateError } = await supabase
       .from("guests")
       .update({
         device_id: null,
       })
-      .eq("invitation_id", invitationId);
+      .eq("id", guest.id);
 
     if (updateError) {
       console.error(updateError);
 
       showMessage(
-        "تعذر إعادة التعيين",
-        "حدث خطأ أثناء إعادة تعيين الأجهزة. حاول مرة أخرى."
+        "تعذر إعادة تعيين الجهاز",
+        "حدث خطأ أثناء إعادة تعيين جهاز هذا المدعو. حاول مرة أخرى."
       );
 
       return;
     }
 
     showMessage(
-      "تمت إعادة التعيين",
-      "تمت إعادة تعيين الأجهزة لجميع الدعوات بنجاح."
+      "تمت إعادة تعيين الجهاز",
+      `تم فصل دعوة ${guest.name} عن الجهاز الحالي ويمكن فتحها من جهاز جديد.`
     );
   };
 
@@ -378,6 +379,14 @@ const Manage = () => {
     window.open(whatsappUrl, "_blank");
   };
 
+  /*
+   * استبدال المدعو
+   *
+   * مهم:
+   * لا يتم إنشاء سجل جديد.
+   * يتم استخدام نفس سجل المدعو المعتذر ونفس invite_code
+   * حتى يبقى العدد كما هو ويعاد استخدام نفس الدعوة والباركود.
+   */
   const replaceGuest = async () => {
     if (!replaceTarget || !invitationId) return;
 
@@ -404,7 +413,9 @@ const Manage = () => {
     }
 
     const exists = guests.some(
-      (item) => item.phone === cleanNewPhone
+      (item) =>
+        item.id !== replaceTarget.id &&
+        item.phone === cleanNewPhone
     );
 
     if (exists) {
@@ -412,31 +423,29 @@ const Manage = () => {
       return;
     }
 
-    if (guests.length >= maxGuests) {
-      setReplaceError(
-        "تم الوصول للحد الأقصى من المدعوين"
-      );
-      return;
-    }
-
-    const newInviteCode = generateInviteCode();
-
-    const { data, error: insertError } = await supabase
+    /*
+     * تحديث نفس المدعو بدل إنشاء مدعو جديد.
+     * هذا يعني أن العدد لن يزيد حتى لو وصل للحد الأقصى.
+     */
+    const { data, error: updateError } = await supabase
       .from("guests")
-      .insert({
-        invitation_id: invitationId,
+      .update({
         name: cleanNewName,
         phone: cleanNewPhone,
-        invite_code: newInviteCode,
         status: "pending",
+        replaced: null,
+        device_id: null,
+        qr_token: null,
+        scanned: false,
       })
+      .eq("id", replaceTarget.id)
       .select(
         "id, name, phone, status, invite_code, replaced, created_at"
       )
       .single();
 
-    if (insertError || !data) {
-      console.error(insertError);
+    if (updateError || !data) {
+      console.error(updateError);
 
       setReplaceError(
         "حدث خطأ أثناء استبدال المدعو، حاول مرة أخرى."
@@ -445,28 +454,16 @@ const Manage = () => {
       return;
     }
 
-    const { error: updateError } = await supabase
-      .from("guests")
-      .update({
-        replaced: data.id,
-      })
-      .eq("id", replaceTarget.id);
-
-    if (updateError) {
-      console.error(updateError);
-
-      showMessage(
-        "تنبيه",
-        "تمت إضافة المدعو الجديد ولكن حدث خطأ في ربط عملية الاستبدال."
-      );
-
-      return;
-    }
-
-    setGuests((prev) => [
-      ...prev,
-      data as Guest,
-    ]);
+    /*
+     * تحديث القائمة مباشرة بنفس السجل
+     */
+    setGuests((prev) =>
+      prev.map((guest) =>
+        guest.id === replaceTarget.id
+          ? (data as Guest)
+          : guest
+      )
+    );
 
     setReplaceModalOpen(false);
     setReplaceTarget(null);
@@ -475,12 +472,12 @@ const Manage = () => {
     setReplaceError("");
 
     /*
-     * فتح واتساب بعد نجاح الاستبدال
+     * إرسال الدعوة الجديدة على نفس invite_code
      */
     sendWhatsApp(
       cleanNewName,
       cleanNewPhone,
-      newInviteCode
+      data.invite_code
     );
   };
 
@@ -578,10 +575,30 @@ const Manage = () => {
             مساحة دعوتك
           </div>
 
-          <div
-            className="mx-auto mt-5 h-px w-12"
-            style={{ background: "#B5A07E" }}
-          />
+          <div className="mt-5 flex items-center justify-center gap-2">
+            <div
+              className="h-px w-14"
+              style={{ background: "#B5A07E" }}
+            />
+
+            <svg
+              width="42"
+              height="24"
+              viewBox="0 0 42 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.5 20.5H32C36.1421 20.5 39.5 17.1421 39.5 13C39.5 9.05887 36.4579 5.875 32.5 5.875C31.8285 5.875 31.1764 5.96125 30.56 6.12375C29.2719 2.8425 26.0879 0.5 22.35 0.5C17.8307 0.5 14.125 4.06123 13.8925 8.52375C12.8476 7.90055 11.0266 7.5 9.5 7.5C4.80558 7.5 1 10.6337 1 14.5C1 17.8137 4.80558 20.5 9.5 20.5H10.5Z"
+                fill="#273247"
+              />
+            </svg>
+
+            <div
+              className="h-px w-14"
+              style={{ background: "#B5A07E" }}
+            />
+          </div>
         </header>
 
         {/* Invitation Preview */}
@@ -804,7 +821,6 @@ const Manage = () => {
                 }}
               />
 
-              {/* إضافة من جهات الاتصال */}
               <button
                 onClick={addFromContacts}
                 className="w-full rounded-2xl py-3 text-sm font-medium transition-all active:scale-[.99]"
@@ -839,56 +855,6 @@ const Manage = () => {
                 </p>
               )}
             </div>
-          </div>
-        </section>
-
-        {/* إدارة الأجهزة والباركود */}
-        <section className="mb-12">
-          <div className="mb-5 text-center">
-            <div
-              className="text-lg font-medium"
-              style={{ color: "#273247" }}
-            >
-              إدارة الدعوات
-            </div>
-
-            <div
-              className="mt-1 text-xs leading-6"
-              style={{ color: "#7B818B" }}
-            >
-              يمكنك إعادة تعيين الأجهزة لجميع الدعوات عند الحاجة
-            </div>
-          </div>
-
-          <div
-            className="rounded-[26px] p-5"
-            style={{
-              background: "#FFFFFF",
-              border: "1px solid #E2E0DA",
-              boxShadow:
-                "0 16px 40px rgba(39,50,71,.05)",
-            }}
-          >
-            <button
-              onClick={() => {
-                showConfirm(
-                  "إعادة تعيين الأجهزة",
-                  "سيتم فصل جميع الدعوات عن الأجهزة الحالية، ويمكن فتحها من جهاز جديد. هل تريد المتابعة؟",
-                  async () => {
-                    setModal(null);
-                    await resetAllDevices();
-                  }
-                );
-              }}
-              className="w-full rounded-2xl py-3 text-sm font-medium transition-all active:scale-[.99]"
-              style={{
-                background: "#F1F0EC",
-                color: "#5F6978",
-                border: "1px solid #E2E0DA",
-              }}
-            >
-              إعادة تعيين الجهاز لجميع الدعوات
-            </button>
           </div>
         </section>
 
@@ -998,6 +964,7 @@ const Manage = () => {
                     {/* الأزرار */}
                     <div className="mt-4 grid grid-cols-2 gap-2">
 
+                      {/* إعادة تعيين الباركود */}
                       <button
                         onClick={() => {
                           showConfirm(
@@ -1019,12 +986,35 @@ const Manage = () => {
                         إعادة تعيين الباركود
                       </button>
 
-                      {guest.status === "declined" ? (
+                      {/* إعادة تعيين الجهاز */}
+                      <button
+                        onClick={() => {
+                          showConfirm(
+                            "إعادة تعيين الجهاز",
+                            `سيتم فصل دعوة ${guest.name} عن الجهاز الحالي ويمكن فتحها من جهاز جديد. هل تريد المتابعة؟`,
+                            async () => {
+                              setModal(null);
+                              await resetDevice(guest);
+                            }
+                          );
+                        }}
+                        className="rounded-xl py-2.5 text-xs font-medium transition-all active:scale-[.98]"
+                        style={{
+                          background: "#F1F0EC",
+                          color: "#5F6978",
+                          border: "1px solid #E2E0DA",
+                        }}
+                      >
+                        إعادة تعيين الجهاز
+                      </button>
+
+                      {/* استبدال */}
+                      {guest.status === "declined" && (
                         <button
                           onClick={() =>
                             openReplaceModal(guest)
                           }
-                          className="rounded-xl py-2.5 text-xs font-medium transition-all active:scale-[.98]"
+                          className="col-span-2 rounded-xl py-2.5 text-xs font-medium transition-all active:scale-[.98]"
                           style={{
                             background: "#273247",
                             color: "#FFFFFF",
@@ -1032,8 +1022,6 @@ const Manage = () => {
                         >
                           استبدال
                         </button>
-                      ) : (
-                        <div />
                       )}
                     </div>
                   </div>
@@ -1043,11 +1031,41 @@ const Manage = () => {
           </div>
         </section>
 
+        {/* Footer */}
         <footer
-          className="mt-14 pb-4 text-center text-xs"
-          style={{ color: "#7B818B" }}
+          className="mt-14 pb-4 text-center"
         >
-          غيمة · دعوات تليق بتفاصيلك
+          <div className="mb-3 flex items-center justify-center gap-2">
+            <div
+              className="h-px w-12"
+              style={{ background: "#B5A07E" }}
+            />
+
+            <svg
+              width="42"
+              height="24"
+              viewBox="0 0 42 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10.5 20.5H32C36.1421 20.5 39.5 17.1421 39.5 13C39.5 9.05887 36.4579 5.875 32.5 5.875C31.8285 5.875 31.1764 5.96125 30.56 6.12375C29.2719 2.8425 26.0879 0.5 22.35 0.5C17.8307 0.5 14.125 4.06123 13.8925 8.52375C12.8476 7.90055 11.0266 7.5 9.5 7.5C4.80558 7.5 1 10.6337 1 14.5C1 17.8137 4.80558 20.5 9.5 20.5H10.5Z"
+                fill="#273247"
+              />
+            </svg>
+
+            <div
+              className="h-px w-12"
+              style={{ background: "#B5A07E" }}
+            />
+          </div>
+
+          <div
+            className="text-xs"
+            style={{ color: "#7B818B" }}
+          >
+            غيمة · دعوات تليق بتفاصيلك
+          </div>
         </footer>
       </div>
 
