@@ -17,6 +17,7 @@ import bgMusic from "@/assets/m.m4a";
 interface NavigationDockProps {
   active: boolean;
   guestName: string;
+  inviteCode: string;
 }
 
 const NavigationDock = ({ active, guestName }: NavigationDockProps) => {
