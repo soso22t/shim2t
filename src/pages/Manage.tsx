@@ -298,20 +298,17 @@ const Manage = () => {
             }}
           >
             <div
-              className="flex items-center justify-center"
-              style={{
-                minHeight: "180px",
-                background:
-                  "linear-gradient(145deg,#FFFFFF,#F2F9FB)",
-              }}
-            >
-              <span
-                className="text-sm"
-                style={{ color: "#9BAEB5" }}
-              >
-                معاينة الدعوة
-              </span>
-            </div>
+  className="w-full overflow-hidden"
+  style={{
+    background: "#FFFFFF",
+  }}
+>
+  <img
+    src="https://m.shim2t.com/K.png"
+    alt="معاينة الدعوة"
+    className="w-full h-auto block"
+  />
+</div>
             <div className="p-5">
               <button
   onClick={() => {
