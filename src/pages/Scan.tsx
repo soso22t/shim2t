@@ -28,7 +28,7 @@ const Scan = () => {
     if (isMounted) setState({ kind: "loading" });
 
     const { data, error } = await supabase
-      .from("rsvps")
+      .from("guests")
       .select("name, scanned")
       .eq("qr_token", cleanToken)
       .maybeSingle();
@@ -50,7 +50,7 @@ if (data.scanned) {
 
 // تحديث scanned
 const { error: updateError } = await supabase
-  .from("rsvps")
+  .from("guests")
   .update({ scanned: true })
   .eq("qr_token", cleanToken);
 
