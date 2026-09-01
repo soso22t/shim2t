@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Index from "./Index";
 
 const Invite = () => {
-  const { code } = useParams();
+  const code = new URLSearchParams(window.location.search).get("invite");
 
   const [loading, setLoading] = useState(true);
   const [valid, setValid] = useState(false);
