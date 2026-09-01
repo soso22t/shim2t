@@ -19,12 +19,11 @@ const App = () => (
 
       <BrowserRouter>
         <Routes>
-          {/* الدعوة الأصلية — لا تغيير */}
+          {/* الدعوة الأصلية — الصفحة الرئيسية */}
           <Route path="/" element={<Index />} />
 
           {/* رابط الدعوة الخاص بالضيف */}
           <Route path="/invite/:code" element={<Invite />} />
-<Route path="/" element={<Invite />} />
 
           {/* مسح QR */}
           <Route path="/scan/:token" element={<Scan />} />
