@@ -376,7 +376,7 @@ const Manage = () => {
         message
       )}`;
 
-    window.open(whatsappUrl, "_blank");
+    window.location.href = whatsappUrl;
   };
 
   /*
