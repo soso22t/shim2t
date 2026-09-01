@@ -11,6 +11,12 @@ import Invite from "./pages/Invite.tsx";
 
 const queryClient = new QueryClient();
 
+const Home = () => {
+  const hasInvite = new URLSearchParams(window.location.search).has("invite");
+
+  return hasInvite ? <Invite /> : <Index />;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -19,10 +25,10 @@ const App = () => (
 
       <BrowserRouter>
         <Routes>
-          {/* الدعوة الأصلية — الصفحة الرئيسية */}
-          <Route path="/" element={<Index />} />
+          {/* الدعوة الأصلية + روابط الضيوف */}
+          <Route path="/" element={<Home />} />
 
-          {/* رابط الدعوة الخاص بالضيف */}
+          {/* رابط الدعوة القديم إن وجد */}
           <Route path="/invite/:code" element={<Invite />} />
 
           {/* مسح QR */}
