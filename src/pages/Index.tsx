@@ -171,7 +171,11 @@ if (inviteCode && !inviteValid) {
       <SprayParticles />
 
       {/* الشريط السفلي للتنقل والموسيقى */}
-      <NavigationDock active={opened} />
+     <NavigationDock
+  active={opened}
+  guestName={guestName}
+  inviteCode={inviteCode || ""}
+/>
 
       {/* 1. الظرف */}
       <Envelope onOpen={() => setOpened(true)} />
