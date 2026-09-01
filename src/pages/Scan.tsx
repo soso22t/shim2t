@@ -17,57 +17,96 @@ const Scan = () => {
   const [state, setState] = useState<State>({ kind: "loading" });
 
   useEffect(() => {
-  let isMounted = true;
+    let isMounted = true;
 
-  const run = async () => {
-    if (!cleanToken) {
-      if (isMounted) setState({ kind: "not_found" });
-      return;
-    }
+    const run = async () => {
+      if (!cleanToken) {
+        if (isMounted) setState({ kind: "not_found" });
+        return;
+      }
 
-    if (isMounted) setState({ kind: "loading" });
+      if (isMounted) setState({ kind: "loading" });
 
-    const { data, error } = await supabase
-      .from("guests")
-      .select("name, scanned")
-      .eq("qr_token", cleanToken)
-      .maybeSingle();
-console.log("TOKEN:", cleanToken);
-console.log("DATA:", data);
-console.log("ERROR:", error);
+      // البحث عن الباركود
+      const { data, error } = await supabase
+        .from("guests")
+        .select("name, scanned")
+        .eq("qr_token", cleanToken)
+        .maybeSingle();
 
-    if (!isMounted) return;
+      console.log("TOKEN:", cleanToken);
+      console.log("DATA:", data);
+      console.log("ERROR:", error);
 
-    if (error || !data) {
-      setState({ kind: "not_found" });
-      return;
-    }
+      if (!isMounted) return;
 
-if (data.scanned) {
-  setState({ kind: "already", name: data.name });
-  return;
-}
+      if (error || !data) {
+        setState({ kind: "not_found" });
+        return;
+      }
 
-// تحديث scanned
-const { error: updateError } = await supabase
-  .from("guests")
-  .update({ scanned: true })
-  .eq("qr_token", cleanToken);
+      // إذا كان الباركود مستخدمًا مسبقًا
+      if (data.scanned) {
+        setState({ kind: "already", name: data.name });
+        return;
+      }
 
-if (updateError) {
-  setState({ kind: "error" });
-  return;
-}
+      // محاولة تسجيل المسح مرة واحدة فقط
+      const { data: updatedData, error: updateError } = await supabase
+        .from("guests")
+        .update({ scanned: true })
+        .eq("qr_token", cleanToken)
+        .eq("scanned", false)
+        .select("name")
+        .maybeSingle();
 
-setState({ kind: "ok", name: data.name });
-  };
+      if (updateError) {
+        console.error("UPDATE ERROR:", updateError);
 
-  run();
+        if (isMounted) {
+          setState({ kind: "error" });
+        }
 
-  return () => {
-    isMounted = false;
-  };
-}, [cleanToken]);
+        return;
+      }
+
+      // إذا لم يتم تحديث أي صف، فهذا يعني أن الباركود
+      // تم استخدامه في نفس اللحظة من جهاز آخر
+      if (!updatedData) {
+        if (isMounted) {
+          const { data: latestData } = await supabase
+            .from("guests")
+            .select("name, scanned")
+            .eq("qr_token", cleanToken)
+            .maybeSingle();
+
+          if (latestData?.scanned) {
+            setState({
+              kind: "already",
+              name: latestData.name,
+            });
+          } else {
+            setState({ kind: "not_found" });
+          }
+        }
+
+        return;
+      }
+
+      if (isMounted) {
+        setState({
+          kind: "ok",
+          name: updatedData.name,
+        });
+      }
+    };
+
+    run();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [cleanToken]);
 
   if (state.kind === "loading") {
     return (
@@ -77,7 +116,7 @@ setState({ kind: "ok", name: data.name });
     );
   }
 
- if (state.kind === "ok") {
+  if (state.kind === "ok") {
     return (
       <div className="min-h-screen w-full">
         <img src={scanSuccess} className="w-full block" />
@@ -86,40 +125,54 @@ setState({ kind: "ok", name: data.name });
   }
 
   if (state.kind === "already") {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f5efe6] px-6">
-      <div className="bg-white border-2 border-red-500 rounded-2xl p-8 text-center shadow-lg max-w-md w-full">
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f5efe6] px-6">
+        <div className="bg-white border-2 border-red-500 rounded-2xl p-8 text-center shadow-lg max-w-md w-full">
+          <div className="text-red-500 text-5xl mb-4">✕</div>
 
-        <div className="text-red-500 text-5xl mb-4">✕</div>
-
-        <p className="text-red-600 text-2xl font-bold mb-2">
-          تم مسح الباركود مسبقاً
-        </p>
-
-        {state.name && (
-          <p className="text-gray-700 text-base">
-            الاسم: {state.name}
+          <p className="text-red-600 text-2xl font-bold mb-2">
+            تم مسح الباركود مسبقاً
           </p>
-        )}
 
+          {state.name && (
+            <p className="text-gray-700 text-base">
+              الاسم: {state.name}
+            </p>
+          )}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
   if (state.kind === "not_found") {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f5efe6]">
-      <div className="bg-white border-2 border-red-500 rounded-2xl p-8 text-center max-w-md">
-        <div className="text-red-500 text-5xl mb-4">⛔</div>
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f5efe6]">
+        <div className="bg-white border-2 border-red-500 rounded-2xl p-8 text-center max-w-md">
+          <div className="text-red-500 text-5xl mb-4">⛔</div>
 
-        <p className="text-red-600 text-2xl font-bold mb-2">
-          الباركود غير صالح
-        </p>
+          <p className="text-red-600 text-2xl font-bold mb-2">
+            الباركود غير صالح
+          </p>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+
+  if (state.kind === "error") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f5efe6]">
+        <div className="bg-white border-2 border-red-500 rounded-2xl p-8 text-center max-w-md">
+          <div className="text-red-500 text-5xl mb-4">⚠️</div>
+
+          <p className="text-red-600 text-2xl font-bold mb-2">
+            حدث خطأ أثناء التحقق
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
 };
 
 export default Scan;
