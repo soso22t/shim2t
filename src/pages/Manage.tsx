@@ -1105,12 +1105,15 @@ const Manage = () => {
                     {/* الاسم والرقم والحالة */}
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">
-                        <div
-                          className="truncate text-sm font-medium"
-                          style={{ color: "#273247" }}
-                        >
-                          {guest.name}
-                        </div>
+                       <div
+  className="truncate text-sm font-medium"
+  style={{
+    color: "#273247",
+    fontFamily: "Arial, sans-serif",
+  }}
+>
+  {guest.name}
+</div>
 
                         <div
                           className="mt-1 text-xs"
