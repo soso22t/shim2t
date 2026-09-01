@@ -10,13 +10,16 @@ type Guest = {
   invite_code: string;
   replaced?: string | null;
   created_at?: string;
+  qr_token?: string | null;
+  scanned?: boolean | null;
+  device_id?: string | null;
 };
 
 type ModalState = {
   type: "message" | "confirm";
   title: string;
   message: string;
-  action?: () => void;
+  action?: () => void | Promise<void>;
 };
 
 const Manage = () => {
@@ -50,7 +53,7 @@ const Manage = () => {
   const showConfirm = (
     title: string,
     message: string,
-    action: () => void
+    action: () => void | Promise<void>
   ) => {
     setModal({
       type: "confirm",
@@ -97,7 +100,7 @@ const Manage = () => {
         await supabase
           .from("guests")
           .select(
-            "id, name, phone, status, invite_code, replaced, created_at"
+            "id, name, phone, status, invite_code, replaced, created_at, qr_token, scanned, device_id"
           )
           .eq("invitation_id", invitation.id)
           .order("created_at", { ascending: true });
@@ -123,6 +126,66 @@ const Manage = () => {
       .replace(/-/g, "")
       .slice(0, 8)
       .toUpperCase();
+  };
+
+  /*
+   * إنشاء رابط واتساب
+   */
+  const createWhatsAppUrl = (
+    guestName: string,
+    guestPhone: string,
+    inviteCode: string
+  ) => {
+    const invitationUrl =
+      `https://m.shim2t.com/?invite=${encodeURIComponent(
+        inviteCode
+      )}`;
+
+    const message =
+      `يسعدنا دعوتك لمشاركتنا فرحة زفاف غالينا، فحضورك يزيد فرحتنا جمالًا ♥️💍.\n\n` +
+      `${guestName}\n` +
+      `${invitationUrl}`;
+
+    const cleanPhone = guestPhone.replace(/\D/g, "");
+
+    let whatsappPhone = cleanPhone;
+
+    if (cleanPhone.startsWith("0")) {
+      whatsappPhone = "966" + cleanPhone.slice(1);
+    }
+
+    return `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(
+      message
+    )}`;
+  };
+
+  /*
+   * فتح واتساب
+   *
+   * يتم فتح نافذة فارغة أولًا أثناء ضغطة المستخدم
+   * حتى لا يمنع المتصفح فتح النافذة بعد انتهاء طلب Supabase.
+   */
+  const prepareWhatsAppWindow = () => {
+    return window.open("", "_blank");
+  };
+
+  const openWhatsApp = (
+    whatsappWindow: Window | null,
+    guestName: string,
+    guestPhone: string,
+    inviteCode: string
+  ) => {
+    const whatsappUrl = createWhatsAppUrl(
+      guestName,
+      guestPhone,
+      inviteCode
+    );
+
+    if (whatsappWindow) {
+      whatsappWindow.location.href = whatsappUrl;
+    } else {
+      window.location.href = whatsappUrl;
+    }
   };
 
   const addGuest = async () => {
@@ -167,6 +230,12 @@ const Manage = () => {
       return;
     }
 
+    /*
+     * تجهيز واتساب قبل طلب Supabase
+     * حتى لا يعتبر المتصفح فتحه نافذة منبثقة.
+     */
+    const whatsappWindow = prepareWhatsAppWindow();
+
     const inviteCode = generateInviteCode();
 
     const { data, error: insertError } = await supabase
@@ -179,20 +248,37 @@ const Manage = () => {
         status: "pending",
       })
       .select(
-        "id, name, phone, status, invite_code, replaced, created_at"
+        "id, name, phone, status, invite_code, replaced, created_at, qr_token, scanned, device_id"
       )
       .single();
 
     if (insertError || !data) {
       console.error(insertError);
+
+      if (whatsappWindow) {
+        whatsappWindow.close();
+      }
+
       setError("حدث خطأ أثناء إضافة المدعو");
       return;
     }
 
     setGuests((prev) => [...prev, data as Guest]);
+
     setName("");
     setPhone("");
     setError("");
+
+    /*
+     * بعد نجاح الإضافة مباشرة يفتح واتساب
+     * بالرسالة الجاهزة.
+     */
+    openWhatsApp(
+      whatsappWindow,
+      cleanName,
+      cleanPhone,
+      inviteCode
+    );
   };
 
   /*
@@ -281,30 +367,39 @@ const Manage = () => {
   ).length;
 
   /*
-   * إعادة تعيين جهاز مدعو واحد فقط
+   * إعادة تعيين جهاز جميع الدعوات
    */
-  const resetDevice = async (guest: Guest) => {
+  const resetAllDevices = async () => {
+    if (!invitationId) return;
+
     const { error: updateError } = await supabase
       .from("guests")
       .update({
         device_id: null,
       })
-      .eq("id", guest.id);
+      .eq("invitation_id", invitationId);
 
     if (updateError) {
       console.error(updateError);
 
       showMessage(
-        "تعذر إعادة تعيين الجهاز",
-        "حدث خطأ أثناء إعادة تعيين جهاز هذا المدعو. حاول مرة أخرى."
+        "تعذر إعادة التعيين",
+        "حدث خطأ أثناء إعادة تعيين الأجهزة. حاول مرة أخرى."
       );
 
       return;
     }
 
+    setGuests((prev) =>
+      prev.map((guest) => ({
+        ...guest,
+        device_id: null,
+      }))
+    );
+
     showMessage(
-      "تمت إعادة تعيين الجهاز",
-      `تم فصل دعوة ${guest.name} عن الجهاز الحالي ويمكن فتحها من جهاز جديد.`
+      "تمت إعادة التعيين",
+      "تمت إعادة تعيين الأجهزة لجميع الدعوات بنجاح."
     );
   };
 
@@ -331,9 +426,51 @@ const Manage = () => {
       return;
     }
 
+    setGuests((prev) =>
+      prev.map((item) =>
+        item.id === guest.id
+          ? {
+              ...item,
+              qr_token: null,
+              scanned: false,
+            }
+          : item
+      )
+    );
+
     showMessage(
       "تمت إعادة تعيين الباركود",
       `تم جعل باركود ${guest.name} جديدًا ويمكن استخدامه من جديد.`
+    );
+  };
+
+  /*
+   * حذف المدعو
+   */
+  const deleteGuest = async (guest: Guest) => {
+    const { error: deleteError } = await supabase
+      .from("guests")
+      .delete()
+      .eq("id", guest.id);
+
+    if (deleteError) {
+      console.error(deleteError);
+
+      showMessage(
+        "تعذر حذف المدعو",
+        "حدث خطأ أثناء حذف المدعو. حاول مرة أخرى."
+      );
+
+      return;
+    }
+
+    setGuests((prev) =>
+      prev.filter((item) => item.id !== guest.id)
+    );
+
+    showMessage(
+      "تم حذف المدعو",
+      `تم حذف ${guest.name} من قائمة المدعوين، وأصبح بالإمكان إضافة مدعو جديد مكانه.`
     );
   };
 
@@ -346,46 +483,10 @@ const Manage = () => {
   };
 
   /*
-   * إرسال رسالة واتساب للمدعو الجديد
-   */
-  const sendWhatsApp = (
-    guestName: string,
-    guestPhone: string,
-    inviteCode: string
-  ) => {
-    const invitationUrl =
-      `https://m.shim2t.com/?invite=${encodeURIComponent(
-        inviteCode
-      )}`;
-
-    const message =
-      `يسعدنا دعوتك لمشاركتنا فرحة زفاف غالينا، فحضورك يزيد فرحتنا جمالًا ♥️💍.\n\n` +
-      `${guestName}\n` +
-      `${invitationUrl}`;
-
-    const cleanPhone = guestPhone.replace(/\D/g, "");
-
-    let whatsappPhone = cleanPhone;
-
-    if (cleanPhone.startsWith("0")) {
-      whatsappPhone = "966" + cleanPhone.slice(1);
-    }
-
-    const whatsappUrl =
-      `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(
-        message
-      )}`;
-
-    window.location.href = whatsappUrl;
-  };
-
-  /*
    * استبدال المدعو
    *
-   * مهم:
-   * لا يتم إنشاء سجل جديد.
-   * يتم استخدام نفس سجل المدعو المعتذر ونفس invite_code
-   * حتى يبقى العدد كما هو ويعاد استخدام نفس الدعوة والباركود.
+   * لا يتم فحص الحد الأقصى هنا لأن الاستبدال
+   * يعيد استخدام مكان الدعوة نفسها.
    */
   const replaceGuest = async () => {
     if (!replaceTarget || !invitationId) return;
@@ -414,8 +515,8 @@ const Manage = () => {
 
     const exists = guests.some(
       (item) =>
-        item.id !== replaceTarget.id &&
-        item.phone === cleanNewPhone
+        item.phone === cleanNewPhone &&
+        item.id !== replaceTarget.id
     );
 
     if (exists) {
@@ -424,28 +525,32 @@ const Manage = () => {
     }
 
     /*
-     * تحديث نفس المدعو بدل إنشاء مدعو جديد.
-     * هذا يعني أن العدد لن يزيد حتى لو وصل للحد الأقصى.
+     * تجهيز واتساب قبل طلب Supabase.
      */
-    const { data, error: updateError } = await supabase
+    const whatsappWindow = prepareWhatsAppWindow();
+
+    const newInviteCode = generateInviteCode();
+
+    const { data, error: insertError } = await supabase
       .from("guests")
-      .update({
+      .insert({
+        invitation_id: invitationId,
         name: cleanNewName,
         phone: cleanNewPhone,
+        invite_code: newInviteCode,
         status: "pending",
-        replaced: null,
-        device_id: null,
-        qr_token: null,
-        scanned: false,
       })
-      .eq("id", replaceTarget.id)
       .select(
-        "id, name, phone, status, invite_code, replaced, created_at"
+        "id, name, phone, status, invite_code, replaced, created_at, qr_token, scanned, device_id"
       )
       .single();
 
-    if (updateError || !data) {
-      console.error(updateError);
+    if (insertError || !data) {
+      console.error(insertError);
+
+      if (whatsappWindow) {
+        whatsappWindow.close();
+      }
 
       setReplaceError(
         "حدث خطأ أثناء استبدال المدعو، حاول مرة أخرى."
@@ -455,15 +560,34 @@ const Manage = () => {
     }
 
     /*
-     * تحديث القائمة مباشرة بنفس السجل
+     * ربط المدعو القديم بالمدعو الجديد.
      */
-    setGuests((prev) =>
-      prev.map((guest) =>
-        guest.id === replaceTarget.id
-          ? (data as Guest)
-          : guest
-      )
-    );
+    const { error: updateError } = await supabase
+      .from("guests")
+      .update({
+        replaced: data.id,
+      })
+      .eq("id", replaceTarget.id);
+
+    if (updateError) {
+      console.error(updateError);
+
+      if (whatsappWindow) {
+        whatsappWindow.close();
+      }
+
+      showMessage(
+        "تنبيه",
+        "تمت إضافة المدعو الجديد ولكن حدث خطأ في ربط عملية الاستبدال."
+      );
+
+      return;
+    }
+
+    setGuests((prev) => [
+      ...prev,
+      data as Guest,
+    ]);
 
     setReplaceModalOpen(false);
     setReplaceTarget(null);
@@ -472,12 +596,13 @@ const Manage = () => {
     setReplaceError("");
 
     /*
-     * إرسال الدعوة الجديدة على نفس invite_code
+     * فتح واتساب بعد نجاح الاستبدال.
      */
-    sendWhatsApp(
+    openWhatsApp(
+      whatsappWindow,
       cleanNewName,
       cleanNewPhone,
-      data.invite_code
+      newInviteCode
     );
   };
 
@@ -821,6 +946,7 @@ const Manage = () => {
                 }}
               />
 
+              {/* إضافة من جهات الاتصال */}
               <button
                 onClick={addFromContacts}
                 className="w-full rounded-2xl py-3 text-sm font-medium transition-all active:scale-[.99]"
@@ -855,6 +981,56 @@ const Manage = () => {
                 </p>
               )}
             </div>
+          </div>
+        </section>
+
+        {/* إدارة الأجهزة */}
+        <section className="mb-12">
+          <div className="mb-5 text-center">
+            <div
+              className="text-lg font-medium"
+              style={{ color: "#273247" }}
+            >
+              إدارة الدعوات
+            </div>
+
+            <div
+              className="mt-1 text-xs leading-6"
+              style={{ color: "#7B818B" }}
+            >
+              يمكنك إعادة تعيين الأجهزة لجميع الدعوات عند الحاجة
+            </div>
+          </div>
+
+          <div
+            className="rounded-[26px] p-5"
+            style={{
+              background: "#FFFFFF",
+              border: "1px solid #E2E0DA",
+              boxShadow:
+                "0 16px 40px rgba(39,50,71,.05)",
+            }}
+          >
+            <button
+              onClick={() => {
+                showConfirm(
+                  "إعادة تعيين الأجهزة",
+                  "سيتم فصل جميع الدعوات عن الأجهزة الحالية، ويمكن فتحها من جهاز جديد. هل تريد المتابعة؟",
+                  async () => {
+                    setModal(null);
+                    await resetAllDevices();
+                  }
+                );
+              }}
+              className="w-full rounded-2xl py-3 text-sm font-medium transition-all active:scale-[.99]"
+              style={{
+                background: "#F1F0EC",
+                color: "#5F6978",
+                border: "1px solid #E2E0DA",
+              }}
+            >
+              إعادة تعيين الجهاز لجميع الدعوات
+            </button>
           </div>
         </section>
 
@@ -917,6 +1093,14 @@ const Manage = () => {
                     ? "#B5A07E"
                     : "#B7BABF";
 
+                /*
+                 * يظهر زر إعادة تعيين الباركود فقط
+                 * إذا كان المدعو قد حصل على QR token
+                 * أو تم تسجيل الباركود كممسوح.
+                 */
+                const hasUsedBarcode =
+                  !!guest.qr_token || !!guest.scanned;
+
                 return (
                   <div
                     key={guest.id}
@@ -965,56 +1149,38 @@ const Manage = () => {
                     <div className="mt-4 grid grid-cols-2 gap-2">
 
                       {/* إعادة تعيين الباركود */}
-                      <button
-                        onClick={() => {
-                          showConfirm(
-                            "إعادة تعيين الباركود",
-                            `سيتم إعادة تعيين باركود ${guest.name} وجعله صالحًا للاستخدام من جديد. هل تريد المتابعة؟`,
-                            async () => {
-                              setModal(null);
-                              await resetBarcode(guest);
-                            }
-                          );
-                        }}
-                        className="rounded-xl py-2.5 text-xs font-medium transition-all active:scale-[.98]"
-                        style={{
-                          background: "#F1F0EC",
-                          color: "#5F6978",
-                          border: "1px solid #E2E0DA",
-                        }}
-                      >
-                        إعادة تعيين الباركود
-                      </button>
-
-                      {/* إعادة تعيين الجهاز */}
-                      <button
-                        onClick={() => {
-                          showConfirm(
-                            "إعادة تعيين الجهاز",
-                            `سيتم فصل دعوة ${guest.name} عن الجهاز الحالي ويمكن فتحها من جهاز جديد. هل تريد المتابعة؟`,
-                            async () => {
-                              setModal(null);
-                              await resetDevice(guest);
-                            }
-                          );
-                        }}
-                        className="rounded-xl py-2.5 text-xs font-medium transition-all active:scale-[.98]"
-                        style={{
-                          background: "#F1F0EC",
-                          color: "#5F6978",
-                          border: "1px solid #E2E0DA",
-                        }}
-                      >
-                        إعادة تعيين الجهاز
-                      </button>
+                      {hasUsedBarcode ? (
+                        <button
+                          onClick={() => {
+                            showConfirm(
+                              "إعادة تعيين الباركود",
+                              `سيتم إعادة تعيين باركود ${guest.name} وجعله صالحًا للاستخدام من جديد. هل تريد المتابعة؟`,
+                              async () => {
+                                setModal(null);
+                                await resetBarcode(guest);
+                              }
+                            );
+                          }}
+                          className="rounded-xl py-2.5 text-xs font-medium transition-all active:scale-[.98]"
+                          style={{
+                            background: "#F1F0EC",
+                            color: "#5F6978",
+                            border: "1px solid #E2E0DA",
+                          }}
+                        >
+                          إعادة تعيين الباركود
+                        </button>
+                      ) : (
+                        <div />
+                      )}
 
                       {/* استبدال */}
-                      {guest.status === "declined" && (
+                      {guest.status === "declined" ? (
                         <button
                           onClick={() =>
                             openReplaceModal(guest)
                           }
-                          className="col-span-2 rounded-xl py-2.5 text-xs font-medium transition-all active:scale-[.98]"
+                          className="rounded-xl py-2.5 text-xs font-medium transition-all active:scale-[.98]"
                           style={{
                             background: "#273247",
                             color: "#FFFFFF",
@@ -1022,7 +1188,31 @@ const Manage = () => {
                         >
                           استبدال
                         </button>
+                      ) : (
+                        <div />
                       )}
+
+                      {/* حذف */}
+                      <button
+                        onClick={() => {
+                          showConfirm(
+                            "حذف المدعو",
+                            `هل أنت متأكد من حذف ${guest.name}؟ سيتم حذف دعوته من القائمة ويمكن إضافة مدعو جديد مكانه.`,
+                            async () => {
+                              setModal(null);
+                              await deleteGuest(guest);
+                            }
+                          );
+                        }}
+                        className="rounded-xl py-2.5 text-xs font-medium transition-all active:scale-[.98]"
+                        style={{
+                          background: "#F1F0EC",
+                          color: "#5F6978",
+                          border: "1px solid #E2E0DA",
+                        }}
+                      >
+                        حذف المدعو
+                      </button>
                     </div>
                   </div>
                 );
@@ -1031,7 +1221,6 @@ const Manage = () => {
           </div>
         </section>
 
-        {/* Footer */}
         <footer
           className="mt-14 pb-4 text-center"
         >
@@ -1246,8 +1435,8 @@ const Manage = () => {
                 </button>
 
                 <button
-                  onClick={() => {
-                    modal.action?.();
+                  onClick={async () => {
+                    await modal.action?.();
                   }}
                   className="rounded-2xl py-3 text-sm font-medium"
                   style={{
