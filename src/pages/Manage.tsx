@@ -404,6 +404,45 @@ const Manage = () => {
   };
 
   /*
+   * إعادة تعيين جهاز مدعو واحد
+   */
+  const resetGuestDevice = async (guest: Guest) => {
+    const { error: updateError } = await supabase
+      .from("guests")
+      .update({
+        device_id: null,
+      })
+      .eq("id", guest.id);
+
+    if (updateError) {
+      console.error(updateError);
+
+      showMessage(
+        "تعذر إعادة تعيين الجهاز",
+        "حدث خطأ أثناء إعادة تعيين جهاز المدعو. حاول مرة أخرى."
+      );
+
+      return;
+    }
+
+    setGuests((prev) =>
+      prev.map((item) =>
+        item.id === guest.id
+          ? {
+              ...item,
+              device_id: null,
+            }
+          : item
+      )
+    );
+
+    showMessage(
+      "تمت إعادة تعيين الجهاز",
+      `تم فصل دعوة ${guest.name} عن الجهاز الحالي ويمكن فتحها من جهاز جديد.`
+    );
+  };
+
+  /*
    * إعادة تعيين باركود مدعو واحد
    */
   const resetBarcode = async (guest: Guest) => {
@@ -1095,8 +1134,7 @@ const Manage = () => {
 
                 /*
                  * يظهر زر إعادة تعيين الباركود فقط
-                 * إذا كان المدعو قد حصل على QR token
-                 * أو تم تسجيل الباركود كممسوح.
+                 * إذا كان المدعو قد فتح/استخدم الباركود.
                  */
                 const hasUsedBarcode =
                   !!guest.qr_token || !!guest.scanned;
@@ -1112,8 +1150,8 @@ const Manage = () => {
                           : "none",
                     }}
                   >
-                    {/* الاسم والرقم */}
-                    <div className="flex items-center justify-between gap-4">
+                    {/* الاسم والرقم والحالة */}
+                    <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">
                         <div
                           className="truncate text-sm font-medium"
@@ -1128,20 +1166,87 @@ const Manage = () => {
                         >
                           {guest.phone}
                         </div>
+
+                        {/* إعادة تعيين جهاز المدعو */}
+                        <button
+                          onClick={() => {
+                            showConfirm(
+                              "إعادة تعيين الجهاز",
+                              `سيتم فصل دعوة ${guest.name} عن الجهاز الحالي، ويمكن فتحها من جهاز جديد. هل تريد المتابعة؟`,
+                              async () => {
+                                setModal(null);
+                                await resetGuestDevice(guest);
+                              }
+                            );
+                          }}
+                          className="mt-3 rounded-xl px-3 py-2 text-xs font-medium transition-all active:scale-[.98]"
+                          style={{
+                            background: "#F1F0EC",
+                            color: "#5F6978",
+                            border: "1px solid #E2E0DA",
+                          }}
+                        >
+                          إعادة تعيين الجهاز
+                        </button>
                       </div>
 
                       <div
-                        className="flex shrink-0 items-center gap-1.5 text-xs"
+                        className="flex shrink-0 flex-col items-end gap-2 text-xs"
                         style={{ color: "#7B818B" }}
                       >
-                        <span
-                          className="h-1.5 w-1.5 rounded-full"
-                          style={{
-                            background: dotColor,
-                          }}
-                        />
+                        <div className="flex items-center gap-1.5">
+                          <span
+                            className="h-1.5 w-1.5 rounded-full"
+                            style={{
+                              background: dotColor,
+                            }}
+                          />
 
-                        {status}
+                          {status}
+                        </div>
+
+                        {/* حذف */}
+                        <button
+                          onClick={() => {
+                            showConfirm(
+                              "حذف المدعو",
+                              `هل أنت متأكد من حذف ${guest.name}؟ سيتم حذف دعوته من القائمة ويمكن إضافة مدعو جديد مكانه.`,
+                              async () => {
+                                setModal(null);
+                                await deleteGuest(guest);
+                              }
+                            );
+                          }}
+                          aria-label={`حذف ${guest.name}`}
+                          className="flex h-8 w-8 items-center justify-center rounded-lg transition-all active:scale-[.95]"
+                          style={{
+                            background: "#273247",
+                            color: "#FFFFFF",
+                          }}
+                        >
+                          <svg
+                            width="15"
+                            height="15"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M9 3H15L16 5H20V7H4V5H8L9 3Z"
+                              fill="currentColor"
+                            />
+                            <path
+                              d="M6 8H18L17.2 20C17.13 21.12 16.2 22 15.08 22H8.92C7.8 22 6.87 21.12 6.8 20L6 8Z"
+                              fill="currentColor"
+                            />
+                            <path
+                              d="M10 11V18M14 11V18"
+                              stroke="#273247"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                            />
+                          </svg>
+                        </button>
                       </div>
                     </div>
 
@@ -1191,28 +1296,6 @@ const Manage = () => {
                       ) : (
                         <div />
                       )}
-
-                      {/* حذف */}
-                      <button
-                        onClick={() => {
-                          showConfirm(
-                            "حذف المدعو",
-                            `هل أنت متأكد من حذف ${guest.name}؟ سيتم حذف دعوته من القائمة ويمكن إضافة مدعو جديد مكانه.`,
-                            async () => {
-                              setModal(null);
-                              await deleteGuest(guest);
-                            }
-                          );
-                        }}
-                        className="rounded-xl py-2.5 text-xs font-medium transition-all active:scale-[.98]"
-                        style={{
-                          background: "#F1F0EC",
-                          color: "#5F6978",
-                          border: "1px solid #E2E0DA",
-                        }}
-                      >
-                        حذف المدعو
-                      </button>
                     </div>
                   </div>
                 );
