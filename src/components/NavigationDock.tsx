@@ -16,9 +16,10 @@ import bgMusic from "@/assets/m.m4a";
 
 interface NavigationDockProps {
   active: boolean;
+  guestName: string;
 }
 
-const NavigationDock = ({ active }: NavigationDockProps) => {
+const NavigationDock = ({ active, guestName }: NavigationDockProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
@@ -26,7 +27,6 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
   const [showRSVP, setShowRSVP] = useState(false);
   const [showContact, setShowContact] = useState(false);
 
-  const [guestName, setGuestName] = useState("");
   const [rsvpStatus, setRsvpStatus] = useState<
     "attending" | "declined" | ""
   >("");
@@ -52,15 +52,10 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
   // استرجاع رد الحضور المحفوظ
   useEffect(() => {
     const savedStatus = localStorage.getItem("wedding_rsvp_status");
-    const savedName = localStorage.getItem("wedding_rsvp_name");
 
     if (savedStatus === "attending" || savedStatus === "declined") {
       setRsvpStatus(savedStatus);
       setRsvpSent(true);
-    }
-
-    if (savedName) {
-      setGuestName(savedName);
     }
   }, []);
 
@@ -153,7 +148,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
       renderHeight
     );
 
-    // الاسم (مكبر بنفس نسبة معاينة الشاشة وبنفس الموقع)
+    // الاسم
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#FFFFFF";
@@ -221,7 +216,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
   // إرسال الرد مباشرة إلى Google Form
   const handleRSVPSubmit = async () => {
     if (!guestName.trim() || !rsvpStatus) {
-      alert("فضلاً اكتب الاسم واختر الرد.");
+      alert("فضلاً اختر الرد.");
       return;
     }
 
@@ -341,7 +336,8 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                     style={{
                       backgroundColor: "#B08A3C",
                       border: "none",
-                      boxShadow: "0 0 15px rgba(176, 138, 60, 0.6)",
+                      boxShadow:
+                        "0 0 15px rgba(176, 138, 60, 0.6)",
                     }}
                   >
                   </button>
@@ -362,9 +358,11 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                   <div
                     className="w-full p-4 rounded-3xl backdrop-blur-xl flex flex-col items-center gap-3 shadow-2xl"
                     style={{
-                      background: "rgba(35, 28, 23, 0.82)",
+                      background:
+                        "rgba(35, 28, 23, 0.82)",
                       border: "none",
-                      boxShadow: "0 0 12px rgba(176, 138, 60, 0.4)",
+                      boxShadow:
+                        "0 0 12px rgba(176, 138, 60, 0.4)",
                     }}
                   >
 
@@ -376,7 +374,8 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                         download="mohammed-ahood.png"
                         className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-white font-arabic text-sm font-semibold transition-all active:scale-95"
                         style={{
-                          background: "rgba(255, 255, 255, 0.12)",
+                          background:
+                            "rgba(255, 255, 255, 0.12)",
                           border: "none",
                         }}
                       >
@@ -390,7 +389,8 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                         }
                         className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-white font-arabic text-sm font-semibold transition-all active:scale-95 cursor-pointer"
                         style={{
-                          background: "rgba(255, 255, 255, 0.12)",
+                          background:
+                            "rgba(255, 255, 255, 0.12)",
                           border: "none",
                         }}
                       >
@@ -439,7 +439,8 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
               background: "rgba(24, 18, 20, 0.88)",
               color: "#FFFFFF",
               border: "none",
-              boxShadow: "0 0 16px rgba(176, 138, 60, 0.4), 0 20px 50px rgba(0, 0, 0, 0.5)",
+              boxShadow:
+                "0 0 16px rgba(176, 138, 60, 0.4), 0 20px 50px rgba(0, 0, 0, 0.5)",
             }}
           >
 
@@ -486,7 +487,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
               </p>
 
               {/* وقت الاتصال */}
-             {/*   <p
+              {/* <p
                 className="text-sm mb-7 opacity-80"
                 style={{
                   fontFamily:
@@ -566,7 +567,8 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
               background: "rgba(24, 18, 20, 0.88)",
               color: "#FFFFFF",
               border: "none",
-              boxShadow: "0 0 16px rgba(176, 138, 60, 0.4), 0 20px 50px rgba(0, 0, 0, 0.5)",
+              boxShadow:
+                "0 0 16px rgba(176, 138, 60, 0.4), 0 20px 50px rgba(0, 0, 0, 0.5)",
             }}
           >
 
@@ -614,38 +616,18 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
 
                 </div>
 
-                {/* الاسم */}
-                <div className="mb-5">
-
-                  <label
-                    className="block text-right mb-2 text-sm font-bold"
+                {/* اسم الضيف */}
+                <div className="mb-5 text-center">
+                  <p
+                    className="text-2xl font-bold"
                     style={{
                       fontFamily:
-                        "'Almarai', sans-serif",
-                      color: "#FFFFFF",
+                        "'IranNastaliq', sans-serif",
+                      color: "#B08A3C",
                     }}
                   >
-                    الاسم الكريم
-                  </label>
-
-                  <input
-                    type="text"
-                    value={guestName}
-                    onChange={(e) =>
-                      setGuestName(e.target.value)
-                    }
-                    placeholder="اكتب اسمك الثلاثي"
-                    className="w-full rounded-2xl px-4 py-3 text-right outline-none backdrop-blur-md"
-                    style={{
-                      fontFamily:
-                        "'Almarai', sans-serif",
-                      background: "rgba(255, 255, 255, 0.1)",
-                      border: "none",
-                      boxShadow: "0 0 8px rgba(176, 138, 60, 0.2)",
-                      color: "#FFFFFF",
-                    }}
-                  />
-
+                    {guestName}
+                  </p>
                 </div>
 
                 {/* خيارات الحضور */}
@@ -666,7 +648,10 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                           : "rgba(255, 255, 255, 0.1)",
                       color: "#FFFFFF",
                       border: "none",
-                      boxShadow: rsvpStatus === "attending" ? "0 0 10px rgba(176, 138, 60, 0.5)" : "none",
+                      boxShadow:
+                        rsvpStatus === "attending"
+                          ? "0 0 10px rgba(176, 138, 60, 0.5)"
+                          : "none",
                     }}
                   >
                     تاكيد الحضور
@@ -687,7 +672,10 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                           : "rgba(255, 255, 255, 0.1)",
                       color: "#FFFFFF",
                       border: "none",
-                      boxShadow: rsvpStatus === "declined" ? "0 0 10px rgba(100, 20, 20, 0.5)" : "none",
+                      boxShadow:
+                        rsvpStatus === "declined"
+                          ? "0 0 10px rgba(100, 20, 20, 0.5)"
+                          : "none",
                     }}
                   >
                     الاعتذار عن الحضور
@@ -810,7 +798,8 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
           style={{
             background: "transparent",
             border: "none",
-            boxShadow: "0 0 12px rgba(176, 138, 60, 0.4), 0 10px 25px rgba(0, 0, 0, 0.3)",
+            boxShadow:
+              "0 0 12px rgba(176, 138, 60, 0.4), 0 10px 25px rgba(0, 0, 0, 0.3)",
           }}
         >
 
@@ -854,7 +843,7 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
             </span>
           </button>
 
-          {/* 3. الكاميرا والفلتر (أيقونة فقط متواسطة الشريط) */}
+          {/* 3. الكاميرا والفلتر */}
           <button
             onClick={openCamera}
             className="flex items-center justify-center cursor-pointer transition-transform active:scale-95"
@@ -863,7 +852,8 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
               className="w-11 h-11 rounded-full flex items-center justify-center shadow-lg"
               style={{
                 backgroundColor: "#B08A3C",
-                boxShadow: "0 0 10px rgba(176, 138, 60, 0.5)",
+                boxShadow:
+                  "0 0 10px rgba(176, 138, 60, 0.5)",
               }}
             >
               <Camera
@@ -901,23 +891,14 @@ const NavigationDock = ({ active }: NavigationDockProps) => {
                 "wedding_rsvp_status"
               );
 
-              const savedName = localStorage.getItem(
-                "wedding_rsvp_name"
-              );
-
               if (
                 savedStatus === "attending" ||
                 savedStatus === "declined"
               ) {
                 setRsvpStatus(savedStatus);
                 setRsvpSent(true);
-
-                if (savedName) {
-                  setGuestName(savedName);
-                }
               } else {
                 setRsvpSent(false);
-                setGuestName("");
                 setRsvpStatus("");
               }
 
