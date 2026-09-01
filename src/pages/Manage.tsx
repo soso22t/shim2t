@@ -1023,56 +1023,6 @@ const Manage = () => {
           </div>
         </section>
 
-        {/* إدارة الأجهزة */}
-        <section className="mb-12">
-          <div className="mb-5 text-center">
-            <div
-              className="text-lg font-medium"
-              style={{ color: "#273247" }}
-            >
-              إدارة الدعوات
-            </div>
-
-            <div
-              className="mt-1 text-xs leading-6"
-              style={{ color: "#7B818B" }}
-            >
-              يمكنك إعادة تعيين الأجهزة لجميع الدعوات عند الحاجة
-            </div>
-          </div>
-
-          <div
-            className="rounded-[26px] p-5"
-            style={{
-              background: "#FFFFFF",
-              border: "1px solid #E2E0DA",
-              boxShadow:
-                "0 16px 40px rgba(39,50,71,.05)",
-            }}
-          >
-            <button
-              onClick={() => {
-                showConfirm(
-                  "إعادة تعيين الأجهزة",
-                  "سيتم فصل جميع الدعوات عن الأجهزة الحالية، ويمكن فتحها من جهاز جديد. هل تريد المتابعة؟",
-                  async () => {
-                    setModal(null);
-                    await resetAllDevices();
-                  }
-                );
-              }}
-              className="w-full rounded-2xl py-3 text-sm font-medium transition-all active:scale-[.99]"
-              style={{
-                background: "#F1F0EC",
-                color: "#5F6978",
-                border: "1px solid #E2E0DA",
-              }}
-            >
-              إعادة تعيين الجهاز لجميع الدعوات
-            </button>
-          </div>
-        </section>
-
         {/* Guests */}
         <section>
           <div className="mb-5 flex items-end justify-between">
