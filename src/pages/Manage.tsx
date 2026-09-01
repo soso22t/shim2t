@@ -142,9 +142,9 @@ const Manage = () => {
       )}`;
 
     const message =
-  `${guestName}\n\n` +
-  `يسعدنا دعوتك لمشاركتنا فرحة زفاف غالينا، فحضورك يزيد فرحتنا جمالًا \u2665\uFE0F\uD83D\uDC8D.\n\n` +
-  `${invitationUrl}`;
+      `${guestName}\n\n` +
+      `يسعدنا دعوتك لمشاركتنا فرحة زفاف غالينا، فحضورك يزيد فرحتنا جمالًا \u2665\uFE0F\uD83D\uDC8D.\n\n` +
+      `${invitationUrl}`;
 
     const cleanPhone = guestPhone.replace(/\D/g, "");
 
@@ -446,44 +446,44 @@ const Manage = () => {
    * إعادة تعيين باركود مدعو واحد
    */
   const resetBarcode = async (guest: Guest) => {
-  const newQrToken = crypto.randomUUID();
+    const newQrToken = crypto.randomUUID();
 
-  const { error: updateError } = await supabase
-    .from("guests")
-    .update({
-      qr_token: newQrToken,
-      scanned: false,
-    })
-    .eq("id", guest.id);
+    const { error: updateError } = await supabase
+      .from("guests")
+      .update({
+        qr_token: newQrToken,
+        scanned: false,
+      })
+      .eq("id", guest.id);
 
-  if (updateError) {
-    console.error(updateError);
+    if (updateError) {
+      console.error(updateError);
 
-    showMessage(
-      "تعذر إعادة تعيين الباركود",
-      "حدث خطأ أثناء إعادة تعيين الباركود. حاول مرة أخرى."
+      showMessage(
+        "تعذر إعادة تعيين الباركود",
+        "حدث خطأ أثناء إعادة تعيين الباركود. حاول مرة أخرى."
+      );
+
+      return;
+    }
+
+    setGuests((prev) =>
+      prev.map((item) =>
+        item.id === guest.id
+          ? {
+              ...item,
+              qr_token: newQrToken,
+              scanned: false,
+            }
+          : item
+      )
     );
 
-    return;
-  }
-
-  setGuests((prev) =>
-    prev.map((item) =>
-      item.id === guest.id
-        ? {
-            ...item,
-            qr_token: newQrToken,
-            scanned: false,
-          }
-        : item
-    )
-  );
-
-  showMessage(
-    "تمت إعادة تعيين الباركود",
-    `تم إنشاء باركود جديد لـ ${guest.name} ويمكن استخدامه من جديد.`
-  );
-};
+    showMessage(
+      "تمت إعادة تعيين الباركود",
+      `تم إنشاء باركود جديد لـ ${guest.name} ويمكن استخدامه من جديد.`
+    );
+  };
 
   /*
    * حذف المدعو
@@ -526,8 +526,9 @@ const Manage = () => {
   /*
    * استبدال المدعو
    *
-   * لا يتم فحص الحد الأقصى هنا لأن الاستبدال
-   * يعيد استخدام مكان الدعوة نفسها.
+   * يتم تحديث نفس سجل المدعو المعتذر بدل إضافة
+   * سجل جديد، حتى لا يزيد عدد المدعوين ولا نحتاج
+   * إلى ربط سجلين ببعض.
    */
   const replaceGuest = async () => {
     if (!replaceTarget || !invitationId) return;
@@ -572,22 +573,39 @@ const Manage = () => {
 
     const newInviteCode = generateInviteCode();
 
-    const { data, error: insertError } = await supabase
+    /*
+     * استبدال بيانات المدعو المعتذر داخل نفس السجل.
+     *
+     * يتم أيضًا تصفير:
+     * - الحالة
+     * - الباركود
+     * - حالة المسح
+     * - الجهاز
+     * - replaced
+     *
+     * حتى يبدأ المدعو الجديد كدعوة جديدة تمامًا.
+     */
+    const { data, error: updateError } = await supabase
       .from("guests")
-      .insert({
-        invitation_id: invitationId,
+      .update({
         name: cleanNewName,
         phone: cleanNewPhone,
         invite_code: newInviteCode,
         status: "pending",
+        qr_token: null,
+        scanned: false,
+        device_id: null,
+        replaced: null,
       })
+      .eq("id", replaceTarget.id)
+      .eq("invitation_id", invitationId)
       .select(
         "id, name, phone, status, invite_code, replaced, created_at, qr_token, scanned, device_id"
       )
       .single();
 
-    if (insertError || !data) {
-      console.error(insertError);
+    if (updateError || !data) {
+      console.error(updateError);
 
       if (whatsappWindow) {
         whatsappWindow.close();
@@ -601,34 +619,15 @@ const Manage = () => {
     }
 
     /*
-     * ربط المدعو القديم بالمدعو الجديد.
+     * تحديث القائمة مباشرة بدون إضافة مدعو جديد.
      */
-    const { error: updateError } = await supabase
-      .from("guests")
-      .update({
-        replaced: data.id,
-      })
-      .eq("id", replaceTarget.id);
-
-    if (updateError) {
-      console.error(updateError);
-
-      if (whatsappWindow) {
-        whatsappWindow.close();
-      }
-
-      showMessage(
-        "تنبيه",
-        "تمت إضافة المدعو الجديد ولكن حدث خطأ في ربط عملية الاستبدال."
-      );
-
-      return;
-    }
-
-    setGuests((prev) => [
-      ...prev,
-      data as Guest,
-    ]);
+    setGuests((prev) =>
+      prev.map((item) =>
+        item.id === replaceTarget.id
+          ? (data as Guest)
+          : item
+      )
+    );
 
     setReplaceModalOpen(false);
     setReplaceTarget(null);
@@ -637,7 +636,7 @@ const Manage = () => {
     setReplaceError("");
 
     /*
-     * فتح واتساب بعد نجاح الاستبدال.
+     * فتح واتساب للمدعو الجديد.
      */
     openWhatsApp(
       whatsappWindow,
@@ -1089,7 +1088,7 @@ const Manage = () => {
                  * إذا كان المدعو قد فتح/استخدم الباركود.
                  */
                 const hasUsedBarcode =
-  !!guest.qr_token && !!guest.scanned;
+                  !!guest.qr_token && !!guest.scanned;
 
                 return (
                   <div
@@ -1105,15 +1104,15 @@ const Manage = () => {
                     {/* الاسم والرقم والحالة */}
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">
-                       <div
-  className="truncate text-sm font-medium"
-  style={{
-    color: "#273247",
-    fontFamily: "Arial, sans-serif",
-  }}
->
-  {guest.name}
-</div>
+                        <div
+                          className="truncate text-sm font-medium"
+                          style={{
+                            color: "#273247",
+                            fontFamily: "Arial, sans-serif",
+                          }}
+                        >
+                          {guest.name}
+                        </div>
 
                         <div
                           className="mt-1 text-xs"
