@@ -14,13 +14,20 @@ import {
 // 🎵 استيراد ملف الصوت m4a
 import bgMusic from "@/assets/m.m4a";
 
+import { supabase } from "@/integrations/supabase/client";
+import { QRCodeCanvas } from "qrcode.react";
+
 interface NavigationDockProps {
   active: boolean;
   guestName: string;
   inviteCode: string;
 }
 
-const NavigationDock = ({ active, guestName }: NavigationDockProps) => {
+const NavigationDock = ({
+  active,
+  guestName,
+  inviteCode,
+}: NavigationDockProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
@@ -31,7 +38,10 @@ const NavigationDock = ({ active, guestName }: NavigationDockProps) => {
   const [rsvpStatus, setRsvpStatus] = useState<
     "attending" | "declined" | ""
   >("");
+
   const [rsvpSent, setRsvpSent] = useState(false);
+  const [qrToken, setQrToken] = useState<string | null>(null);
+  const [rsvpLoading, setRsvpLoading] = useState(false);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -49,16 +59,6 @@ const NavigationDock = ({ active, guestName }: NavigationDockProps) => {
         });
     }
   }, [active]);
-
-  // استرجاع رد الحضور المحفوظ
-  useEffect(() => {
-    const savedStatus = localStorage.getItem("wedding_rsvp_status");
-
-    if (savedStatus === "attending" || savedStatus === "declined") {
-      setRsvpStatus(savedStatus);
-      setRsvpSent(true);
-    }
-  }, []);
 
   const toggleMusic = () => {
     if (!audioRef.current) return;
@@ -214,30 +214,81 @@ const NavigationDock = ({ active, guestName }: NavigationDockProps) => {
     window.location.href = "tel:0545252599";
   };
 
-  // إرسال الرد مباشرة إلى Google Form
+  // إرسال الرد إلى Supabase + Google Form
   const handleRSVPSubmit = async () => {
-    if (!guestName.trim() || !rsvpStatus) {
+    if (!inviteCode || !guestName.trim() || !rsvpStatus) {
       alert("فضلاً اختر الرد.");
       return;
     }
 
-    const formData = new URLSearchParams();
-
-    // حقل الاسم - الفورم الجديد
-    formData.append(
-      "entry.1456442516",
-      guestName.trim()
-    );
-
-    // حقل الرد - الفورم الجديد
-    formData.append(
-      "entry.2082093714",
-      rsvpStatus === "attending"
-        ? "تاكيد الحضور"
-        : "الاعتذار عن الحضور"
-    );
+    setRsvpLoading(true);
 
     try {
+      const { data: guest, error: guestError } = await supabase
+        .from("guests")
+        .select("id, status, qr_token, scanned")
+        .eq("invite_code", inviteCode)
+        .maybeSingle();
+
+      if (guestError || !guest) {
+        alert("تعذر العثور على بيانات الدعوة.");
+        return;
+      }
+
+      let token = guest.qr_token;
+
+      if (rsvpStatus === "attending") {
+        // إذا كان لديه باركود سابق نستخدم نفس الباركود
+        if (!token) {
+          token = crypto.randomUUID();
+        }
+
+        const { error } = await supabase
+          .from("guests")
+          .update({
+            status: "attending",
+            qr_token: token,
+            scanned: false,
+          })
+          .eq("id", guest.id);
+
+        if (error) {
+          throw error;
+        }
+
+        setQrToken(token);
+      } else {
+        const { error } = await supabase
+          .from("guests")
+          .update({
+            status: "declined",
+            qr_token: null,
+            scanned: false,
+          })
+          .eq("id", guest.id);
+
+        if (error) {
+          throw error;
+        }
+
+        setQrToken(null);
+      }
+
+      // إرسال الرد إلى Google Form
+      const formData = new URLSearchParams();
+
+      formData.append(
+        "entry.1456442516",
+        guestName.trim()
+      );
+
+      formData.append(
+        "entry.2082093714",
+        rsvpStatus === "attending"
+          ? "تاكيد الحضور"
+          : "الاعتذار عن الحضور"
+      );
+
       await fetch(
         "https://docs.google.com/forms/d/e/1FAIpQLSeXZ4ZlKGRpjYRxylObWh32sctV27XBmcsR5hFIDuNLdfBZ5A/formResponse",
         {
@@ -251,27 +302,15 @@ const NavigationDock = ({ active, guestName }: NavigationDockProps) => {
         }
       );
 
-      // حفظ الرد والاسم حتى يبقى بعد تحديث الصفحة
-      localStorage.setItem(
-        "wedding_rsvp_status",
-        rsvpStatus
-      );
-
-      localStorage.setItem(
-        "wedding_rsvp_name",
-        guestName.trim()
-      );
-
       setRsvpSent(true);
     } catch (error) {
-      console.error(
-        "حدث خطأ أثناء إرسال الرد:",
-        error
-      );
+      console.error("RSVP ERROR:", error);
 
       alert(
         "تعذر إرسال الرد، يرجى المحاولة مرة أخرى."
       );
+    } finally {
+      setRsvpLoading(false);
     }
   };
 
@@ -688,7 +727,8 @@ const NavigationDock = ({ active, guestName }: NavigationDockProps) => {
                 <button
                   type="button"
                   onClick={handleRSVPSubmit}
-                  className="w-full py-3.5 rounded-2xl font-bold transition-all active:scale-95 cursor-pointer shadow-lg"
+                  disabled={rsvpLoading}
+                  className="w-full py-3.5 rounded-2xl font-bold transition-all active:scale-95 cursor-pointer shadow-lg disabled:opacity-60"
                   style={{
                     fontFamily:
                       "'Almarai', sans-serif",
@@ -697,7 +737,7 @@ const NavigationDock = ({ active, guestName }: NavigationDockProps) => {
                     border: "none",
                   }}
                 >
-                  إرسال
+                  {rsvpLoading ? "جارٍ الإرسال..." : "إرسال"}
                 </button>
 
                 {/* إغلاق */}
@@ -752,6 +792,30 @@ const NavigationDock = ({ active, guestName }: NavigationDockProps) => {
                     ? "نسعد بحضوركم ومشاركتكم لنا هذه الفرحة"
                     : "نشكر لكم تواصلكم، ونسأل الله أن يجمعنا بكم على خير"}
                 </p>
+
+                {/* الباركود الشخصي */}
+                {rsvpStatus === "attending" && qrToken && (
+                  <div className="mt-6 flex flex-col items-center">
+                    <div className="bg-white p-4 rounded-2xl">
+                      <QRCodeCanvas
+                        value={`${window.location.origin}/scan/${qrToken}`}
+                        size={220}
+                        level="H"
+                      />
+                    </div>
+
+                    <p
+                      className="mt-4 text-sm"
+                      style={{
+                        fontFamily:
+                          "'Almarai', sans-serif",
+                        color: "#FFFFFF",
+                      }}
+                    >
+                      هذا الباركود مخصص لك ويُستخدم مرة واحدة فقط
+                    </p>
+                  </div>
+                )}
 
                 <button
                   type="button"
@@ -887,22 +951,31 @@ const NavigationDock = ({ active, guestName }: NavigationDockProps) => {
 
           {/* 5. تأكيد الحضور */}
           <button
-            onClick={() => {
-              const savedStatus = localStorage.getItem(
-                "wedding_rsvp_status"
-              );
+            onClick={async () => {
+              setRsvpLoading(true);
 
-              if (
-                savedStatus === "attending" ||
-                savedStatus === "declined"
-              ) {
-                setRsvpStatus(savedStatus);
-                setRsvpSent(true);
-              } else {
-                setRsvpSent(false);
-                setRsvpStatus("");
+              const { data } = await supabase
+                .from("guests")
+                .select("status, qr_token")
+                .eq("invite_code", inviteCode)
+                .maybeSingle();
+
+              if (data) {
+                setQrToken(data.qr_token);
+
+                if (
+                  data.status === "attending" ||
+                  data.status === "declined"
+                ) {
+                  setRsvpStatus(data.status);
+                  setRsvpSent(true);
+                } else {
+                  setRsvpStatus("");
+                  setRsvpSent(false);
+                }
               }
 
+              setRsvpLoading(false);
               setShowRSVP(true);
             }}
             className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
