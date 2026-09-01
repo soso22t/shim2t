@@ -39,6 +39,27 @@ const Manage = () => {
   const [replacePhone, setReplacePhone] = useState("");
   const [replaceError, setReplaceError] = useState("");
 
+  const showMessage = (title: string, message: string) => {
+    setModal({
+      type: "message",
+      title,
+      message,
+    });
+  };
+
+  const showConfirm = (
+    title: string,
+    message: string,
+    action: () => void
+  ) => {
+    setModal({
+      type: "confirm",
+      title,
+      message,
+      action,
+    });
+  };
+
   useEffect(() => {
     const loadInvitation = async () => {
       if (!id) {
@@ -102,14 +123,6 @@ const Manage = () => {
       .replace(/-/g, "")
       .slice(0, 8)
       .toUpperCase();
-  };
-
-  const showMessage = (title: string, message: string) => {
-    setModal({
-      type: "message",
-      title,
-      message,
-    });
   };
 
   const addGuest = async () => {
@@ -182,6 +195,74 @@ const Manage = () => {
     setError("");
   };
 
+  /*
+   * إضافة مدعو من جهات الاتصال
+   *
+   * تعمل في المتصفحات التي تدعم Contact Picker API.
+   * إذا لم يكن النظام يدعمها تظهر نافذة منسقة بدل تنبيه الجوال.
+   */
+  const addFromContacts = async () => {
+    try {
+      const nav = navigator as Navigator & {
+        contacts?: {
+          select: (
+            properties: string[],
+            options?: { multiple?: boolean }
+          ) => Promise<
+            Array<{
+              name?: string[];
+              tel?: string[];
+            }>
+          >;
+        };
+      };
+
+      if (!nav.contacts?.select) {
+        showMessage(
+          "إضافة من جهات الاتصال",
+          "هذه الخاصية غير مدعومة في المتصفح الحالي. يمكنك كتابة الاسم ورقم الجوال يدويًا."
+        );
+        return;
+      }
+
+      const contacts = await nav.contacts.select(
+        ["name", "tel"],
+        { multiple: false }
+      );
+
+      if (!contacts.length) return;
+
+      const contact = contacts[0];
+
+      const contactName = contact.name?.[0] || "";
+      const contactPhone = contact.tel?.[0] || "";
+
+      const cleanPhone = contactPhone.replace(/\D/g, "");
+
+      let finalPhone = cleanPhone;
+
+      if (cleanPhone.startsWith("9665") && cleanPhone.length === 12) {
+        finalPhone = "0" + cleanPhone.slice(3);
+      }
+
+      if (cleanPhone.startsWith("5") && cleanPhone.length === 9) {
+        finalPhone = "0" + cleanPhone;
+      }
+
+      setName(contactName);
+      setPhone(finalPhone);
+
+      setError("");
+    } catch (contactError) {
+      console.error(contactError);
+
+      showMessage(
+        "إضافة من جهات الاتصال",
+        "تعذر الوصول إلى جهات الاتصال. يمكنك كتابة الاسم ورقم الجوال يدويًا."
+      );
+    }
+  };
+
   const confirmedCount = guests.filter(
     (guest) => guest.status === "attending"
   ).length;
@@ -196,12 +277,105 @@ const Manage = () => {
       !guest.status
   ).length;
 
+  /*
+   * إعادة تعيين جهاز جميع الدعوات
+   */
+  const resetAllDevices = async () => {
+    if (!invitationId) return;
+
+    const { error: updateError } = await supabase
+      .from("guests")
+      .update({
+        device_id: null,
+      })
+      .eq("invitation_id", invitationId);
+
+    if (updateError) {
+      console.error(updateError);
+
+      showMessage(
+        "تعذر إعادة التعيين",
+        "حدث خطأ أثناء إعادة تعيين الأجهزة. حاول مرة أخرى."
+      );
+
+      return;
+    }
+
+    showMessage(
+      "تمت إعادة التعيين",
+      "تمت إعادة تعيين الأجهزة لجميع الدعوات بنجاح."
+    );
+  };
+
+  /*
+   * إعادة تعيين باركود مدعو واحد
+   */
+  const resetBarcode = async (guest: Guest) => {
+    const { error: updateError } = await supabase
+      .from("guests")
+      .update({
+        qr_token: null,
+        scanned: false,
+      })
+      .eq("id", guest.id);
+
+    if (updateError) {
+      console.error(updateError);
+
+      showMessage(
+        "تعذر إعادة تعيين الباركود",
+        "حدث خطأ أثناء إعادة تعيين الباركود. حاول مرة أخرى."
+      );
+
+      return;
+    }
+
+    showMessage(
+      "تمت إعادة تعيين الباركود",
+      `تم جعل باركود ${guest.name} جديدًا ويمكن استخدامه من جديد.`
+    );
+  };
+
   const openReplaceModal = (guest: Guest) => {
     setReplaceTarget(guest);
     setReplaceName("");
     setReplacePhone("");
     setReplaceError("");
     setReplaceModalOpen(true);
+  };
+
+  /*
+   * إرسال رسالة واتساب للمدعو الجديد
+   */
+  const sendWhatsApp = (
+    guestName: string,
+    guestPhone: string,
+    inviteCode: string
+  ) => {
+    const invitationUrl =
+      `https://m.shim2t.com/?invite=${encodeURIComponent(
+        inviteCode
+      )}`;
+
+    const message =
+      `يسعدنا دعوتك لمشاركتنا فرحة زفاف غالينا، فحضورك يزيد فرحتنا جمالًا ♥️💍.\n\n` +
+      `${guestName}\n` +
+      `${invitationUrl}`;
+
+    const cleanPhone = guestPhone.replace(/\D/g, "");
+
+    let whatsappPhone = cleanPhone;
+
+    if (cleanPhone.startsWith("0")) {
+      whatsappPhone = "966" + cleanPhone.slice(1);
+    }
+
+    const whatsappUrl =
+      `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(
+        message
+      )}`;
+
+    window.open(whatsappUrl, "_blank");
   };
 
   const replaceGuest = async () => {
@@ -299,6 +473,15 @@ const Manage = () => {
     setReplaceName("");
     setReplacePhone("");
     setReplaceError("");
+
+    /*
+     * فتح واتساب بعد نجاح الاستبدال
+     */
+    sendWhatsApp(
+      cleanNewName,
+      cleanNewPhone,
+      newInviteCode
+    );
   };
 
   if (loading) {
@@ -586,6 +769,7 @@ const Manage = () => {
             }}
           >
             <div className="space-y-3">
+
               <input
                 placeholder="اسم المدعو"
                 value={name}
@@ -620,6 +804,19 @@ const Manage = () => {
                 }}
               />
 
+              {/* إضافة من جهات الاتصال */}
+              <button
+                onClick={addFromContacts}
+                className="w-full rounded-2xl py-3 text-sm font-medium transition-all active:scale-[.99]"
+                style={{
+                  background: "#F1F0EC",
+                  color: "#5F6978",
+                  border: "1px solid #E2E0DA",
+                }}
+              >
+                إضافة من جهات الاتصال
+              </button>
+
               <button
                 onClick={addGuest}
                 className="w-full rounded-2xl py-3 text-sm font-medium transition-all active:scale-[.99]"
@@ -642,6 +839,56 @@ const Manage = () => {
                 </p>
               )}
             </div>
+          </div>
+        </section>
+
+        {/* إدارة الأجهزة والباركود */}
+        <section className="mb-12">
+          <div className="mb-5 text-center">
+            <div
+              className="text-lg font-medium"
+              style={{ color: "#273247" }}
+            >
+              إدارة الدعوات
+            </div>
+
+            <div
+              className="mt-1 text-xs leading-6"
+              style={{ color: "#7B818B" }}
+            >
+              يمكنك إعادة تعيين الأجهزة لجميع الدعوات عند الحاجة
+            </div>
+          </div>
+
+          <div
+            className="rounded-[26px] p-5"
+            style={{
+              background: "#FFFFFF",
+              border: "1px solid #E2E0DA",
+              boxShadow:
+                "0 16px 40px rgba(39,50,71,.05)",
+            }}
+          >
+            <button
+              onClick={() => {
+                showConfirm(
+                  "إعادة تعيين الأجهزة",
+                  "سيتم فصل جميع الدعوات عن الأجهزة الحالية، ويمكن فتحها من جهاز جديد. هل تريد المتابعة؟",
+                  async () => {
+                    setModal(null);
+                    await resetAllDevices();
+                  }
+                );
+              }}
+              className="w-full rounded-2xl py-3 text-sm font-medium transition-all active:scale-[.99]"
+              style={{
+                background: "#F1F0EC",
+                color: "#5F6978",
+                border: "1px solid #E2E0DA",
+              }}
+            >
+              إعادة تعيين الجهاز لجميع الدعوات
+            </button>
           </div>
         </section>
 
@@ -707,7 +954,7 @@ const Manage = () => {
                 return (
                   <div
                     key={guest.id}
-                    className="flex items-center justify-between gap-4 px-5 py-4"
+                    className="px-5 py-4"
                     style={{
                       borderBottom:
                         index !== guests.length - 1
@@ -715,32 +962,26 @@ const Manage = () => {
                           : "none",
                     }}
                   >
-                    <div className="min-w-0">
-                      <div
-                        className="truncate text-sm font-medium"
-                        style={{ color: "#273247" }}
-                      >
-                        {guest.name}
+                    {/* الاسم والرقم */}
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="min-w-0">
+                        <div
+                          className="truncate text-sm font-medium"
+                          style={{ color: "#273247" }}
+                        >
+                          {guest.name}
+                        </div>
+
+                        <div
+                          className="mt-1 text-xs"
+                          style={{ color: "#7B818B" }}
+                        >
+                          {guest.phone}
+                        </div>
                       </div>
 
                       <div
-                        className="mt-1 text-xs"
-                        style={{ color: "#7B818B" }}
-                      >
-                        {guest.phone}
-                      </div>
-
-                      <div
-                        className="mt-1 text-[10px]"
-                        style={{ color: "#B5A07E" }}
-                      >
-                        كود الدعوة: {guest.invite_code}
-                      </div>
-                    </div>
-
-                    <div className="flex shrink-0 items-center gap-3">
-                      <div
-                        className="flex items-center gap-1.5 text-xs"
+                        className="flex shrink-0 items-center gap-1.5 text-xs"
                         style={{ color: "#7B818B" }}
                       >
                         <span
@@ -752,19 +993,47 @@ const Manage = () => {
 
                         {status}
                       </div>
+                    </div>
 
-                      {guest.status === "declined" && (
+                    {/* الأزرار */}
+                    <div className="mt-4 grid grid-cols-2 gap-2">
+
+                      <button
+                        onClick={() => {
+                          showConfirm(
+                            "إعادة تعيين الباركود",
+                            `سيتم إعادة تعيين باركود ${guest.name} وجعله صالحًا للاستخدام من جديد. هل تريد المتابعة؟`,
+                            async () => {
+                              setModal(null);
+                              await resetBarcode(guest);
+                            }
+                          );
+                        }}
+                        className="rounded-xl py-2.5 text-xs font-medium transition-all active:scale-[.98]"
+                        style={{
+                          background: "#F1F0EC",
+                          color: "#5F6978",
+                          border: "1px solid #E2E0DA",
+                        }}
+                      >
+                        إعادة تعيين الباركود
+                      </button>
+
+                      {guest.status === "declined" ? (
                         <button
                           onClick={() =>
                             openReplaceModal(guest)
                           }
-                          className="text-xs font-medium transition-opacity hover:opacity-70"
+                          className="rounded-xl py-2.5 text-xs font-medium transition-all active:scale-[.98]"
                           style={{
-                            color: "#273247",
+                            background: "#273247",
+                            color: "#FFFFFF",
                           }}
                         >
                           استبدال
                         </button>
+                      ) : (
+                        <div />
                       )}
                     </div>
                   </div>
@@ -903,7 +1172,7 @@ const Manage = () => {
         </div>
       )}
 
-      {/* Message Modal */}
+      {/* Message / Confirmation Modal */}
       {modal && (
         <div
           dir="rtl"
@@ -945,16 +1214,44 @@ const Manage = () => {
               {modal.message}
             </div>
 
-            <button
-              onClick={() => setModal(null)}
-              className="mt-6 w-full rounded-2xl py-3 text-sm font-medium"
-              style={{
-                background: "#273247",
-                color: "#FFFFFF",
-              }}
-            >
-              حسنًا
-            </button>
+            {modal.type === "confirm" ? (
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => setModal(null)}
+                  className="rounded-2xl py-3 text-sm font-medium"
+                  style={{
+                    background: "#F1F0EC",
+                    color: "#5F6978",
+                  }}
+                >
+                  إلغاء
+                </button>
+
+                <button
+                  onClick={() => {
+                    modal.action?.();
+                  }}
+                  className="rounded-2xl py-3 text-sm font-medium"
+                  style={{
+                    background: "#273247",
+                    color: "#FFFFFF",
+                  }}
+                >
+                  تأكيد
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setModal(null)}
+                className="mt-6 w-full rounded-2xl py-3 text-sm font-medium"
+                style={{
+                  background: "#273247",
+                  color: "#FFFFFF",
+                }}
+              >
+                حسنًا
+              </button>
+            )}
           </div>
         </div>
       )}
