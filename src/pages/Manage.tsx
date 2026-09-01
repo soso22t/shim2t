@@ -314,19 +314,19 @@ const Manage = () => {
             </div>
             <div className="p-5">
               <button
-                onClick={() => {
-                  window.open("/", "_blank");
-                }}
-                className="w-full rounded-2xl py-3 text-sm font-medium transition-all"
-                style={{
-                  background: "#73C3DC",
-                  color: "#FFFFFF",
-                  boxShadow:
-                    "0 7px 20px rgba(115,195,220,.22)",
-                }}
-              >
-                معاينة الدعوة
-              </button>
+  onClick={() => {
+    window.open("https://mo.shim2t.com", "_blank");
+  }}
+  className="w-full rounded-2xl py-3 text-sm font-medium transition-all"
+  style={{
+    background: "#73C3DC",
+    color: "#FFFFFF",
+    boxShadow:
+      "0 7px 20px rgba(115,195,220,.22)",
+  }}
+>
+  معاينة الدعوة
+</button>
             </div>
           </div>
         </section>
