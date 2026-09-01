@@ -142,9 +142,9 @@ const Manage = () => {
       )}`;
 
     const message =
-      `يسعدنا دعوتك لمشاركتنا فرحة زفاف غالينا، فحضورك يزيد فرحتنا جمالًا ♥️💍.\n\n` +
-      `${guestName}\n` +
-      `${invitationUrl}`;
+  `${guestName}\n\n` +
+  `يسعدنا دعوتك لمشاركتنا فرحة زفاف غالينا، فحضورك يزيد فرحتنا جمالًا ♥️💍.\n\n` +
+  `${invitationUrl}`;
 
     const cleanPhone = guestPhone.replace(/\D/g, "");
 
@@ -446,42 +446,44 @@ const Manage = () => {
    * إعادة تعيين باركود مدعو واحد
    */
   const resetBarcode = async (guest: Guest) => {
-    const { error: updateError } = await supabase
-      .from("guests")
-      .update({
-        qr_token: null,
-        scanned: false,
-      })
-      .eq("id", guest.id);
+  const newQrToken = crypto.randomUUID();
 
-    if (updateError) {
-      console.error(updateError);
+  const { error: updateError } = await supabase
+    .from("guests")
+    .update({
+      qr_token: newQrToken,
+      scanned: false,
+    })
+    .eq("id", guest.id);
 
-      showMessage(
-        "تعذر إعادة تعيين الباركود",
-        "حدث خطأ أثناء إعادة تعيين الباركود. حاول مرة أخرى."
-      );
-
-      return;
-    }
-
-    setGuests((prev) =>
-      prev.map((item) =>
-        item.id === guest.id
-          ? {
-              ...item,
-              qr_token: null,
-              scanned: false,
-            }
-          : item
-      )
-    );
+  if (updateError) {
+    console.error(updateError);
 
     showMessage(
-      "تمت إعادة تعيين الباركود",
-      `تم جعل باركود ${guest.name} جديدًا ويمكن استخدامه من جديد.`
+      "تعذر إعادة تعيين الباركود",
+      "حدث خطأ أثناء إعادة تعيين الباركود. حاول مرة أخرى."
     );
-  };
+
+    return;
+  }
+
+  setGuests((prev) =>
+    prev.map((item) =>
+      item.id === guest.id
+        ? {
+            ...item,
+            qr_token: newQrToken,
+            scanned: false,
+          }
+        : item
+    )
+  );
+
+  showMessage(
+    "تمت إعادة تعيين الباركود",
+    `تم إنشاء باركود جديد لـ ${guest.name} ويمكن استخدامه من جديد.`
+  );
+};
 
   /*
    * حذف المدعو
