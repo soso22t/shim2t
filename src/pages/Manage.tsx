@@ -143,7 +143,7 @@ const Manage = () => {
 
     const message =
   `${guestName}\n\n` +
-  `يسعدنا دعوتك لمشاركتنا فرحة زفاف غالينا، فحضورك يزيد فرحتنا جمالًا ♥️💍.\n\n` +
+  `يسعدنا دعوتك لمشاركتنا فرحة زفاف غالينا، فحضورك يزيد فرحتنا جمالًا \u2665\uFE0F\uD83D\uDC8D.\n\n` +
   `${invitationUrl}`;
 
     const cleanPhone = guestPhone.replace(/\D/g, "");
@@ -1089,7 +1089,7 @@ const Manage = () => {
                  * إذا كان المدعو قد فتح/استخدم الباركود.
                  */
                 const hasUsedBarcode =
-                  !!guest.qr_token || !!guest.scanned;
+  !!guest.qr_token && !!guest.scanned;
 
                 return (
                   <div
