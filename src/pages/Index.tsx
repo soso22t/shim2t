@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { Heart, Calendar } from "lucide-react";
 import invitationImg from "@/assets/B.jpeg";
 import sosImg from "@/assets/xx.png";
@@ -16,7 +17,73 @@ import NavigationDock from "@/components/NavigationDock";
 
 const Index = () => {
   const [opened, setOpened] = useState(false);
+const inviteCode = new URLSearchParams(window.location.search).get("invite");
 
+const [guestName, setGuestName] = useState("");
+const [inviteLoading, setInviteLoading] = useState(!!inviteCode);
+const [inviteValid, setInviteValid] = useState(!inviteCode);
+const [wrongDevice, setWrongDevice] = useState(false);
+
+useEffect(() => {
+  const loadGuest = async () => {
+    if (!inviteCode) {
+      setInviteLoading(false);
+      return;
+    }
+
+    let deviceId = localStorage.getItem("guest_device_id");
+
+    if (!deviceId) {
+      deviceId = crypto.randomUUID();
+      localStorage.setItem("guest_device_id", deviceId);
+    }
+
+    const { data: guest, error } = await supabase
+      .from("guests")
+      .select("id, name, device_id")
+      .eq("invite_code", inviteCode)
+      .maybeSingle();
+
+    if (error || !guest) {
+      setInviteValid(false);
+      setInviteLoading(false);
+      return;
+    }
+
+    setGuestName(guest.name);
+
+    // إذا الدعوة مرتبطة بجهاز آخر
+    if (guest.device_id && guest.device_id !== deviceId) {
+      setWrongDevice(true);
+      setInviteValid(false);
+      setInviteLoading(false);
+      return;
+    }
+
+    // أول جهاز يفتح الدعوة يصبح الجهاز المسموح له
+    if (!guest.device_id) {
+      const { error: updateError } = await supabase
+        .from("guests")
+        .update({
+          device_id: deviceId,
+        })
+        .eq("id", guest.id)
+        .is("device_id", null);
+
+      if (updateError) {
+        console.error(updateError);
+        setInviteValid(false);
+        setInviteLoading(false);
+        return;
+      }
+    }
+
+    setInviteValid(true);
+    setInviteLoading(false);
+  };
+
+  loadGuest();
+}, [inviteCode]);
   useEffect(() => {
     if (opened) {
       const startPosition = window.pageYOffset;
@@ -48,7 +115,52 @@ const Index = () => {
       }, 1500);
     }
   }, [opened]);
+if (inviteLoading) {
+  return (
+    <div
+      className="min-h-screen flex items-center justify-center"
+      style={{ backgroundColor: "#24000D" }}
+    />
+  );
+}
 
+if (wrongDevice) {
+  return (
+    <div
+      dir="rtl"
+      className="min-h-screen flex items-center justify-center px-6 text-center"
+      style={{
+        backgroundColor: "#24000D",
+        color: "#FFFFFF",
+      }}
+    >
+      <div>
+        <p className="font-arabic text-xl">
+          عذراً، هذه الدعوة مخصصة لشخص آخر
+        </p>
+      </div>
+    </div>
+  );
+}
+
+if (inviteCode && !inviteValid) {
+  return (
+    <div
+      dir="rtl"
+      className="min-h-screen flex items-center justify-center px-6 text-center"
+      style={{
+        backgroundColor: "#24000D",
+        color: "#FFFFFF",
+      }}
+    >
+      <div>
+        <p className="font-arabic text-xl">
+          رابط الدعوة غير صالح
+        </p>
+      </div>
+    </div>
+  );
+}
   return (
     <div
       className={`relative min-h-screen text-white ${
