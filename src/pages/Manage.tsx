@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+
 type Guest = {
   id: string;
   name: string;
@@ -9,9 +10,13 @@ type Guest = {
   invite_code: string;
   replaced?: string | null;
   created_at?: string;
+  device_id?: string | null;
+  scanned?: boolean | null;
 };
+
 const Manage = () => {
   const { id } = useParams();
+
   const [maxGuests, setMaxGuests] = useState(0);
   const [invitationId, setInvitationId] = useState("");
   const [error, setError] = useState("");
@@ -19,6 +24,8 @@ const Manage = () => {
   const [guests, setGuests] = useState<Guest[]>([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
+
   useEffect(() => {
     const loadInvitation = async () => {
       if (!id) {
@@ -26,46 +33,56 @@ const Manage = () => {
         setLoading(false);
         return;
       }
+
       setLoading(true);
+
       const { data: invitation, error: invitationError } =
         await supabase
           .from("invitations")
           .select("id, guest_limit, manage_code")
           .eq("manage_code", id)
           .maybeSingle();
+
       if (invitationError) {
         console.error(invitationError);
         setError("حدث خطأ أثناء تحميل الدعوة");
         setLoading(false);
         return;
       }
+
       if (!invitation) {
         setError("لم يتم العثور على الدعوة");
         setLoading(false);
         return;
       }
+
       setMaxGuests(invitation.guest_limit ?? 0);
       setInvitationId(invitation.id);
+
       const { data: guestsData, error: guestsError } =
         await supabase
           .from("guests")
           .select(
-            "id, name, phone, status, invite_code, replaced, created_at"
+            "id, name, phone, status, invite_code, replaced, created_at, device_id, scanned"
           )
           .eq("invitation_id", invitation.id)
           .order("created_at", { ascending: true });
+
       if (guestsError) {
         console.error(guestsError);
         setError("حدث خطأ أثناء تحميل المدعوين");
         setLoading(false);
         return;
       }
+
       setGuests((guestsData as Guest[]) || []);
       setError("");
       setLoading(false);
     };
+
     loadInvitation();
   }, [id]);
+
   const generateInviteCode = () => {
     return crypto
       .randomUUID()
@@ -73,38 +90,49 @@ const Manage = () => {
       .slice(0, 8)
       .toUpperCase();
   };
+
   const addGuest = async () => {
     const cleanName = name.trim();
     const cleanPhone = phone.trim();
+
     setError("");
+
     if (!cleanName) {
       setError("يرجى كتابة اسم المدعو");
       return;
     }
+
     if (!cleanPhone) {
       setError("يرجى كتابة رقم الجوال");
       return;
     }
+
     if (!/^05\d{8}$/.test(cleanPhone)) {
       setError("رقم الجوال يجب أن يتكون من 10 أرقام ويبدأ بـ 05");
       return;
     }
+
     if (!invitationId) {
       setError("لم يتم العثور على الدعوة");
       return;
     }
+
     if (guests.length >= maxGuests) {
       setError("تم الوصول للحد الأقصى من المدعوين");
       return;
     }
+
     const exists = guests.some(
       (guest) => guest.phone === cleanPhone
     );
+
     if (exists) {
       setError("رقم الجوال مضاف مسبقًا");
       return;
     }
+
     const inviteCode = generateInviteCode();
+
     const { data, error: insertError } = await supabase
       .from("guests")
       .insert({
@@ -115,60 +143,136 @@ const Manage = () => {
         status: "pending",
       })
       .select(
-        "id, name, phone, status, invite_code, replaced, created_at"
+        "id, name, phone, status, invite_code, replaced, created_at, device_id, scanned"
       )
       .single();
+
     if (insertError || !data) {
       console.error(insertError);
       setError("حدث خطأ أثناء إضافة المدعو");
       return;
     }
+
     setGuests((prev) => [...prev, data as Guest]);
     setName("");
     setPhone("");
     setError("");
   };
-  const confirmedCount = guests.filter(
-    (guest) => guest.status === "attending"
-  ).length;
-  const declinedCount = guests.filter(
-    (guest) => guest.status === "declined"
-  ).length;
-  const pendingCount = guests.filter(
-    (guest) =>
-      guest.status === "pending" ||
-      !guest.status
-  ).length;
+
+  const chooseContact = async () => {
+    const contactPicker = (
+      navigator as Navigator & {
+        contacts?: {
+          select: (
+            properties: string[],
+            options?: { multiple?: boolean }
+          ) => Promise<
+            Array<{
+              name?: string[];
+              tel?: string[];
+            }>
+          >;
+        };
+      }
+    ).contacts;
+
+    if (!contactPicker) {
+      window.alert(
+        "اختيار جهة الاتصال غير مدعوم مباشرة على هذا الجهاز أو المتصفح.\nيمكنك نسخ الرقم من جهات الاتصال ولصقه هنا."
+      );
+      return;
+    }
+
+    try {
+      const contacts = await contactPicker.select(
+        ["name", "tel"],
+        { multiple: false }
+      );
+
+      if (!contacts.length) return;
+
+      const contact = contacts[0];
+
+      const selectedName = contact.name?.[0] || "";
+      const selectedPhone = (contact.tel?.[0] || "").replace(/\D/g, "");
+
+      let normalizedPhone = selectedPhone;
+
+      if (normalizedPhone.startsWith("9665")) {
+        normalizedPhone = "0" + normalizedPhone.slice(3);
+      }
+
+      if (normalizedPhone.length > 10) {
+        normalizedPhone = normalizedPhone.slice(-10);
+      }
+
+      setName(selectedName);
+      setPhone(normalizedPhone);
+      setError("");
+    } catch (contactError) {
+      console.log(contactError);
+    }
+  };
+
+  const sendWhatsApp = (guest: Guest) => {
+    const message =
+      `${guest.name}\n\n` +
+      `يسعدنا دعوتك لمشاركتنا فرحة زفاف غالينا، فحضورك يزيد فرحتنا جمالًا ♥️💍\n\n` +
+      `رابط الدعوة:\nhttps://mo.shim2t.com`;
+
+    const whatsappUrl = `https://wa.me/${guest.phone.replace(
+      /^0/,
+      "966"
+    )}?text=${encodeURIComponent(message)}`;
+
+    window.open(whatsappUrl, "_blank");
+  };
+
   const replaceGuest = async (guest: Guest) => {
     if (!invitationId) return;
-    const newName = window.prompt(
-      "اكتب اسم المدعو الجديد"
+
+    const confirmed = window.confirm(
+      `استبدال المدعو "${guest.name}"؟\n\nسيتم إضافة مدعو جديد بدلًا منه، مع الاحتفاظ بسجل المدعو السابق.`
     );
+
+    if (!confirmed) return;
+
+    const newName = window.prompt("اكتب اسم المدعو الجديد");
+
     if (!newName?.trim()) return;
+
     const newPhone = window.prompt(
       "اكتب رقم جوال المدعو الجديد\nمثال: 05xxxxxxxx"
     );
+
     if (!newPhone) return;
+
     const cleanNewName = newName.trim();
     const cleanNewPhone = newPhone.replace(/\D/g, "");
+
     if (!/^05\d{8}$/.test(cleanNewPhone)) {
       window.alert(
         "رقم الجوال يجب أن يتكون من 10 أرقام ويبدأ بـ 05"
       );
       return;
     }
+
     const exists = guests.some(
       (item) => item.phone === cleanNewPhone
     );
+
     if (exists) {
       window.alert("رقم الجوال مضاف مسبقًا");
       return;
     }
+
     if (guests.length >= maxGuests) {
       window.alert("تم الوصول للحد الأقصى من المدعوين");
       return;
     }
+
     const newInviteCode = generateInviteCode();
+
     const { data, error: insertError } = await supabase
       .from("guests")
       .insert({
@@ -179,20 +283,23 @@ const Manage = () => {
         status: "pending",
       })
       .select(
-        "id, name, phone, status, invite_code, replaced, created_at"
+        "id, name, phone, status, invite_code, replaced, created_at, device_id, scanned"
       )
       .single();
+
     if (insertError || !data) {
       console.error(insertError);
       window.alert("حدث خطأ أثناء استبدال المدعو");
       return;
     }
+
     const { error: updateError } = await supabase
       .from("guests")
       .update({
         replaced: data.id,
       })
       .eq("id", guest.id);
+
     if (updateError) {
       console.error(updateError);
       window.alert(
@@ -200,11 +307,92 @@ const Manage = () => {
       );
       return;
     }
-    setGuests((prev) => [
-      ...prev,
-      data as Guest,
-    ]);
+
+    setGuests((prev) => [...prev, data as Guest]);
   };
+
+  const resetDevice = async (guest: Guest) => {
+    const confirmed = window.confirm(
+      `إعادة تعيين الجهاز للمدعو "${guest.name}"؟\n\nسيتم إزالة الجهاز المرتبط بهذه الدعوة، ويمكن للمدعو فتحها من جهاز جديد.`
+    );
+
+    if (!confirmed) return;
+
+    setActionLoading(`device-${guest.id}`);
+
+    const { error: updateError } = await supabase
+      .from("guests")
+      .update({
+        device_id: null,
+      })
+      .eq("id", guest.id);
+
+    if (updateError) {
+      console.error(updateError);
+      window.alert("حدث خطأ أثناء إعادة تعيين الجهاز");
+      setActionLoading(null);
+      return;
+    }
+
+    setGuests((prev) =>
+      prev.map((item) =>
+        item.id === guest.id
+          ? { ...item, device_id: null }
+          : item
+      )
+    );
+
+    setActionLoading(null);
+  };
+
+  const resetBarcode = async (guest: Guest) => {
+    const confirmed = window.confirm(
+      `إعادة تعيين الباركود للمدعو "${guest.name}"؟\n\nسيتم جعل الباركود متاحًا للاستخدام من جديد.`
+    );
+
+    if (!confirmed) return;
+
+    setActionLoading(`barcode-${guest.id}`);
+
+    const { error: updateError } = await supabase
+      .from("guests")
+      .update({
+        scanned: false,
+      })
+      .eq("id", guest.id);
+
+    if (updateError) {
+      console.error(updateError);
+      window.alert("حدث خطأ أثناء إعادة تعيين الباركود");
+      setActionLoading(null);
+      return;
+    }
+
+    setGuests((prev) =>
+      prev.map((item) =>
+        item.id === guest.id
+          ? { ...item, scanned: false }
+          : item
+      )
+    );
+
+    setActionLoading(null);
+  };
+
+  const confirmedCount = guests.filter(
+    (guest) => guest.status === "attending"
+  ).length;
+
+  const declinedCount = guests.filter(
+    (guest) => guest.status === "declined"
+  ).length;
+
+  const pendingCount = guests.filter(
+    (guest) =>
+      guest.status === "pending" ||
+      !guest.status
+  ).length;
+
   if (loading) {
     return (
       <div
@@ -224,6 +412,7 @@ const Manage = () => {
       </div>
     );
   }
+
   if (error && !invitationId) {
     return (
       <div
@@ -244,16 +433,19 @@ const Manage = () => {
           >
             غيمة
           </div>
+
           <div
             className="mx-auto mt-5 h-px w-12"
             style={{ background: "#748A99" }}
           />
+
           <div
             className="mt-7 text-lg font-medium"
             style={{ color: "#26343B" }}
           >
             تعذر فتح صفحة الإدارة
           </div>
+
           <div
             className="mt-2 text-sm"
             style={{ color: "#A8757D" }}
@@ -264,6 +456,7 @@ const Manage = () => {
       </div>
     );
   }
+
   return (
     <div
       dir="rtl"
@@ -274,7 +467,7 @@ const Manage = () => {
       }}
     >
       <div className="mx-auto w-full max-w-2xl px-5 py-10 sm:px-7">
-        {/* Header */}
+
         <header className="mb-12 text-center">
           <div
             className="text-4xl font-light"
@@ -285,18 +478,20 @@ const Manage = () => {
           >
             غيمة
           </div>
+
           <div
             className="mt-3 text-sm font-light"
             style={{ color: "#87949C" }}
           >
             مساحة دعوتك
           </div>
+
           <div
             className="mx-auto mt-5 h-px w-12"
             style={{ background: "#748A99" }}
           />
         </header>
-        {/* Invitation Preview */}
+
         <section className="mb-12">
           <div
             className="mb-4 text-center text-sm"
@@ -304,6 +499,7 @@ const Manage = () => {
           >
             دعوتك
           </div>
+
           <div
             className="overflow-hidden rounded-[28px]"
             style={{
@@ -314,20 +510,18 @@ const Manage = () => {
             }}
           >
             <div
-              className="flex items-center justify-center"
+              className="w-full overflow-hidden"
               style={{
-                minHeight: "180px",
-                background:
-                  "linear-gradient(145deg,#FFFFFF,#F3F5F5)",
+                background: "#FFFFFF",
               }}
             >
-              <span
-                className="text-sm"
-                style={{ color: "#9BAEB5" }}
-              >
-                معاينة الدعوة
-              </span>
+              <img
+                src="https://m.shim2t.com/K.png"
+                alt="معاينة الدعوة"
+                className="w-full h-auto block"
+              />
             </div>
+
             <div className="p-5">
               <button
                 onClick={() => {
@@ -346,7 +540,7 @@ const Manage = () => {
             </div>
           </div>
         </section>
-        {/* Statistics */}
+
         <section className="mb-12">
           <div className="mb-5 text-center">
             <div
@@ -355,17 +549,20 @@ const Manage = () => {
             >
               ملخص الدعوة
             </div>
+
             <div
               className="mt-3 text-5xl font-light tracking-tight"
               style={{ color: "#26343B" }}
             >
               {guests.length}
+
               <span
                 className="mx-1 text-2xl"
                 style={{ color: "#B2C2C8" }}
               >
                 /
               </span>
+
               <span
                 className="text-2xl"
                 style={{ color: "#81939B" }}
@@ -373,6 +570,7 @@ const Manage = () => {
                 {maxGuests}
               </span>
             </div>
+
             <div
               className="mt-1 text-xs"
               style={{ color: "#94A5AB" }}
@@ -380,6 +578,7 @@ const Manage = () => {
               المدعوون
             </div>
           </div>
+
           <div
             className="h-[2px] w-full overflow-hidden rounded-full"
             style={{ background: "#E2DED7" }}
@@ -399,6 +598,7 @@ const Manage = () => {
               }}
             />
           </div>
+
           <div
             className="mt-7 grid grid-cols-3 text-center"
             style={{ color: "#6F8189" }}
@@ -410,10 +610,12 @@ const Manage = () => {
               >
                 {confirmedCount}
               </div>
+
               <div className="mt-1 text-xs">
                 تم التأكيد
               </div>
             </div>
+
             <div
               className="border-x"
               style={{ borderColor: "#DEDAD3" }}
@@ -424,10 +626,12 @@ const Manage = () => {
               >
                 {pendingCount}
               </div>
+
               <div className="mt-1 text-xs">
                 بانتظار الرد
               </div>
             </div>
+
             <div>
               <div
                 className="text-2xl font-light"
@@ -435,13 +639,14 @@ const Manage = () => {
               >
                 {declinedCount}
               </div>
+
               <div className="mt-1 text-xs">
                 اعتذروا
               </div>
             </div>
           </div>
         </section>
-        {/* Add Guest */}
+
         <section className="mb-12">
           <div className="mb-5 text-center">
             <div
@@ -450,6 +655,7 @@ const Manage = () => {
             >
               إضافة مدعو
             </div>
+
             <div
               className="mt-1 text-xs"
               style={{ color: "#94A5AB" }}
@@ -457,6 +663,7 @@ const Manage = () => {
               أضف الاسم ورقم الجوال لإرسال الدعوة
             </div>
           </div>
+
           <div
             className="rounded-[26px] p-5 sm:p-6"
             style={{
@@ -467,6 +674,7 @@ const Manage = () => {
             }}
           >
             <div className="space-y-3">
+
               <input
                 placeholder="اسم المدعو"
                 value={name}
@@ -481,6 +689,7 @@ const Manage = () => {
                   color: "#26343B",
                 }}
               />
+
               <input
                 placeholder="05xxxxxxxx"
                 inputMode="numeric"
@@ -499,6 +708,20 @@ const Manage = () => {
                   color: "#26343B",
                 }}
               />
+
+              <button
+                type="button"
+                onClick={chooseContact}
+                className="w-full rounded-2xl py-3 text-sm font-medium transition-all active:scale-[.99]"
+                style={{
+                  background: "#F1F3F4",
+                  color: "#748A99",
+                  border: "1px solid #E2DED7",
+                }}
+              >
+                إضافة من جهات الاتصال
+              </button>
+
               <button
                 onClick={addGuest}
                 className="w-full rounded-2xl py-3 text-sm font-medium transition-all active:scale-[.99]"
@@ -511,6 +734,7 @@ const Manage = () => {
               >
                 إضافة المدعو
               </button>
+
               {error && (
                 <p
                   className="pt-1 text-center text-xs"
@@ -522,7 +746,7 @@ const Manage = () => {
             </div>
           </div>
         </section>
-        {/* Guests */}
+
         <section>
           <div className="mb-5 flex items-end justify-between">
             <div>
@@ -532,6 +756,7 @@ const Manage = () => {
               >
                 المدعوون
               </div>
+
               <div
                 className="mt-1 text-xs"
                 style={{ color: "#94A5AB" }}
@@ -539,6 +764,7 @@ const Manage = () => {
                 قائمة المدعوين وحالة الرد
               </div>
             </div>
+
             <div
               className="text-xs"
               style={{ color: "#81939B" }}
@@ -546,6 +772,7 @@ const Manage = () => {
               {guests.length} / {maxGuests}
             </div>
           </div>
+
           <div
             className="overflow-hidden rounded-[26px]"
             style={{
@@ -570,16 +797,18 @@ const Manage = () => {
                     : guest.status === "declined"
                     ? "اعتذر"
                     : "بانتظار الرد";
+
                 const dotColor =
                   guest.status === "attending"
                     ? "#748A99"
                     : guest.status === "declined"
                     ? "#B99AA3"
                     : "#B9C4C8";
+
                 return (
                   <div
                     key={guest.id}
-                    className="flex items-center justify-between gap-4 px-5 py-4"
+                    className="px-5 py-5"
                     style={{
                       borderBottom:
                         index !== guests.length - 1
@@ -587,52 +816,143 @@ const Manage = () => {
                           : "none",
                     }}
                   >
-                    <div className="min-w-0">
-                      <div
-                        className="truncate text-sm font-medium"
-                        style={{ color: "#26343B" }}
-                      >
-                        {guest.name}
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0">
+                        <div
+                          className="truncate text-sm font-medium"
+                          style={{ color: "#26343B" }}
+                        >
+                          {guest.name}
+                        </div>
+
+                        <div
+                          className="mt-1 text-xs"
+                          style={{ color: "#91A1A7" }}
+                        >
+                          {guest.phone}
+                        </div>
+
+                        <div
+                          className="mt-1 text-[10px]"
+                          style={{ color: "#B0BDC2" }}
+                        >
+                          كود الدعوة: {guest.invite_code}
+                        </div>
                       </div>
-                      <div
-                        className="mt-1 text-xs"
-                        style={{ color: "#91A1A7" }}
-                      >
-                        {guest.phone}
-                      </div>
-                      <div
-                        className="mt-1 text-[10px]"
-                        style={{ color: "#B0BDC2" }}
-                      >
-                        كود الدعوة: {guest.invite_code}
-                      </div>
-                    </div>
-                    <div className="flex shrink-0 items-center gap-3">
-                      <div
-                        className="flex items-center gap-1.5 text-xs"
-                        style={{ color: "#7E9097" }}
-                      >
+
+                      <div className="flex shrink-0 items-center gap-1.5 text-xs">
                         <span
                           className="h-1.5 w-1.5 rounded-full"
                           style={{
                             background: dotColor,
                           }}
                         />
-                        {status}
+
+                        <span style={{ color: "#7E9097" }}>
+                          {status}
+                        </span>
                       </div>
-                      {guest.status === "declined" && (
+                    </div>
+
+                    <div className="mt-4 grid grid-cols-2 gap-2">
+
+                      <button
+                        type="button"
+                        onClick={() => sendWhatsApp(guest)}
+                        className="rounded-xl px-3 py-2.5 text-xs font-medium transition-all active:scale-[.98]"
+                        style={{
+                          background: "#748A99",
+                          color: "#FFFFFF",
+                        }}
+                      >
+                        إرسال الدعوة
+                      </button>
+
+                      {guest.status === "declined" ? (
                         <button
-                          onClick={() =>
-                            replaceGuest(guest)
-                          }
-                          className="text-xs font-medium transition-opacity hover:opacity-70"
+                          type="button"
+                          onClick={() => replaceGuest(guest)}
+                          className="rounded-xl px-3 py-2.5 text-xs font-medium transition-all active:scale-[.98]"
                           style={{
+                            background: "#F3EFF0",
                             color: "#748A99",
+                            border:
+                              "1px solid #DED4D7",
                           }}
                         >
                           استبدال
                         </button>
+                      ) : (
+                        <div />
                       )}
+                    </div>
+
+                    <div
+                      className="mt-3 rounded-2xl p-3"
+                      style={{
+                        background: "#FAF9F7",
+                        border:
+                          "1px solid #EEEAE4",
+                      }}
+                    >
+                      <div
+                        className="mb-2 text-[10px]"
+                        style={{
+                          color: "#9AA5A9",
+                        }}
+                      >
+                        أدوات الإدارة
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            resetDevice(guest)
+                          }
+                          disabled={
+                            actionLoading ===
+                            `device-${guest.id}`
+                          }
+                          className="rounded-xl px-2 py-2.5 text-[11px] font-medium transition-all active:scale-[.98] disabled:opacity-50"
+                          style={{
+                            background: "#FFFFFF",
+                            color: "#748A99",
+                            border:
+                              "1px solid #DEDAD3",
+                          }}
+                        >
+                          {actionLoading ===
+                          `device-${guest.id}`
+                            ? "جارٍ التنفيذ..."
+                            : "إعادة تعيين الجهاز"}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            resetBarcode(guest)
+                          }
+                          disabled={
+                            actionLoading ===
+                            `barcode-${guest.id}`
+                          }
+                          className="rounded-xl px-2 py-2.5 text-[11px] font-medium transition-all active:scale-[.98] disabled:opacity-50"
+                          style={{
+                            background: "#FFFFFF",
+                            color: "#748A99",
+                            border:
+                              "1px solid #DEDAD3",
+                          }}
+                        >
+                          {actionLoading ===
+                          `barcode-${guest.id}`
+                            ? "جارٍ التنفيذ..."
+                            : "إعادة تعيين الباركود"}
+                        </button>
+
+                      </div>
                     </div>
                   </div>
                 );
@@ -640,6 +960,7 @@ const Manage = () => {
             )}
           </div>
         </section>
+
         <footer
           className="mt-14 pb-4 text-center text-xs"
           style={{ color: "#A2AAA9" }}
@@ -650,4 +971,5 @@ const Manage = () => {
     </div>
   );
 };
+
 export default Manage;
