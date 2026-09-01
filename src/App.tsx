@@ -24,6 +24,7 @@ const App = () => (
 
           {/* رابط الدعوة الخاص بالضيف */}
           <Route path="/invite/:code" element={<Invite />} />
+<Route path="/" element={<Invite />} />
 
           {/* مسح QR */}
           <Route path="/scan/:token" element={<Scan />} />
