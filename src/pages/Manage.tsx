@@ -209,38 +209,17 @@ const Manage = () => {
     return (
       <div
         dir="rtl"
-        className="min-h-screen flex items-center justify-center font-arabic relative overflow-hidden"
+        className="min-h-screen flex items-center justify-center font-arabic"
         style={{
-          background:
-            "radial-gradient(circle at 50% 0%, #E8F8FD 0%, #F8FCFE 42%, #FFFFFF 100%)",
+          background: "#F7F4EF",
           color: "#26343B",
         }}
       >
         <div
-          className="absolute -top-32 -right-24 h-72 w-72 rounded-full blur-3xl"
-          style={{
-            background: "rgba(169,220,235,.25)",
-          }}
-        />
-        <div
-          className="absolute -bottom-32 -left-24 h-72 w-72 rounded-full blur-3xl"
-          style={{
-            background: "rgba(115,195,220,.14)",
-          }}
-        />
-        <div className="relative text-center">
-          <div
-            className="text-4xl font-light tracking-[0.16em]"
-            style={{ color: "#68B7D0" }}
-          >
-            غيمة
-          </div>
-          <div
-            className="mt-4 text-sm"
-            style={{ color: "#8BA4AE" }}
-          >
-            جاري تحميل دعوتك...
-          </div>
+          className="text-sm"
+          style={{ color: "#748A99" }}
+        >
+          جاري تحميل الدعوة...
         </div>
       </div>
     );
@@ -249,32 +228,25 @@ const Manage = () => {
     return (
       <div
         dir="rtl"
-        className="min-h-screen flex items-center justify-center px-5 font-arabic relative overflow-hidden"
+        className="min-h-screen flex items-center justify-center px-5 font-arabic"
         style={{
-          background:
-            "radial-gradient(circle at 50% 0%, #E8F8FD 0%, #F8FCFE 42%, #FFFFFF 100%)",
+          background: "#F7F4EF",
           color: "#26343B",
         }}
       >
-        <div
-          className="absolute -top-32 -right-24 h-72 w-72 rounded-full blur-3xl"
-          style={{
-            background: "rgba(169,220,235,.22)",
-          }}
-        />
-        <div className="relative text-center">
+        <div className="text-center">
           <div
-            className="text-4xl font-light tracking-[0.16em]"
-            style={{ color: "#68B7D0" }}
+            className="text-3xl font-light"
+            style={{
+              color: "#748A99",
+              letterSpacing: "0",
+            }}
           >
             غيمة
           </div>
           <div
-            className="mx-auto mt-7 h-px w-14"
-            style={{
-              background:
-                "linear-gradient(to left, transparent, #A9DCEB, transparent)",
-            }}
+            className="mx-auto mt-5 h-px w-12"
+            style={{ background: "#748A99" }}
           />
           <div
             className="mt-7 text-lg font-medium"
@@ -284,7 +256,7 @@ const Manage = () => {
           </div>
           <div
             className="mt-2 text-sm"
-            style={{ color: "#C77F8A" }}
+            style={{ color: "#A8757D" }}
           >
             {error}
           </div>
@@ -295,281 +267,176 @@ const Manage = () => {
   return (
     <div
       dir="rtl"
-      className="min-h-screen font-arabic relative overflow-hidden"
+      className="min-h-screen font-arabic"
       style={{
-        background:
-          "radial-gradient(circle at 50% -10%, #E7F8FD 0%, #F7FCFE 35%, #FFFFFF 72%)",
+        background: "#F7F4EF",
         color: "#26343B",
       }}
     >
-      {/* Cloud atmosphere */}
-      <div
-        className="pointer-events-none absolute -top-40 -right-40 h-[420px] w-[420px] rounded-full blur-3xl"
-        style={{
-          background: "rgba(169,220,235,.20)",
-        }}
-      />
-      <div
-        className="pointer-events-none absolute top-[420px] -left-52 h-[430px] w-[430px] rounded-full blur-3xl"
-        style={{
-          background: "rgba(115,195,220,.10)",
-        }}
-      />
-      <div
-        className="pointer-events-none absolute bottom-[-220px] right-[20%] h-[430px] w-[430px] rounded-full blur-3xl"
-        style={{
-          background: "rgba(220,244,250,.55)",
-        }}
-      />
-      <div className="relative mx-auto w-full max-w-2xl px-5 py-10 sm:px-7">
+      <div className="mx-auto w-full max-w-2xl px-5 py-10 sm:px-7">
         {/* Header */}
         <header className="mb-12 text-center">
           <div
-            className="text-4xl font-light tracking-[0.16em]"
+            className="text-4xl font-light"
             style={{
-              color: "#68B7D0",
-              textShadow:
-                "0 4px 18px rgba(104,183,208,.18)",
+              color: "#748A99",
+              letterSpacing: "0",
             }}
           >
             غيمة
           </div>
           <div
-            className="mt-3 text-sm font-light tracking-wide"
-            style={{ color: "#829BA5" }}
+            className="mt-3 text-sm font-light"
+            style={{ color: "#87949C" }}
           >
-            مساحة دعوتك الخاصة
+            مساحة دعوتك
           </div>
           <div
-            className="mx-auto mt-6 h-px w-16"
-            style={{
-              background:
-                "linear-gradient(to left, transparent, #A9DCEB, transparent)",
-            }}
+            className="mx-auto mt-5 h-px w-12"
+            style={{ background: "#748A99" }}
           />
         </header>
         {/* Invitation Preview */}
         <section className="mb-12">
-          <div className="mb-5 text-center">
-            <div
-              className="text-sm font-medium"
-              style={{ color: "#58727D" }}
-            >
-              دعوتك
-            </div>
-            <div
-              className="mt-1 text-[11px]"
-              style={{ color: "#9AAEB6" }}
-            >
-              معاينة سريعة للدعوة
-            </div>
+          <div
+            className="mb-4 text-center text-sm"
+            style={{ color: "#60747D" }}
+          >
+            دعوتك
           </div>
           <div
-            className="overflow-hidden rounded-[30px]"
+            className="overflow-hidden rounded-[28px]"
             style={{
-              background:
-                "linear-gradient(145deg, rgba(255,255,255,.98), rgba(244,251,253,.96))",
-              border: "1px solid rgba(213,234,240,.9)",
+              background: "#FFFFFF",
+              border: "1px solid #E5E1DA",
               boxShadow:
-                "0 25px 70px rgba(76,139,158,.10), inset 0 1px 0 rgba(255,255,255,.95)",
+                "0 18px 45px rgba(65,80,88,.10)",
             }}
           >
-            {/* Luxury invitation mockup */}
             <div
-              className="relative flex items-center justify-center overflow-hidden"
+              className="flex items-center justify-center"
               style={{
-                minHeight: "230px",
+                minHeight: "180px",
                 background:
-                  "radial-gradient(circle at 50% 25%, #FFFFFF 0%, #F5FBFD 48%, #EAF7FB 100%)",
+                  "linear-gradient(145deg,#FFFFFF,#F3F5F5)",
               }}
             >
-              <div
-                className="absolute h-44 w-36 rounded-[22px]"
-                style={{
-                  background:
-                    "linear-gradient(150deg, #FFFFFF 0%, #F8FCFD 60%, #E8F6FA 100%)",
-                  border:
-                    "1px solid rgba(183,218,228,.75)",
-                  boxShadow:
-                    "0 20px 45px rgba(72,130,147,.13), inset 0 0 0 6px rgba(255,255,255,.7)",
-                  transform: "rotate(-2deg)",
-                }}
+              <span
+                className="text-sm"
+                style={{ color: "#9BAEB5" }}
               >
-                <div
-                  className="absolute left-1/2 top-7 -translate-x-1/2 h-px w-16"
-                  style={{
-                    background: "#B7DDE7",
-                  }}
-                />
-                <div
-                  className="absolute left-1/2 top-11 -translate-x-1/2 whitespace-nowrap text-[10px] tracking-[0.18em]"
-                  style={{
-                    color: "#6FAFC2",
-                  }}
-                >
-                  دعوة خاصة
-                </div>
-                <div
-                  className="absolute left-1/2 top-[88px] -translate-x-1/2 h-1 w-20 rounded-full"
-                  style={{
-                    background:
-                      "linear-gradient(to right, transparent, #C8E7EE, transparent)",
-                  }}
-                />
-                <div
-                  className="absolute left-1/2 top-[112px] -translate-x-1/2 text-[8px]"
-                  style={{
-                    color: "#9DB5BD",
-                  }}
-                >
-                  بكل حب
-                </div>
-                <div
-                  className="absolute bottom-7 left-1/2 -translate-x-1/2 h-px w-12"
-                  style={{
-                    background: "#C3E2EA",
-                  }}
-                />
-              </div>
-              <div
-                className="absolute bottom-4 left-1/2 h-8 w-28 -translate-x-1/2 rounded-full blur-xl"
-                style={{
-                  background: "rgba(92,168,190,.18)",
-                }}
-              />
+                معاينة الدعوة
+              </span>
             </div>
             <div className="p-5">
               <button
                 onClick={() => {
                   window.open("/", "_blank");
                 }}
-                className="w-full rounded-2xl py-3.5 text-sm font-medium transition-all active:scale-[.99]"
+                className="w-full rounded-2xl py-3 text-sm font-medium transition-all active:scale-[.99]"
                 style={{
-                  background:
-                    "linear-gradient(135deg, #79C8DE, #62B4CE)",
+                  background: "#748A99",
                   color: "#FFFFFF",
                   boxShadow:
-                    "0 10px 25px rgba(98,180,206,.20)",
+                    "0 8px 22px rgba(116,138,153,.22)",
                 }}
               >
-                فتح الدعوة
+                معاينة الدعوة
               </button>
             </div>
           </div>
         </section>
         {/* Statistics */}
         <section className="mb-12">
-          <div
-            className="rounded-[30px] p-6 sm:p-7"
-            style={{
-              background:
-                "rgba(255,255,255,.78)",
-              border:
-                "1px solid rgba(218,235,240,.9)",
-              boxShadow:
-                "0 22px 60px rgba(76,139,158,.07)",
-              backdropFilter: "blur(14px)",
-            }}
-          >
-            <div className="text-center">
-              <div
-                className="text-sm font-medium"
-                style={{ color: "#58727D" }}
+          <div className="mb-5 text-center">
+            <div
+              className="text-sm"
+              style={{ color: "#60747D" }}
+            >
+              ملخص الدعوة
+            </div>
+            <div
+              className="mt-3 text-5xl font-light tracking-tight"
+              style={{ color: "#26343B" }}
+            >
+              {guests.length}
+              <span
+                className="mx-1 text-2xl"
+                style={{ color: "#B2C2C8" }}
               >
-                ملخص الدعوة
-              </div>
+                /
+              </span>
+              <span
+                className="text-2xl"
+                style={{ color: "#81939B" }}
+              >
+                {maxGuests}
+              </span>
+            </div>
+            <div
+              className="mt-1 text-xs"
+              style={{ color: "#94A5AB" }}
+            >
+              المدعوون
+            </div>
+          </div>
+          <div
+            className="h-[2px] w-full overflow-hidden rounded-full"
+            style={{ background: "#E2DED7" }}
+          >
+            <div
+              className="h-full rounded-full transition-all"
+              style={{
+                width: `${
+                  maxGuests
+                    ? Math.min(
+                        (guests.length / maxGuests) * 100,
+                        100
+                      )
+                    : 0
+                }%`,
+                background: "#748A99",
+              }}
+            />
+          </div>
+          <div
+            className="mt-7 grid grid-cols-3 text-center"
+            style={{ color: "#6F8189" }}
+          >
+            <div>
               <div
-                className="mt-3 text-5xl font-light tracking-tight"
+                className="text-2xl font-light"
                 style={{ color: "#26343B" }}
               >
-                {guests.length}
-                <span
-                  className="mx-2 text-2xl"
-                  style={{ color: "#B9CDD4" }}
-                >
-                  /
-                </span>
-                <span
-                  className="text-2xl"
-                  style={{ color: "#78939D" }}
-                >
-                  {maxGuests}
-                </span>
+                {confirmedCount}
               </div>
-              <div
-                className="mt-1 text-xs"
-                style={{ color: "#95A9B0" }}
-              >
-                المدعوون
+              <div className="mt-1 text-xs">
+                تم التأكيد
               </div>
             </div>
             <div
-              className="mt-6 h-2 w-full overflow-hidden rounded-full"
-              style={{
-                background: "#EAF3F6",
-              }}
+              className="border-x"
+              style={{ borderColor: "#DEDAD3" }}
             >
               <div
-                className="h-full rounded-full transition-all"
-                style={{
-                  width: `${
-                    maxGuests
-                      ? Math.min(
-                          (guests.length / maxGuests) * 100,
-                          100
-                        )
-                      : 0
-                  }%`,
-                  background:
-                    "linear-gradient(to left, #68B9D3, #9DD9E8)",
-                }}
-              />
-            </div>
-            <div className="mt-7 grid grid-cols-3 text-center">
-              <div>
-                <div
-                  className="text-2xl font-light"
-                  style={{ color: "#26343B" }}
-                >
-                  {confirmedCount}
-                </div>
-                <div
-                  className="mt-1 text-xs"
-                  style={{ color: "#80959E" }}
-                >
-                  تم التأكيد
-                </div>
-              </div>
-              <div
-                className="border-x"
-                style={{ borderColor: "#E2EDF1" }}
+                className="text-2xl font-light"
+                style={{ color: "#26343B" }}
               >
-                <div
-                  className="text-2xl font-light"
-                  style={{ color: "#26343B" }}
-                >
-                  {pendingCount}
-                </div>
-                <div
-                  className="mt-1 text-xs"
-                  style={{ color: "#80959E" }}
-                >
-                  بانتظار الرد
-                </div>
+                {pendingCount}
               </div>
-              <div>
-                <div
-                  className="text-2xl font-light"
-                  style={{ color: "#26343B" }}
-                >
-                  {declinedCount}
-                </div>
-                <div
-                  className="mt-1 text-xs"
-                  style={{ color: "#80959E" }}
-                >
-                  اعتذروا
-                </div>
+              <div className="mt-1 text-xs">
+                بانتظار الرد
+              </div>
+            </div>
+            <div>
+              <div
+                className="text-2xl font-light"
+                style={{ color: "#26343B" }}
+              >
+                {declinedCount}
+              </div>
+              <div className="mt-1 text-xs">
+                اعتذروا
               </div>
             </div>
           </div>
@@ -585,21 +452,18 @@ const Manage = () => {
             </div>
             <div
               className="mt-1 text-xs"
-              style={{ color: "#94A8B0" }}
+              style={{ color: "#94A5AB" }}
             >
               أضف الاسم ورقم الجوال لإرسال الدعوة
             </div>
           </div>
           <div
-            className="rounded-[30px] p-5 sm:p-6"
+            className="rounded-[26px] p-5 sm:p-6"
             style={{
-              background:
-                "rgba(255,255,255,.82)",
-              border:
-                "1px solid rgba(218,235,240,.9)",
+              background: "#FFFFFF",
+              border: "1px solid #E5E1DA",
               boxShadow:
-                "0 22px 60px rgba(76,139,158,.07)",
-              backdropFilter: "blur(14px)",
+                "0 16px 40px rgba(65,80,88,.07)",
             }}
           >
             <div className="space-y-3">
@@ -610,10 +474,10 @@ const Manage = () => {
                   setName(e.target.value);
                   setError("");
                 }}
-                className="w-full rounded-2xl px-4 py-3.5 outline-none text-sm transition-all"
+                className="w-full rounded-2xl px-4 py-3 outline-none text-sm"
                 style={{
-                  background: "#FBFDFE",
-                  border: "1px solid #DDECF0",
+                  background: "#FCFBF9",
+                  border: "1px solid #E2DED7",
                   color: "#26343B",
                 }}
               />
@@ -628,22 +492,21 @@ const Manage = () => {
                   );
                   setError("");
                 }}
-                className="w-full rounded-2xl px-4 py-3.5 outline-none text-sm transition-all"
+                className="w-full rounded-2xl px-4 py-3 outline-none text-sm"
                 style={{
-                  background: "#FBFDFE",
-                  border: "1px solid #DDECF0",
+                  background: "#FCFBF9",
+                  border: "1px solid #E2DED7",
                   color: "#26343B",
                 }}
               />
               <button
                 onClick={addGuest}
-                className="w-full rounded-2xl py-3.5 text-sm font-medium transition-all active:scale-[.99]"
+                className="w-full rounded-2xl py-3 text-sm font-medium transition-all active:scale-[.99]"
                 style={{
-                  background:
-                    "linear-gradient(135deg, #79C8DE, #62B4CE)",
+                  background: "#748A99",
                   color: "#FFFFFF",
                   boxShadow:
-                    "0 10px 25px rgba(98,180,206,.20)",
+                    "0 8px 22px rgba(116,138,153,.22)",
                 }}
               >
                 إضافة المدعو
@@ -651,7 +514,7 @@ const Manage = () => {
               {error && (
                 <p
                   className="pt-1 text-center text-xs"
-                  style={{ color: "#C77F8A" }}
+                  style={{ color: "#A8757D" }}
                 >
                   {error}
                 </p>
@@ -661,7 +524,7 @@ const Manage = () => {
         </section>
         {/* Guests */}
         <section>
-          <div className="mb-5 flex items-end justify-between px-1">
+          <div className="mb-5 flex items-end justify-between">
             <div>
               <div
                 className="text-lg font-medium"
@@ -671,58 +534,33 @@ const Manage = () => {
               </div>
               <div
                 className="mt-1 text-xs"
-                style={{ color: "#94A8B0" }}
+                style={{ color: "#94A5AB" }}
               >
                 قائمة المدعوين وحالة الرد
               </div>
             </div>
             <div
-              className="rounded-full px-3 py-1 text-xs"
-              style={{
-                background: "#EDF8FB",
-                color: "#6FAFC2",
-                border: "1px solid #D9EDF2",
-              }}
+              className="text-xs"
+              style={{ color: "#81939B" }}
             >
               {guests.length} / {maxGuests}
             </div>
           </div>
           <div
-            className="overflow-hidden rounded-[30px]"
+            className="overflow-hidden rounded-[26px]"
             style={{
-              background:
-                "rgba(255,255,255,.84)",
-              border:
-                "1px solid rgba(218,235,240,.9)",
+              background: "#FFFFFF",
+              border: "1px solid #E5E1DA",
               boxShadow:
-                "0 22px 60px rgba(76,139,158,.07)",
-              backdropFilter: "blur(14px)",
+                "0 16px 40px rgba(65,80,88,.06)",
             }}
           >
             {guests.length === 0 ? (
-              <div className="px-5 py-14 text-center">
-                <div
-                  className="mx-auto flex h-14 w-14 items-center justify-center rounded-full"
-                  style={{
-                    background:
-                      "linear-gradient(145deg, #F0FAFC, #E4F5F9)",
-                    border:
-                      "1px solid #D8EDF2",
-                  }}
-                >
-                  <div
-                    className="h-2 w-2 rounded-full"
-                    style={{
-                      background: "#88C9DC",
-                    }}
-                  />
-                </div>
-                <div
-                  className="mt-4 text-sm"
-                  style={{ color: "#718890" }}
-                >
-                  لم تتم إضافة أي مدعو بعد
-                </div>
+              <div
+                className="py-12 text-center text-sm"
+                style={{ color: "#9BAEB5" }}
+              >
+                لم تتم إضافة أي مدعو بعد
               </div>
             ) : (
               guests.map((guest, index) => {
@@ -734,18 +572,18 @@ const Manage = () => {
                     : "بانتظار الرد";
                 const dotColor =
                   guest.status === "attending"
-                    ? "#73C3DC"
+                    ? "#748A99"
                     : guest.status === "declined"
-                    ? "#C7A0AC"
-                    : "#B7C8CE";
+                    ? "#B99AA3"
+                    : "#B9C4C8";
                 return (
                   <div
                     key={guest.id}
-                    className="flex items-center justify-between gap-4 px-5 py-5"
+                    className="flex items-center justify-between gap-4 px-5 py-4"
                     style={{
                       borderBottom:
                         index !== guests.length - 1
-                          ? "1px solid #EDF3F5"
+                          ? "1px solid #EEEAE4"
                           : "none",
                     }}
                   >
@@ -758,12 +596,12 @@ const Manage = () => {
                       </div>
                       <div
                         className="mt-1 text-xs"
-                        style={{ color: "#91A4AB" }}
+                        style={{ color: "#91A1A7" }}
                       >
                         {guest.phone}
                       </div>
                       <div
-                        className="mt-1.5 text-[10px]"
+                        className="mt-1 text-[10px]"
                         style={{ color: "#B0BDC2" }}
                       >
                         كود الدعوة: {guest.invite_code}
@@ -771,16 +609,8 @@ const Manage = () => {
                     </div>
                     <div className="flex shrink-0 items-center gap-3">
                       <div
-                        className="flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-xs"
-                        style={{
-                          background:
-                            guest.status === "attending"
-                              ? "#EEF9FC"
-                              : guest.status === "declined"
-                              ? "#FBF3F5"
-                              : "#F4F7F8",
-                          color: "#718890",
-                        }}
+                        className="flex items-center gap-1.5 text-xs"
+                        style={{ color: "#7E9097" }}
                       >
                         <span
                           className="h-1.5 w-1.5 rounded-full"
@@ -797,7 +627,7 @@ const Manage = () => {
                           }
                           className="text-xs font-medium transition-opacity hover:opacity-70"
                           style={{
-                            color: "#62AEC7",
+                            color: "#748A99",
                           }}
                         >
                           استبدال
@@ -811,16 +641,9 @@ const Manage = () => {
           </div>
         </section>
         <footer
-          className="mt-16 pb-5 text-center text-xs"
-          style={{ color: "#A2B0B5" }}
+          className="mt-14 pb-4 text-center text-xs"
+          style={{ color: "#A2AAA9" }}
         >
-          <div
-            className="mx-auto mb-3 h-px w-12"
-            style={{
-              background:
-                "linear-gradient(to left, transparent, #D5E9EE, transparent)",
-            }}
-          />
           غيمة · دعوات تليق بتفاصيلك
         </footer>
       </div>
