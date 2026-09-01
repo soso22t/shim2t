@@ -137,7 +137,7 @@ const Manage = () => {
     inviteCode: string
   ) => {
     const invitationUrl =
-      `https://m.shim2t.com/?invite=${encodeURIComponent(
+      `https://mo.shim2t.com/?invite=${encodeURIComponent(
         inviteCode
       )}`;
 
