@@ -21,12 +21,14 @@ interface NavigationDockProps {
   active: boolean;
   guestName: string;
   inviteCode: string;
+  selectedGuestId: string;
 }
 
 const NavigationDock = ({
   active,
   guestName,
   inviteCode,
+  selectedGuestId,
 }: NavigationDockProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
@@ -78,12 +80,13 @@ const NavigationDock = ({
       setShowCamera(true);
       setCapturedImage(null);
 
-      const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: { ideal: "environment" },
-        },
-        audio: false,
-      });
+      const mediaStream =
+        await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: { ideal: "environment" },
+          },
+          audio: false,
+        });
 
       setStream(mediaStream);
 
@@ -91,7 +94,9 @@ const NavigationDock = ({
         videoRef.current.srcObject = mediaStream;
       }
     } catch (err) {
-      alert("يرجى السماح للمتصفح بالوصول إلى الكاميرا.");
+      alert(
+        "يرجى السماح للمتصفح بالوصول إلى الكاميرا."
+      );
       setShowCamera(false);
     }
   };
@@ -99,7 +104,9 @@ const NavigationDock = ({
   // إغلاق الكاميرا
   const closeCamera = () => {
     if (stream) {
-      stream.getTracks().forEach((track) => track.stop());
+      stream.getTracks().forEach((track) =>
+        track.stop()
+      );
     }
 
     setStream(null);
@@ -109,7 +116,11 @@ const NavigationDock = ({
 
   // التقاط الصورة
   const capturePhoto = () => {
-    if (!videoRef.current || !canvasRef.current) return;
+    if (
+      !videoRef.current ||
+      !canvasRef.current
+    )
+      return;
 
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -121,9 +132,11 @@ const NavigationDock = ({
     canvas.height = 1920;
 
     const vRatio =
-      video.videoWidth / video.videoHeight || 9 / 16;
+      video.videoWidth /
+        video.videoHeight || 9 / 16;
 
-    const cRatio = canvas.width / canvas.height;
+    const cRatio =
+      canvas.width / canvas.height;
 
     let renderWidth = canvas.width;
     let renderHeight = canvas.height;
@@ -131,15 +144,24 @@ const NavigationDock = ({
     let offsetY = 0;
 
     if (vRatio > cRatio) {
-      renderWidth = canvas.height * vRatio;
-      offsetX = (canvas.width - renderWidth) / 2;
+      renderWidth =
+        canvas.height * vRatio;
+      offsetX =
+        (canvas.width - renderWidth) / 2;
     } else {
-      renderHeight = canvas.width / vRatio;
-      offsetY = (canvas.height - renderHeight) / 2;
+      renderHeight =
+        canvas.width / vRatio;
+      offsetY =
+        (canvas.height - renderHeight) / 2;
     }
 
     ctx.fillStyle = "#000000";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
 
     ctx.drawImage(
       video,
@@ -153,9 +175,11 @@ const NavigationDock = ({
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#FFFFFF";
-    ctx.font = "bold 80px IranNastaliq";
+    ctx.font =
+      "bold 80px IranNastaliq";
 
-    ctx.shadowColor = "rgba(0,0,0,0.45)";
+    ctx.shadowColor =
+      "rgba(0,0,0,0.45)";
     ctx.shadowBlur = 10;
 
     ctx.fillText(
@@ -167,7 +191,9 @@ const NavigationDock = ({
     ctx.shadowColor = "transparent";
     ctx.shadowBlur = 0;
 
-    const imageUrl = canvas.toDataURL("image/png");
+    const imageUrl =
+      canvas.toDataURL("image/png");
+
     setCapturedImage(imageUrl);
   };
 
@@ -176,19 +202,26 @@ const NavigationDock = ({
     if (!capturedImage) return;
 
     try {
-      const response = await fetch(capturedImage);
-      const blob = await response.blob();
+      const response =
+        await fetch(capturedImage);
+
+      const blob =
+        await response.blob();
 
       const file = new File(
         [blob],
         "wedding-filter.png",
-        { type: "image/png" }
+        {
+          type: "image/png",
+        }
       );
 
       if (
         navigator.share &&
         navigator.canShare &&
-        navigator.canShare({ files: [file] })
+        navigator.canShare({
+          files: [file],
+        })
       ) {
         await navigator.share({
           files: [file],
@@ -200,7 +233,10 @@ const NavigationDock = ({
         );
       }
     } catch (error) {
-      console.log("إلغاء المشاركة أو خطأ:", error);
+      console.log(
+        "إلغاء المشاركة أو خطأ:",
+        error
+      );
     }
   };
 
@@ -211,12 +247,18 @@ const NavigationDock = ({
 
   // الاتصال بالرقم
   const handleCall = () => {
-    window.location.href = "tel:0545252599";
+    window.location.href =
+      "tel:0545252599";
   };
 
   // إرسال الرد إلى Supabase + Google Form
   const handleRSVPSubmit = async () => {
-    if (!inviteCode || !guestName.trim() || !rsvpStatus) {
+    if (
+      !inviteCode ||
+      !guestName.trim() ||
+      !selectedGuestId ||
+      !rsvpStatus
+    ) {
       alert("فضلاً اختر الرد.");
       return;
     }
@@ -224,33 +266,45 @@ const NavigationDock = ({
     setRsvpLoading(true);
 
     try {
-      const { data: guest, error: guestError } = await supabase
+      // البحث عن الشخص المختار فقط
+      const {
+        data: guest,
+        error: guestError,
+      } = await supabase
         .from("guests")
-        .select("id, status, qr_token, scanned")
+        .select(
+          "id, name, status, qr_token, scanned"
+        )
+        .eq("id", selectedGuestId)
         .eq("invite_code", inviteCode)
         .maybeSingle();
 
       if (guestError || !guest) {
-        alert("تعذر العثور على بيانات الدعوة.");
+        alert(
+          "تعذر العثور على بيانات الدعوة."
+        );
         return;
       }
 
       let token = guest.qr_token;
 
-      if (rsvpStatus === "attending") {
+      if (
+        rsvpStatus === "attending"
+      ) {
         // إذا كان لديه باركود سابق نستخدم نفس الباركود
         if (!token) {
           token = crypto.randomUUID();
         }
 
-        const { error } = await supabase
-          .from("guests")
-          .update({
-            status: "attending",
-            qr_token: token,
-            scanned: false,
-          })
-          .eq("id", guest.id);
+        const { error } =
+          await supabase
+            .from("guests")
+            .update({
+              status: "attending",
+              qr_token: token,
+              scanned: false,
+            })
+            .eq("id", guest.id);
 
         if (error) {
           throw error;
@@ -258,14 +312,15 @@ const NavigationDock = ({
 
         setQrToken(token);
       } else {
-        const { error } = await supabase
-          .from("guests")
-          .update({
-            status: "declined",
-            qr_token: null,
-            scanned: false,
-          })
-          .eq("id", guest.id);
+        const { error } =
+          await supabase
+            .from("guests")
+            .update({
+              status: "declined",
+              qr_token: null,
+              scanned: false,
+            })
+            .eq("id", guest.id);
 
         if (error) {
           throw error;
@@ -275,7 +330,8 @@ const NavigationDock = ({
       }
 
       // إرسال الرد إلى Google Form
-      const formData = new URLSearchParams();
+      const formData =
+        new URLSearchParams();
 
       formData.append(
         "entry.1456442516",
@@ -304,7 +360,10 @@ const NavigationDock = ({
 
       setRsvpSent(true);
     } catch (error) {
-      console.error("RSVP ERROR:", error);
+      console.error(
+        "RSVP ERROR:",
+        error
+      );
 
       alert(
         "تعذر إرسال الرد، يرجى المحاولة مرة أخرى."
@@ -337,7 +396,9 @@ const NavigationDock = ({
             <button
               onClick={closeCamera}
               className="absolute top-6 right-6 z-30 p-2.5 rounded-full bg-black/40 text-white backdrop-blur-md cursor-pointer"
-              style={{ border: "none" }}
+              style={{
+                border: "none",
+              }}
             >
               <X className="w-6 h-6" />
             </button>
@@ -371,16 +432,18 @@ const NavigationDock = ({
                 {/* زر التقاط الصورة */}
                 <div className="absolute bottom-6 z-20">
                   <button
-                    onClick={capturePhoto}
+                    onClick={
+                      capturePhoto
+                    }
                     className="w-20 h-20 rounded-full flex items-center justify-center cursor-pointer active:scale-95 transition-transform shadow-2xl"
                     style={{
-                      backgroundColor: "#B08A3C",
+                      backgroundColor:
+                        "#B08A3C",
                       border: "none",
                       boxShadow:
                         "0 0 15px rgba(176, 138, 60, 0.6)",
                     }}
-                  >
-                  </button>
+                  />
                 </div>
               </>
             ) : (
@@ -410,7 +473,9 @@ const NavigationDock = ({
                     <div className="w-full flex items-center justify-center gap-3">
 
                       <a
-                        href={capturedImage}
+                        href={
+                          capturedImage
+                        }
                         download="mohammed-ahood.png"
                         className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-white font-arabic text-sm font-semibold transition-all active:scale-95"
                         style={{
@@ -425,7 +490,9 @@ const NavigationDock = ({
 
                       <button
                         onClick={() =>
-                          setCapturedImage(null)
+                          setCapturedImage(
+                            null
+                          )
                         }
                         className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-white font-arabic text-sm font-semibold transition-all active:scale-95 cursor-pointer"
                         style={{
@@ -442,10 +509,13 @@ const NavigationDock = ({
 
                     {/* الصف الثاني: زر المشاركة */}
                     <button
-                      onClick={handleShare}
+                      onClick={
+                        handleShare
+                      }
                       className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-xl font-arabic text-sm font-bold shadow-lg transition-all active:scale-95 cursor-pointer"
                       style={{
-                        backgroundColor: "#B08A3C",
+                        backgroundColor:
+                          "#B08A3C",
                         color: "#FFFFFF",
                         border: "none",
                       }}
@@ -469,14 +539,17 @@ const NavigationDock = ({
           {/* الخلفية المموهة */}
           <div
             className="absolute inset-0 bg-black/40 backdrop-blur-md"
-            onClick={() => setShowContact(false)}
+            onClick={() =>
+              setShowContact(false)
+            }
           />
 
           {/* المربع بدون حدود مع توهج ذهبي */}
           <div
             className="relative w-full max-w-[380px] rounded-[32px] px-7 py-8 shadow-2xl backdrop-blur-xl"
             style={{
-              background: "rgba(24, 18, 20, 0.88)",
+              background:
+                "rgba(24, 18, 20, 0.88)",
               color: "#FFFFFF",
               border: "none",
               boxShadow:
@@ -487,14 +560,18 @@ const NavigationDock = ({
             {/* زخرفة الركن العلوي */}
             <div
               className="absolute top-3 right-4 text-xl opacity-60"
-              style={{ color: "#B08A3C" }}
+              style={{
+                color: "#B08A3C",
+              }}
             >
               ❈
             </div>
 
             <div
               className="absolute top-3 left-4 text-xl opacity-60"
-              style={{ color: "#B08A3C" }}
+              style={{
+                color: "#B08A3C",
+              }}
             >
               ❈
             </div>
@@ -558,7 +635,9 @@ const NavigationDock = ({
               {/* إلغاء */}
               <button
                 type="button"
-                onClick={() => setShowContact(false)}
+                onClick={() =>
+                  setShowContact(false)
+                }
                 className="w-full mt-3 py-2 text-sm opacity-80 cursor-pointer"
                 style={{
                   fontFamily:
@@ -574,14 +653,18 @@ const NavigationDock = ({
             {/* زخارف سفلية */}
             <div
               className="absolute bottom-3 right-4 text-xl opacity-60"
-              style={{ color: "#B08A3C" }}
+              style={{
+                color: "#B08A3C",
+              }}
             >
               ❈
             </div>
 
             <div
               className="absolute bottom-3 left-4 text-xl opacity-60"
-              style={{ color: "#B08A3C" }}
+              style={{
+                color: "#B08A3C",
+              }}
             >
               ❈
             </div>
@@ -597,14 +680,17 @@ const NavigationDock = ({
           {/* الخلفية المموهة */}
           <div
             className="absolute inset-0 bg-black/40 backdrop-blur-md"
-            onClick={() => setShowRSVP(false)}
+            onClick={() =>
+              setShowRSVP(false)
+            }
           />
 
           {/* المربع بدون حدود مع توهج ذهبي */}
           <div
             className="relative w-full max-w-[380px] rounded-[32px] px-7 py-8 shadow-2xl backdrop-blur-xl"
             style={{
-              background: "rgba(24, 18, 20, 0.88)",
+              background:
+                "rgba(24, 18, 20, 0.88)",
               color: "#FFFFFF",
               border: "none",
               boxShadow:
@@ -615,14 +701,18 @@ const NavigationDock = ({
             {/* زخرفة الركن العلوي */}
             <div
               className="absolute top-3 right-4 text-xl opacity-60"
-              style={{ color: "#B08A3C" }}
+              style={{
+                color: "#B08A3C",
+              }}
             >
               ❈
             </div>
 
             <div
               className="absolute top-3 left-4 text-xl opacity-60"
-              style={{ color: "#B08A3C" }}
+              style={{
+                color: "#B08A3C",
+              }}
             >
               ❈
             </div>
@@ -676,20 +766,24 @@ const NavigationDock = ({
                   <button
                     type="button"
                     onClick={() =>
-                      setRsvpStatus("attending")
+                      setRsvpStatus(
+                        "attending"
+                      )
                     }
                     className="flex-1 py-3 rounded-2xl transition-all cursor-pointer"
                     style={{
                       fontFamily:
                         "'Almarai', sans-serif",
                       background:
-                        rsvpStatus === "attending"
+                        rsvpStatus ===
+                        "attending"
                           ? "#B08A3C"
                           : "rgba(255, 255, 255, 0.1)",
                       color: "#FFFFFF",
                       border: "none",
                       boxShadow:
-                        rsvpStatus === "attending"
+                        rsvpStatus ===
+                        "attending"
                           ? "0 0 10px rgba(176, 138, 60, 0.5)"
                           : "none",
                     }}
@@ -700,20 +794,24 @@ const NavigationDock = ({
                   <button
                     type="button"
                     onClick={() =>
-                      setRsvpStatus("declined")
+                      setRsvpStatus(
+                        "declined"
+                      )
                     }
                     className="flex-1 py-3 rounded-2xl transition-all cursor-pointer"
                     style={{
                       fontFamily:
                         "'Almarai', sans-serif",
                       background:
-                        rsvpStatus === "declined"
+                        rsvpStatus ===
+                        "declined"
                           ? "#641414"
                           : "rgba(255, 255, 255, 0.1)",
                       color: "#FFFFFF",
                       border: "none",
                       boxShadow:
-                        rsvpStatus === "declined"
+                        rsvpStatus ===
+                        "declined"
                           ? "0 0 10px rgba(100, 20, 20, 0.5)"
                           : "none",
                     }}
@@ -726,7 +824,9 @@ const NavigationDock = ({
                 {/* إرسال */}
                 <button
                   type="button"
-                  onClick={handleRSVPSubmit}
+                  onClick={
+                    handleRSVPSubmit
+                  }
                   disabled={rsvpLoading}
                   className="w-full py-3.5 rounded-2xl font-bold transition-all active:scale-95 cursor-pointer shadow-lg disabled:opacity-60"
                   style={{
@@ -737,7 +837,9 @@ const NavigationDock = ({
                     border: "none",
                   }}
                 >
-                  {rsvpLoading ? "جارٍ الإرسال..." : "إرسال"}
+                  {rsvpLoading
+                    ? "جارٍ الإرسال..."
+                    : "إرسال"}
                 </button>
 
                 {/* إغلاق */}
@@ -762,7 +864,9 @@ const NavigationDock = ({
 
                 <div
                   className="text-4xl mb-5"
-                  style={{ color: "#B08A3C" }}
+                  style={{
+                    color: "#B08A3C",
+                  }}
                 >
                   ♡
                 </div>
@@ -775,7 +879,8 @@ const NavigationDock = ({
                     color: "#B08A3C",
                   }}
                 >
-                  {rsvpStatus === "attending"
+                  {rsvpStatus ===
+                  "attending"
                     ? "تم تأكيـد حضــوركم"
                     : "تم تسجيـل اعتـذاركم"}
                 </h2>
@@ -788,34 +893,37 @@ const NavigationDock = ({
                     color: "#FFFFFF",
                   }}
                 >
-                  {rsvpStatus === "attending"
+                  {rsvpStatus ===
+                  "attending"
                     ? "نسعد بحضوركم ومشاركتكم لنا هذه الفرحة"
                     : "نشكر لكم تواصلكم، ونسأل الله أن يجمعنا بكم على خير"}
                 </p>
 
                 {/* الباركود الشخصي */}
-                {rsvpStatus === "attending" && qrToken && (
-                  <div className="mt-6 flex flex-col items-center">
-                    <div className="bg-white p-4 rounded-2xl">
-                      <QRCodeCanvas
-                        value={`${window.location.origin}/scan/${qrToken}`}
-                        size={220}
-                        level="H"
-                      />
-                    </div>
+                {rsvpStatus ===
+                  "attending" &&
+                  qrToken && (
+                    <div className="mt-6 flex flex-col items-center">
+                      <div className="bg-white p-4 rounded-2xl">
+                        <QRCodeCanvas
+                          value={`${window.location.origin}/scan/${qrToken}`}
+                          size={220}
+                          level="H"
+                        />
+                      </div>
 
-                    <p
-                      className="mt-4 text-sm"
-                      style={{
-                        fontFamily:
-                          "'Almarai', sans-serif",
-                        color: "#FFFFFF",
-                      }}
-                    >
-                      هذا الباركود مخصص لك ويُستخدم مرة واحدة فقط
-                    </p>
-                  </div>
-                )}
+                      <p
+                        className="mt-4 text-sm"
+                        style={{
+                          fontFamily:
+                            "'Almarai', sans-serif",
+                          color: "#FFFFFF",
+                        }}
+                      >
+                        هذا الباركود مخصص لك ويُستخدم مرة واحدة فقط
+                      </p>
+                    </div>
+                  )}
 
                 <button
                   type="button"
@@ -837,14 +945,18 @@ const NavigationDock = ({
                 {/* زخارف */}
                 <div
                   className="absolute bottom-3 right-4 text-xl opacity-60"
-                  style={{ color: "#B08A3C" }}
+                  style={{
+                    color: "#B08A3C",
+                  }}
                 >
                   ❈
                 </div>
 
                 <div
                   className="absolute bottom-3 left-4 text-xl opacity-60"
-                  style={{ color: "#B08A3C" }}
+                  style={{
+                    color: "#B08A3C",
+                  }}
                 >
                   ❈
                 </div>
@@ -870,17 +982,23 @@ const NavigationDock = ({
 
           {/* 1. تواصل */}
           <button
-            onClick={handlePhoneClick}
+            onClick={
+              handlePhoneClick
+            }
             className="flex flex-col items-center justify-center gap-1 cursor-pointer transition-transform active:scale-95"
           >
             <Phone
               className="w-5 h-5"
-              style={{ color: "#FFFFFF" }}
+              style={{
+                color: "#FFFFFF",
+              }}
             />
 
             <span
               className="font-arabic text-[11px] font-bold"
-              style={{ color: "#FFFFFF" }}
+              style={{
+                color: "#FFFFFF",
+              }}
             >
               تواصل
             </span>
@@ -897,12 +1015,16 @@ const NavigationDock = ({
                   ? "opacity-100 animate-pulse"
                   : "opacity-50"
               }`}
-              style={{ color: "#FFFFFF" }}
+              style={{
+                color: "#FFFFFF",
+              }}
             />
 
             <span
               className="font-arabic text-[11px] font-bold"
-              style={{ color: "#FFFFFF" }}
+              style={{
+                color: "#FFFFFF",
+              }}
             >
               موسيقى
             </span>
@@ -916,14 +1038,17 @@ const NavigationDock = ({
             <div
               className="w-11 h-11 rounded-full flex items-center justify-center shadow-lg"
               style={{
-                backgroundColor: "#B08A3C",
+                backgroundColor:
+                  "#B08A3C",
                 boxShadow:
                   "0 0 10px rgba(176, 138, 60, 0.5)",
               }}
             >
               <Camera
                 className="w-5 h-5"
-                style={{ color: "#FFFFFF" }}
+                style={{
+                  color: "#FFFFFF",
+                }}
               />
             </div>
           </button>
@@ -938,12 +1063,16 @@ const NavigationDock = ({
           >
             <MapPin
               className="w-5 h-5"
-              style={{ color: "#FFFFFF" }}
+              style={{
+                color: "#FFFFFF",
+              }}
             />
 
             <span
               className="font-arabic text-[11px] font-bold"
-              style={{ color: "#FFFFFF" }}
+              style={{
+                color: "#FFFFFF",
+              }}
             >
               الموقع
             </span>
@@ -952,27 +1081,54 @@ const NavigationDock = ({
           {/* 5. تأكيد الحضور */}
           <button
             onClick={async () => {
+              if (!selectedGuestId) {
+                alert(
+                  "تعذر تحديد اسم المدعو."
+                );
+                return;
+              }
+
               setRsvpLoading(true);
 
-              const { data } = await supabase
-                .from("guests")
-                .select("status, qr_token")
-                .eq("invite_code", inviteCode)
-                .maybeSingle();
+              const { data } =
+                await supabase
+                  .from("guests")
+                  .select(
+                    "status, qr_token"
+                  )
+                  .eq(
+                    "id",
+                    selectedGuestId
+                  )
+                  .eq(
+                    "invite_code",
+                    inviteCode
+                  )
+                  .maybeSingle();
 
               if (data) {
-                setQrToken(data.qr_token);
+                setQrToken(
+                  data.qr_token
+                );
 
                 if (
-                  data.status === "attending" ||
-                  data.status === "declined"
+                  data.status ===
+                    "attending" ||
+                  data.status ===
+                    "declined"
                 ) {
-                  setRsvpStatus(data.status);
+                  setRsvpStatus(
+                    data.status
+                  );
                   setRsvpSent(true);
                 } else {
                   setRsvpStatus("");
                   setRsvpSent(false);
                 }
+              } else {
+                setRsvpStatus("");
+                setRsvpSent(false);
+                setQrToken(null);
               }
 
               setRsvpLoading(false);
@@ -982,12 +1138,16 @@ const NavigationDock = ({
           >
             <Heart
               className="w-5 h-5"
-              style={{ color: "#FFFFFF" }}
+              style={{
+                color: "#FFFFFF",
+              }}
             />
 
             <span
               className="font-arabic text-[11px] font-bold"
-              style={{ color: "#FFFFFF" }}
+              style={{
+                color: "#FFFFFF",
+              }}
             >
               تأكيد الحضور
             </span>
