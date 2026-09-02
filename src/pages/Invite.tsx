@@ -16,10 +16,11 @@ const Invite = () => {
       }
 
       const { data, error } = await supabase
-        .from("guests")
-        .select("id")
-        .eq("invite_code", code)
-        .single();
+  .from("guests")
+  .select("id")
+  .eq("invite_code", code)
+  .limit(1)
+  .maybeSingle();
 
       if (!error && data) {
         setValid(true);
