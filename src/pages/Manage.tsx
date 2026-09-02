@@ -33,6 +33,8 @@ const Manage = () => {
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  // إضافة: حالة لحفظ أسماء المرافقين
+  const [companions, setCompanions] = useState<string[]>([]);
 
   const [modal, setModal] = useState<ModalState | null>(null);
 
@@ -161,9 +163,6 @@ const Manage = () => {
 
   /*
    * فتح واتساب
-   *
-   * يتم فتح نافذة فارغة أولًا أثناء ضغطة المستخدم
-   * حتى لا يمنع المتصفح فتح النافذة بعد انتهاء طلب Supabase.
    */
   const prepareWhatsAppWindow = () => {
     return window.open("", "_blank");
@@ -191,6 +190,11 @@ const Manage = () => {
   const addGuest = async () => {
     const cleanName = name.trim();
     const cleanPhone = phone.trim();
+    
+    // فلترة المرافقين (تجاهل الحقول الفارغة)
+    const validCompanions = companions
+      .map((c) => c.trim())
+      .filter((c) => c !== "");
 
     setError("");
 
@@ -216,8 +220,13 @@ const Manage = () => {
       return;
     }
 
-    if (guests.length >= maxGuests) {
-      setError("تم الوصول للحد الأقصى من المدعوين");
+    // حساب العدد الإجمالي (الأساسي + المرافقين)
+    const totalGuestsToAdd = 1 + validCompanions.length;
+
+    if (guests.length + totalGuestsToAdd > maxGuests) {
+      setError(
+        `تم الوصول للحد الأقصى. المساحة المتبقية تكفي لـ ${maxGuests - guests.length} مدعو فقط.`
+      );
       return;
     }
 
@@ -230,27 +239,25 @@ const Manage = () => {
       return;
     }
 
-    /*
-     * تجهيز واتساب قبل طلب Supabase
-     * حتى لا يعتبر المتصفح فتحه نافذة منبثقة.
-     */
     const whatsappWindow = prepareWhatsAppWindow();
 
     const inviteCode = generateInviteCode();
 
+    // تجهيز مصفوفة لجميع الأسماء للإضافة دفعة واحدة
+    const guestsToInsert = [cleanName, ...validCompanions].map((n) => ({
+      invitation_id: invitationId,
+      name: n,
+      phone: cleanPhone,
+      invite_code: inviteCode, // نفس كود الدعوة للجميع
+      status: "pending",
+    }));
+
     const { data, error: insertError } = await supabase
       .from("guests")
-      .insert({
-        invitation_id: invitationId,
-        name: cleanName,
-        phone: cleanPhone,
-        invite_code: inviteCode,
-        status: "pending",
-      })
+      .insert(guestsToInsert)
       .select(
         "id, name, phone, status, invite_code, replaced, created_at, qr_token, scanned, device_id"
-      )
-      .single();
+      );
 
     if (insertError || !data) {
       console.error(insertError);
@@ -263,27 +270,24 @@ const Manage = () => {
       return;
     }
 
-    setGuests((prev) => [...prev, data as Guest]);
+    setGuests((prev) => [...prev, ...(data as Guest[])]);
 
     setName("");
     setPhone("");
+    setCompanions([]);
     setError("");
 
-    /*
-     * بعد نجاح الإضافة مباشرة يفتح واتساب
-     * بالرسالة الجاهزة.
-     */
+    // جمع الأسماء لرسالة الواتساب
+    const allNamesJoined = [cleanName, ...validCompanions].join(" و ");
+
     openWhatsApp(
       whatsappWindow,
-      cleanName,
+      allNamesJoined,
       cleanPhone,
       inviteCode
     );
   };
 
-  /*
-   * إضافة مدعو من جهات الاتصال
-   */
   const addFromContacts = async () => {
     try {
       const nav = navigator as Navigator & {
@@ -340,7 +344,7 @@ const Manage = () => {
 
       setName(contactName);
       setPhone(finalPhone);
-
+      setCompanions([]);
       setError("");
     } catch (contactError) {
       console.error(contactError);
@@ -366,9 +370,6 @@ const Manage = () => {
       !guest.status
   ).length;
 
-  /*
-   * إعادة تعيين جهاز جميع الدعوات
-   */
   const resetAllDevices = async () => {
     if (!invitationId) return;
 
@@ -381,12 +382,10 @@ const Manage = () => {
 
     if (updateError) {
       console.error(updateError);
-
       showMessage(
         "تعذر إعادة التعيين",
         "حدث خطأ أثناء إعادة تعيين الأجهزة. حاول مرة أخرى."
       );
-
       return;
     }
 
@@ -403,9 +402,6 @@ const Manage = () => {
     );
   };
 
-  /*
-   * إعادة تعيين جهاز مدعو واحد
-   */
   const resetGuestDevice = async (guest: Guest) => {
     const { error: updateError } = await supabase
       .from("guests")
@@ -416,12 +412,10 @@ const Manage = () => {
 
     if (updateError) {
       console.error(updateError);
-
       showMessage(
         "تعذر إعادة تعيين الجهاز",
         "حدث خطأ أثناء إعادة تعيين جهاز المدعو. حاول مرة أخرى."
       );
-
       return;
     }
 
@@ -442,9 +436,6 @@ const Manage = () => {
     );
   };
 
-  /*
-   * إعادة تعيين باركود مدعو واحد
-   */
   const resetBarcode = async (guest: Guest) => {
     const newQrToken = crypto.randomUUID();
 
@@ -458,12 +449,10 @@ const Manage = () => {
 
     if (updateError) {
       console.error(updateError);
-
       showMessage(
         "تعذر إعادة تعيين الباركود",
         "حدث خطأ أثناء إعادة تعيين الباركود. حاول مرة أخرى."
       );
-
       return;
     }
 
@@ -485,9 +474,6 @@ const Manage = () => {
     );
   };
 
-  /*
-   * حذف المدعو
-   */
   const deleteGuest = async (guest: Guest) => {
     const { error: deleteError } = await supabase
       .from("guests")
@@ -496,12 +482,10 @@ const Manage = () => {
 
     if (deleteError) {
       console.error(deleteError);
-
       showMessage(
         "تعذر حذف المدعو",
         "حدث خطأ أثناء حذف المدعو. حاول مرة أخرى."
       );
-
       return;
     }
 
@@ -523,13 +507,6 @@ const Manage = () => {
     setReplaceModalOpen(true);
   };
 
-  /*
-   * استبدال المدعو
-   *
-   * يتم تحديث نفس سجل المدعو المعتذر بدل إضافة
-   * سجل جديد، حتى لا يزيد عدد المدعوين ولا نحتاج
-   * إلى ربط سجلين ببعض.
-   */
   const replaceGuest = async () => {
     if (!replaceTarget || !invitationId) return;
 
@@ -566,25 +543,10 @@ const Manage = () => {
       return;
     }
 
-    /*
-     * تجهيز واتساب قبل طلب Supabase.
-     */
     const whatsappWindow = prepareWhatsAppWindow();
 
     const newInviteCode = generateInviteCode();
 
-    /*
-     * استبدال بيانات المدعو المعتذر داخل نفس السجل.
-     *
-     * يتم أيضًا تصفير:
-     * - الحالة
-     * - الباركود
-     * - حالة المسح
-     * - الجهاز
-     * - replaced
-     *
-     * حتى يبدأ المدعو الجديد كدعوة جديدة تمامًا.
-     */
     const { data, error: updateError } = await supabase
       .from("guests")
       .update({
@@ -614,13 +576,9 @@ const Manage = () => {
       setReplaceError(
         "حدث خطأ أثناء استبدال المدعو، حاول مرة أخرى."
       );
-
       return;
     }
 
-    /*
-     * تحديث القائمة مباشرة بدون إضافة مدعو جديد.
-     */
     setGuests((prev) =>
       prev.map((item) =>
         item.id === replaceTarget.id
@@ -635,9 +593,6 @@ const Manage = () => {
     setReplacePhone("");
     setReplaceError("");
 
-    /*
-     * فتح واتساب للمدعو الجديد.
-     */
     openWhatsApp(
       whatsappWindow,
       cleanNewName,
@@ -951,9 +906,8 @@ const Manage = () => {
             }}
           >
             <div className="space-y-3">
-
               <input
-                placeholder="اسم المدعو"
+                placeholder="اسم المدعو الأساسي"
                 value={name}
                 onChange={(e) => {
                   setName(e.target.value);
@@ -966,6 +920,53 @@ const Manage = () => {
                   color: "#273247",
                 }}
               />
+
+              {/* حقول المرافقين (إن وُجدت) */}
+              {companions.map((comp, idx) => (
+                <div key={idx} className="flex gap-2">
+                  <input
+                    placeholder={`اسم المرافق (مثال: جود)`}
+                    value={comp}
+                    onChange={(e) => {
+                      const newComps = [...companions];
+                      newComps[idx] = e.target.value;
+                      setCompanions(newComps);
+                      setError("");
+                    }}
+                    className="w-full rounded-2xl px-4 py-3 outline-none text-sm"
+                    style={{
+                      background: "#FFFFFF",
+                      border: "1px solid #E2E0DA",
+                      color: "#273247",
+                    }}
+                  />
+                  <button
+                    onClick={() => {
+                      setCompanions(
+                        companions.filter((_, i) => i !== idx)
+                      );
+                    }}
+                    className="rounded-2xl px-4 text-xs font-medium transition-all active:scale-[.99]"
+                    style={{
+                      background: "#F1F0EC",
+                      color: "#5F6978",
+                      border: "1px solid #E2E0DA",
+                    }}
+                  >
+                    حذف
+                  </button>
+                </div>
+              ))}
+
+              {/* زر إضافة مرافق بنفس طابع وألوان الهوية */}
+              <button
+                type="button"
+                onClick={() => setCompanions([...companions, ""])}
+                className="text-xs font-medium w-full text-right px-2 py-1 transition-all active:scale-[.99]"
+                style={{ color: "#B5A07E" }}
+              >
+                + إضافة مرافق على نفس الرقم (اختياري)
+              </button>
 
               <input
                 placeholder="05xxxxxxxx"
@@ -986,7 +987,6 @@ const Manage = () => {
                 }}
               />
 
-              {/* إضافة من جهات الاتصال */}
               <button
                 onClick={addFromContacts}
                 className="w-full rounded-2xl py-3 text-sm font-medium transition-all active:scale-[.99]"
@@ -1083,10 +1083,6 @@ const Manage = () => {
                     ? "#B5A07E"
                     : "#B7BABF";
 
-                /*
-                 * يظهر زر إعادة تعيين الباركود فقط
-                 * إذا كان المدعو قد فتح/استخدم الباركود.
-                 */
                 const hasUsedBarcode =
                   !!guest.qr_token && !!guest.scanned;
 
@@ -1101,7 +1097,6 @@ const Manage = () => {
                           : "none",
                     }}
                   >
-                    {/* الاسم والرقم والحالة */}
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">
                         <div
@@ -1121,7 +1116,6 @@ const Manage = () => {
                           {guest.phone}
                         </div>
 
-                        {/* إعادة تعيين جهاز المدعو */}
                         <button
                           onClick={() => {
                             showConfirm(
@@ -1159,7 +1153,6 @@ const Manage = () => {
                           {status}
                         </div>
 
-                        {/* حذف */}
                         <button
                           onClick={() => {
                             showConfirm(
@@ -1204,10 +1197,7 @@ const Manage = () => {
                       </div>
                     </div>
 
-                    {/* الأزرار */}
                     <div className="mt-4 grid grid-cols-2 gap-2">
-
-                      {/* إعادة تعيين الباركود */}
                       {hasUsedBarcode ? (
                         <button
                           onClick={() => {
@@ -1233,7 +1223,6 @@ const Manage = () => {
                         <div />
                       )}
 
-                      {/* استبدال */}
                       {guest.status === "declined" ? (
                         <button
                           onClick={() =>
