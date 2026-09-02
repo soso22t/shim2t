@@ -92,7 +92,19 @@ const Index = () => {
         guestRows as GuestMember[];
 
       setGuests(members);
+const savedGuestId =
+  localStorage.getItem("selected_guest_id");
 
+if (members.length > 1 && savedGuestId) {
+  const savedGuest = members.find(
+    (guest) => guest.id === savedGuestId
+  );
+
+  if (savedGuest) {
+    setSelectedGuestId(savedGuest.id);
+    setGuestName(savedGuest.name);
+  }
+}
       // إذا كان شخص واحد فقط
       if (members.length === 1) {
         const guest = members[0];
