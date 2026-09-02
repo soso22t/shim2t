@@ -42,7 +42,6 @@ const Index = () => {
   );
 
   const [wrongDevice, setWrongDevice] = useState(false);
-  const [selectingGuest, setSelectingGuest] = useState(false);
 
   useEffect(() => {
     const loadGuests = async () => {
@@ -56,27 +55,34 @@ const Index = () => {
 
       if (!deviceId) {
         deviceId = crypto.randomUUID();
+
         localStorage.setItem(
           "guest_device_id",
           deviceId
         );
       }
 
-      const { data: guestRows, error } = await supabase
-        .from("guests")
-        .select(
-          "id, name, device_id, status"
-        )
-        .eq("invite_code", inviteCode)
-        .order("created_at", {
-          ascending: true,
-        });
+      const { data: guestRows, error } =
+        await supabase
+          .from("guests")
+          .select(
+            "id, name, device_id, status"
+          )
+          .eq("invite_code", inviteCode)
+          .order("created_at", {
+            ascending: true,
+          });
 
       if (
         error ||
         !guestRows ||
         guestRows.length === 0
       ) {
+        console.error(
+          "INVITE ERROR:",
+          error
+        );
+
         setInviteValid(false);
         setInviteLoading(false);
         return;
@@ -87,7 +93,7 @@ const Index = () => {
 
       setGuests(members);
 
-      // إذا شخص واحد فقط، نختاره تلقائياً
+      // إذا كان شخص واحد فقط
       if (members.length === 1) {
         const guest = members[0];
 
@@ -101,7 +107,6 @@ const Index = () => {
           return;
         }
 
-        // ربط الشخص بجهازه فقط
         if (!guest.device_id) {
           const { error: updateError } =
             await supabase
@@ -113,7 +118,10 @@ const Index = () => {
               .is("device_id", null);
 
           if (updateError) {
-            console.error(updateError);
+            console.error(
+              updateError
+            );
+
             setInviteValid(false);
             setInviteLoading(false);
             return;
@@ -122,14 +130,11 @@ const Index = () => {
 
         setSelectedGuestId(guest.id);
         setGuestName(guest.name);
-        setInviteValid(true);
-        setInviteLoading(false);
-        return;
       }
 
-      // إذا يوجد أكثر من شخص
-      // نعرض أسماء المجموعة ليختار كل شخص اسمه
-      setSelectingGuest(true);
+      // إذا أكثر من شخص، لا نختار أحد هنا
+      // الاختيار سيكون من نافذة تأكيد الحضور
+
       setInviteValid(true);
       setInviteLoading(false);
     };
@@ -137,58 +142,11 @@ const Index = () => {
     loadGuests();
   }, [inviteCode]);
 
-  const selectGuest = async (guest: GuestMember) => {
-    let deviceId =
-      localStorage.getItem("guest_device_id");
-
-    if (!deviceId) {
-      deviceId = crypto.randomUUID();
-
-      localStorage.setItem(
-        "guest_device_id",
-        deviceId
-      );
-    }
-
-    // إذا هذا الشخص مرتبط بجهاز آخر
-    if (
-      guest.device_id &&
-      guest.device_id !== deviceId
-    ) {
-      setWrongDevice(true);
-      setSelectingGuest(false);
-      setInviteValid(false);
-      return;
-    }
-
-    // أول جهاز يختار هذا الشخص يصبح الجهاز المرتبط به
-    if (!guest.device_id) {
-      const { error } = await supabase
-        .from("guests")
-        .update({
-          device_id: deviceId,
-        })
-        .eq("id", guest.id)
-        .is("device_id", null);
-
-      if (error) {
-        console.error(error);
-
-        setInviteValid(false);
-        setSelectingGuest(false);
-        return;
-      }
-    }
-
-    setSelectedGuestId(guest.id);
-    setGuestName(guest.name);
-    setSelectingGuest(false);
-    setInviteValid(true);
-  };
-
   useEffect(() => {
     if (opened) {
-      const startPosition = window.pageYOffset;
+      const startPosition =
+        window.pageYOffset;
+
       const targetPosition =
         document.documentElement.scrollHeight -
         window.innerHeight;
@@ -219,13 +177,18 @@ const Index = () => {
         });
 
         if (progress < 1) {
-          requestAnimationFrame(animation);
+          requestAnimationFrame(
+            animation
+          );
         }
       };
 
       setTimeout(() => {
         startTime = Date.now();
-        requestAnimationFrame(animation);
+
+        requestAnimationFrame(
+          animation
+        );
       }, 1500);
     }
   }, [opened]);
@@ -279,79 +242,6 @@ const Index = () => {
     );
   }
 
-  // اختيار اسم الشخص من مجموعة الدعوة
-  if (
-    inviteCode &&
-    selectingGuest &&
-    guests.length > 1
-  ) {
-    return (
-      <div
-        dir="rtl"
-        className="min-h-screen flex items-center justify-center px-5"
-        style={{
-          backgroundColor: "#24000D",
-          color: "#FFFFFF",
-        }}
-      >
-        <div className="w-full max-w-md text-center">
-
-          <Heart
-            className="w-8 h-8 mx-auto mb-5"
-            style={{ color: "#B08A3C" }}
-          />
-
-          <h2
-            className="text-3xl font-bold mb-3"
-            style={{
-              fontFamily:
-                "'IranNastaliq', sans-serif",
-              color: "#B08A3C",
-            }}
-          >
-            أهلاً بكم
-          </h2>
-
-          <p
-            className="font-arabic text-sm mb-7"
-            style={{
-              color: "#FFFFFF",
-            }}
-          >
-            فضلاً اختر اسمك للدخول إلى الدعوة
-          </p>
-
-          <div className="space-y-3">
-            {guests.map((guest) => (
-              <button
-                key={guest.id}
-                type="button"
-                onClick={() =>
-                  selectGuest(guest)
-                }
-                className="w-full py-4 px-5 rounded-2xl transition-all active:scale-95 cursor-pointer"
-                style={{
-                  background:
-                    "rgba(255,255,255,0.08)",
-                  color: "#FFFFFF",
-                  border: "none",
-                  boxShadow:
-                    "0 0 12px rgba(176,138,60,0.25)",
-                  fontFamily:
-                    "'IranNastaliq', sans-serif",
-                  fontSize: "24px",
-                }}
-              >
-                {guest.name}
-              </button>
-            ))}
-          </div>
-
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div
       className={`relative min-h-screen text-white ${
@@ -365,23 +255,28 @@ const Index = () => {
     >
       <SprayParticles />
 
-      {/* الشريط السفلي للتنقل والموسيقى */}
       <NavigationDock
         active={opened}
         guestName={guestName}
         inviteCode={inviteCode || ""}
         selectedGuestId={selectedGuestId}
+        guests={guests}
+        onGuestSelected={(guest) => {
+          setSelectedGuestId(guest.id);
+          setGuestName(guest.name);
+        }}
+        onWrongDevice={() => {
+          setWrongDevice(true);
+          setInviteValid(false);
+        }}
       />
 
-      {/* 1. الظرف */}
       <Envelope
         onOpen={() => setOpened(true)}
       />
 
-      {/* 2. محتوى الموقع */}
       <main className="relative z-10 w-full pb-24">
 
-        {/* الصورة الأولى */}
         <section className="w-full">
           <img
             src={invitationImg}
@@ -390,7 +285,6 @@ const Index = () => {
           />
         </section>
 
-        {/* المربع الأول بالنصوص الأصلية */}
         <section className="relative w-full flex flex-col items-center justify-start pb-12">
           <img
             src={sosImg}
@@ -429,21 +323,27 @@ const Index = () => {
 
               <p
                 className="font-arabic text-sm sm:text-base pt-2"
-                style={{ color: "#FFFFFF" }}
+                style={{
+                  color: "#FFFFFF",
+                }}
               >
                 في ليلة يكتمل بها أنسنا، وتحت سماء تتلألأ فرحاً
               </p>
 
               <p
                 className="font-arabic text-sm sm:text-base"
-                style={{ color: "#FFFFFF" }}
+                style={{
+                  color: "#FFFFFF",
+                }}
               >
                 ولأن الفرحة لا تكتمل إلا بجميل حضوركم
               </p>
 
               <p
                 className="font-arabic text-base sm:text-lg opacity-90 pb-2"
-                style={{ color: "#FFFFFF" }}
+                style={{
+                  color: "#FFFFFF",
+                }}
               >
                 تتــشرف
               </p>
@@ -452,7 +352,9 @@ const Index = () => {
                 <div className="w-[45%] flex justify-center">
                   <span
                     className="font-arabic text-lg sm:text-xl font-bold whitespace-nowrap text-center"
-                    style={{ color: "#B08A3C" }}
+                    style={{
+                      color: "#B08A3C",
+                    }}
                   >
                     أم يزيد
                   </span>
@@ -461,7 +363,9 @@ const Index = () => {
 
               <p
                 className="font-arabic text-sm sm:text-base pt-2"
-                style={{ color: "#FFFFFF" }}
+                style={{
+                  color: "#FFFFFF",
+                }}
               >
                 بدعوتكم لحضور حفل زفاف اميرها
               </p>
@@ -504,34 +408,38 @@ const Index = () => {
               </div>
             </div>
 
-            {/* قسم الموقع */}
             <div
               id="location"
               className="text-center space-y-1 py-2"
             >
               <h3
                 className="font-arabic text-xl sm:text-2xl font-bold"
-                style={{ color: "#B08A3C" }}
+                style={{
+                  color: "#B08A3C",
+                }}
               >
                 الموقع
               </h3>
 
               <p
                 className="font-arabic text-xl sm:text-xl font-bold"
-                style={{ color: "#FFFFFF" }}
+                style={{
+                  color: "#FFFFFF",
+                }}
               >
                 قاعة رسال للمناسبات والاحتفالات
               </p>
 
               <p
                 className="font-arabic text-lg sm:text-xl font-semibold"
-                style={{ color: "#FFFFFF" }}
+                style={{
+                  color: "#FFFFFF",
+                }}
               >
                 الرياض
               </p>
             </div>
 
-            {/* التقويم */}
             <div className="flex flex-col items-center space-y-3">
 
               <div
@@ -552,7 +460,9 @@ const Index = () => {
                     color: "#FFFFFF",
                   }}
                 >
-                  <span>الخميس</span>
+                  <span>
+                    الخميس
+                  </span>
 
                   <span
                     className="text-sm font-extrabold"
@@ -621,7 +531,6 @@ const Index = () => {
               </button>
             </div>
 
-            {/* العد التنازلي */}
             <div className="w-full max-w-md text-center space-y-2 pt-1">
               <h3
                 className="font-arabic text-base sm:text-lg font-bold"
@@ -637,15 +546,16 @@ const Index = () => {
 
             <EventTimeline />
             <EventDetails />
+
           </div>
         </section>
 
-        {/* القسم السفلي والذيل */}
         <section
           id="gallery"
           className="relative w-full flex flex-col items-center justify-start"
         >
           <div className="relative w-full flex items-center justify-center">
+
             <img
               src={footerBgImg}
               alt="صورة خلفية الفوتر"
@@ -711,6 +621,7 @@ const Index = () => {
               >
                 <Reveal>
                   <div className="flex items-center justify-center gap-2">
+
                     <span
                       className="text-2xl sm:text-3xl"
                       style={{
@@ -743,6 +654,7 @@ const Index = () => {
                     >
                       اميمـه
                     </span>
+
                   </div>
                 </Reveal>
 
@@ -762,6 +674,7 @@ const Index = () => {
                     />
 
                     <span className="font-arabic text-xs sm:text-sm font-semibold">
+
                       <a
                         href="https://www.tiktok.com/@shim2t?_r=1&_t=ZS-95w0d8f7vnk"
                         target="_blank"
@@ -773,13 +686,16 @@ const Index = () => {
                       >
                         غيمة
                       </a>
+
                     </span>
                   </div>
                 </Reveal>
+
               </div>
             </div>
           </div>
         </section>
+
       </main>
     </div>
   );
