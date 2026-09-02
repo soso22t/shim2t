@@ -101,6 +101,14 @@ const NavigationDock = ({
         );
     }
   }, [active]);
+  useEffect(() => {
+  if (selectedGuestId) {
+    localStorage.setItem(
+      "selected_guest_id",
+      selectedGuestId
+    );
+  }
+}, [selectedGuestId]);
 
   const toggleMusic = () => {
     if (!audioRef.current) return;
