@@ -92,23 +92,25 @@ const Index = () => {
         guestRows as GuestMember[];
 
       setGuests(members);
-const savedGuestId =
-  localStorage.getItem("selected_guest_id");
+      const savedGuestId =
+        localStorage.getItem("selected_guest_id");
 
-if (members.length > 1 && savedGuestId) {
-  const savedGuest = members.find(
-    (guest) => guest.id === savedGuestId
-  );
+      if (members.length > 1 && savedGuestId) {
+        const savedGuest = members.find(
+          (guest) => guest.id === savedGuestId
+        );
 
-  if (savedGuest) {
-    setSelectedGuestId(savedGuest.id);
-    setGuestName(savedGuest.name);
-  }
-}
+        if (savedGuest) {
+          setSelectedGuestId(savedGuest.id);
+          setGuestName(savedGuest.name);
+        }
+      }
+      
       // إذا كان شخص واحد فقط
       if (members.length === 1) {
         const guest = members[0];
 
+        // نتحقق فقط مما إذا كان مسجلاً مسبقاً بجهاز مختلف
         if (
           guest.device_id &&
           guest.device_id !== deviceId
@@ -119,27 +121,7 @@ if (members.length > 1 && savedGuestId) {
           return;
         }
 
-        if (!guest.device_id) {
-          const { error: updateError } =
-            await supabase
-              .from("guests")
-              .update({
-                device_id: deviceId,
-              })
-              .eq("id", guest.id)
-              .is("device_id", null);
-
-          if (updateError) {
-            console.error(
-              updateError
-            );
-
-            setInviteValid(false);
-            setInviteLoading(false);
-            return;
-          }
-        }
-
+        // تم إزالة التحديث التلقائي لقاعدة البيانات من هنا لحل مشكلة الروبوتات والمعاينة
         setSelectedGuestId(guest.id);
         setGuestName(guest.name);
       }
@@ -204,6 +186,31 @@ if (members.length > 1 && savedGuestId) {
       }, 1500);
     }
   }, [opened]);
+
+  // دالة جديدة لتسجيل الجهاز فقط عند فتح الظرف
+  const handleOpenEnvelope = async () => {
+    setOpened(true);
+
+    if (guests.length === 1) {
+      const guest = guests[0];
+      const deviceId = localStorage.getItem("guest_device_id");
+
+      // إذا كان الجهاز غير مسجل، يتم تسجيله الآن بعد ضغطة المستخدم الفعلية
+      if (!guest.device_id && deviceId) {
+        const { error: updateError } = await supabase
+          .from("guests")
+          .update({
+            device_id: deviceId,
+          })
+          .eq("id", guest.id)
+          .is("device_id", null);
+
+        if (updateError) {
+          console.error("DEVICE REGISTRATION ERROR:", updateError);
+        }
+      }
+    }
+  };
 
   if (inviteLoading) {
     return (
@@ -284,7 +291,7 @@ if (members.length > 1 && savedGuestId) {
       />
 
       <Envelope
-        onOpen={() => setOpened(true)}
+        onOpen={handleOpenEnvelope}
       />
 
       <main className="relative z-10 w-full pb-24">
