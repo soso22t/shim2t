@@ -7,7 +7,7 @@ interface TimeLeft {
   seconds: number;
 }
 
-const TARGET_DATE = new Date("2026-10-08T19:00:00");
+const TARGET_DATE = new Date("2026-11-11T19:00:00");
 
 const Countdown = () => {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
