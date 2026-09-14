@@ -16,7 +16,7 @@ const Invite = () => {
       }
 
       const { data, error } = await supabase
-  .from("guests")
+  .from("shim2t")
   .select("id")
   .eq("invite_code", code)
   .limit(1)
