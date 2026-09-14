@@ -20,7 +20,7 @@ const Scan = () => {
       }
       if (isMounted) setState({ kind: "loading" });
       const { data, error } = await supabase
-        .from("guests")
+        .from("shim2t")
         .select("name, scanned")
         .eq("qr_token", cleanToken)
         .maybeSingle();
@@ -37,7 +37,7 @@ const Scan = () => {
         return;
       }
       const { data: updatedData, error: updateError } = await supabase
-        .from("guests")
+        .from("shim2t")
         .update({ scanned: true })
         .eq("qr_token", cleanToken)
         .eq("scanned", false)
@@ -53,7 +53,7 @@ const Scan = () => {
       if (!updatedData) {
         if (isMounted) {
           const { data: latestData } = await supabase
-            .from("guests")
+            .from("shim2t")
             .select("name, scanned")
             .eq("qr_token", cleanToken)
             .maybeSingle();
