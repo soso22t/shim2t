@@ -77,7 +77,7 @@ const Manage = () => {
 
       const { data: invitation, error: invitationError } =
         await supabase
-          .from("invitations")
+          .from("shim")
           .select("id, guest_limit, manage_code")
           .eq("manage_code", id)
           .maybeSingle();
@@ -100,7 +100,7 @@ const Manage = () => {
 
       const { data: guestsData, error: guestsError } =
         await supabase
-          .from("guests")
+          .from("shim2t")
           .select(
             "id, name, phone, status, invite_code, replaced, created_at, qr_token, scanned, device_id"
           )
@@ -145,7 +145,7 @@ const Manage = () => {
 
     const message =
       `${guestName}\n\n` +
-      `يسعدنا دعوتك لمشاركتنا فرحة زفاف غالينا، فحضورك يزيد فرحتنا جمالًا \u2665\uFE0F\uD83D\uDC8D.\n\n` +
+      `يسعدنا دعوتك لمشاركتنا فرحة زفاف غالينا، فحضورك يزيد فرحتنا جمالًا ♥️💍.\n\n` +
       `${invitationUrl}`;
 
     const cleanPhone = guestPhone.replace(/\D/g, "");
@@ -248,12 +248,12 @@ const Manage = () => {
       invitation_id: invitationId,
       name: n,
       phone: cleanPhone,
-      invite_code: inviteCode, // نفس كود الدعوة للجميع
+      invite_code: inviteCode,
       status: "pending",
     }));
 
     const { data, error: insertError } = await supabase
-      .from("guests")
+      .from("shim2t")
       .insert(guestsToInsert)
       .select(
         "id, name, phone, status, invite_code, replaced, created_at, qr_token, scanned, device_id"
@@ -374,7 +374,7 @@ const Manage = () => {
     if (!invitationId) return;
 
     const { error: updateError } = await supabase
-      .from("guests")
+      .from("shim2t")
       .update({
         device_id: null,
       })
@@ -404,7 +404,7 @@ const Manage = () => {
 
   const resetGuestDevice = async (guest: Guest) => {
     const { error: updateError } = await supabase
-      .from("guests")
+      .from("shim2t")
       .update({
         device_id: null,
       })
@@ -440,7 +440,7 @@ const Manage = () => {
     const newQrToken = crypto.randomUUID();
 
     const { error: updateError } = await supabase
-      .from("guests")
+      .from("shim2t")
       .update({
         qr_token: newQrToken,
         scanned: false,
@@ -476,7 +476,7 @@ const Manage = () => {
 
   const deleteGuest = async (guest: Guest) => {
     const { error: deleteError } = await supabase
-      .from("guests")
+      .from("shim2t")
       .delete()
       .eq("id", guest.id);
 
@@ -548,7 +548,7 @@ const Manage = () => {
     const newInviteCode = generateInviteCode();
 
     const { data, error: updateError } = await supabase
-      .from("guests")
+      .from("shim2t")
       .update({
         name: cleanNewName,
         phone: cleanNewPhone,
