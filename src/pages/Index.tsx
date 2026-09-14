@@ -64,7 +64,7 @@ const Index = () => {
 
       const { data: guestRows, error } =
         await supabase
-          .from("guests")
+          .from("shim2t")
           .select(
             "id, name, device_id, status"
           )
@@ -198,7 +198,7 @@ const Index = () => {
       // إذا كان الجهاز غير مسجل، يتم تسجيله الآن بعد ضغطة المستخدم الفعلية
       if (!guest.device_id && deviceId) {
         const { error: updateError } = await supabase
-          .from("guests")
+          .from("shim2t")
           .update({
             device_id: deviceId,
           })
@@ -375,7 +375,7 @@ const Index = () => {
                       color: "#B08A3C",
                     }}
                   >
-                    أم يزيد
+                    أم عبدالله
                   </span>
                 </div>
               </div>
@@ -422,7 +422,7 @@ const Index = () => {
                     color: "#B08A3C",
                   }}
                 >
-                  اميمـه
+                  امنـه
                 </span>
               </div>
             </div>
@@ -446,7 +446,7 @@ const Index = () => {
                   color: "#FFFFFF",
                 }}
               >
-                قاعة رسال للمناسبات والاحتفالات
+                قاعة ليلة التاج للمناسبات والاحتفالات
               </p>
 
               <p
@@ -489,7 +489,7 @@ const Index = () => {
                       color: "#B08A3C",
                     }}
                   >
-                    اكتوبر
+                    نوفمبر
                   </span>
 
                   <span className="font-display">
@@ -504,7 +504,7 @@ const Index = () => {
                       color: "#B08A3C",
                     }}
                   >
-                    8
+                    11
                   </div>
 
                   <div
@@ -671,7 +671,7 @@ const Index = () => {
                         color: "#B08A3C",
                       }}
                     >
-                      اميمـه
+                      امنـه
                     </span>
 
                   </div>
