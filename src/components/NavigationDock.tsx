@@ -257,7 +257,7 @@ const NavigationDock = ({
     ctx.shadowBlur = 10;
 
     ctx.fillText(
-      "محمـد & اميمـه",
+      "محمـد & امنـه",
       canvas.width / 2,
       canvas.height - 180
     );
@@ -305,7 +305,7 @@ const NavigationDock = ({
         await navigator.share({
           files: [file],
           title:
-            "محمـد & اميمـه",
+            "محمـد & امنـه",
         });
       } else {
         alert(
@@ -326,7 +326,7 @@ const NavigationDock = ({
 
   const handleCall = () => {
     window.location.href =
-      "tel:0545252599";
+      "tel:0554129943";
   };
 
   const openRSVP = async () => {
@@ -352,7 +352,7 @@ const NavigationDock = ({
 
     const { data } =
       await supabase
-        .from("guests")
+        .from("shim2t")
         .select(
           "status, qr_token"
         )
@@ -426,7 +426,7 @@ const NavigationDock = ({
     if (!guest.device_id) {
       const { error } =
         await supabase
-          .from("guests")
+          .from("shim2t")
           .update({
             device_id:
               deviceId,
@@ -479,7 +479,7 @@ const NavigationDock = ({
     // جلب الباركود الحالي للشخص
     const { data } =
       await supabase
-        .from("guests")
+        .from("shim2t")
         .select(
           "status, qr_token"
         )
@@ -538,7 +538,7 @@ const NavigationDock = ({
           data: guest,
           error: guestError,
         } = await supabase
-          .from("guests")
+          .from("shim2t")
           .select(
             "id, name, status, qr_token, scanned"
           )
@@ -577,7 +577,7 @@ const NavigationDock = ({
 
           const { error } =
             await supabase
-              .from("guests")
+              .from("shim2t")
               .update({
                 status:
                   "attending",
@@ -598,7 +598,7 @@ const NavigationDock = ({
         } else {
           const { error } =
             await supabase
-              .from("guests")
+              .from("shim2t")
               .update({
                 status:
                   "declined",
@@ -712,7 +712,7 @@ const NavigationDock = ({
                       }}
                       className="text-5xl font-bold"
                     >
-                      محمـد & اميمـه
+                      محمـد & امنـه
                     </p>
                   </div>
                 </div>
@@ -879,7 +879,7 @@ const NavigationDock = ({
                   color: "#FFFFFF",
                 }}
               >
-                0545252599
+                0554129943
               </p>
 
               <button
@@ -1259,8 +1259,8 @@ const NavigationDock = ({
                 >
                   {rsvpStatus ===
                   "attending"
-                    ? "نسعد بحضوركم ومشاركتكم لنا هذه الفرحة"
-                    : "نشكر لكم تواصلكم، ونسأل الله أن يجمعنا بكم على خير"}
+                    ? "نسعد بحضورك ومشاركتك لنا هذه الفرحة"
+                    : "نشكر لك تواصلك، ونسأل الله أن يجمعنا بك على خير"}
                 </p>
 
                 {rsvpStatus ===
